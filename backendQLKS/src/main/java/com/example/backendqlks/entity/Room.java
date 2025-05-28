@@ -1,6 +1,7 @@
 package com.example.backendqlks.entity;
 
 import com.example.backendqlks.entity.enums.RoomState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,8 +10,9 @@ import lombok.Data;
 @Data
 public class Room {
     @Id
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
     @Column(name = "ID")
-    private String id; // lay ma phong lam id luon vd P1.16
+    private int id;
 
     @Column(name = "NAME")
     private  String name;
@@ -24,9 +26,21 @@ public class Room {
     @Column(name = "ROOM_STATE")
     private RoomState state;
 
-    @Column(name = "ROOMTYPE_ID")
+    @Column(name = "ROOMTYPE_ID") // foreign key references RoomType
     private int roomTypeId;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ROOMTYPE_ID", referencedColumnName = "ID", insertable = false, updatable = false) // only for extracting related information, not create or update
+    private RoomType roomType;
 
-    //TangId int [ref: > Tang.Id]
+    @Column(name ="FLOOR_ID") // foreign key references Floor
+    private int  floorId;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FLOOR_ID", referencedColumnName = "ID", insertable = false, updatable = false) // only for extracting related information, not create or update
+    private Floor floor;
+
+    //TODO: add OneToMay relationship Facility. A room have many facilities.
 }
