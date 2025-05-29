@@ -1,8 +1,11 @@
 package com.example.backendqlks.entity;
 
 import com.example.backendqlks.entity.enums.RoomState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Table(name = "ROOM")
@@ -28,5 +31,11 @@ public class Room {
     private int roomTypeId;
 
 
-    //TangId int [ref: > Tang.Id]
+    //Khoa ngoai cho tang
+    //Phai them vao day
+
+    //Khoa ngoai cho phieu trich xuat
+    @JsonIgnore
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<StockRequisitionInvoiceDetail> stockRequisitionInvoiceDetails;
 }
