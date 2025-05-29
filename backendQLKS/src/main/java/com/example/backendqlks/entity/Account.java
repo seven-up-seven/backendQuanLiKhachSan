@@ -19,6 +19,7 @@ public class Account {
     @Column(name="PASSWORD")
     private String password;
 
+    //khoa ngoai toi vai tro cua tai khoan
     @Column(name = "ROLE_ID")
     private int roleId;
 

@@ -28,6 +28,7 @@ public class Room {
     @Column(name = "ROOM_STATE")
     private RoomState state;
 
+    //khoa ngoai cho loai phong
     @Column(name = "ROOMTYPE_ID") // foreign key references RoomType
     private int roomTypeId;
 
@@ -36,13 +37,13 @@ public class Room {
     @JoinColumn(name = "ROOMTYPE_ID", referencedColumnName = "ID") // only for extracting related information, not create or update
     private RoomType roomType;
 
-    //Khoa ngoai cho tang
-    //Phai them vao day
-
     //Khoa ngoai cho phieu trich xuat
     @JsonIgnore
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StockRequisitionInvoiceDetail> stockRequisitionInvoiceDetails;
+
+
+    //khoa ngoai cho tang
     @Column(name ="FLOOR_ID") // foreign key references Floor
     private int  floorId;
 
@@ -51,5 +52,8 @@ public class Room {
     @JoinColumn(name = "FLOOR_ID", referencedColumnName = "ID") // only for extracting related information, not create or update
     private Floor floor;
 
-    //TODO: add OneToMay relationship Facility. A room have many facilities.
+    //khoa ngoai toi RoomSupply (cho vat tu)
+    @JsonIgnore
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RoomsSupply> roomsSupplies;
 }

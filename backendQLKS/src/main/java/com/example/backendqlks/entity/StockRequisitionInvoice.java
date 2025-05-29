@@ -21,7 +21,7 @@ public class StockRequisitionInvoice {
 
     //khoa ngoai toi chi tiet phieu trich xuat
     @JsonIgnore
-    @OneToMany(mappedBy = "stockRequisitionInvoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "stockRequisitionInvoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<StockRequisitionInvoiceDetail> stockRequisitionInvoiceDetails;
 
     //khoa ngoai toi phong

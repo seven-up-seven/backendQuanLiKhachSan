@@ -23,6 +23,6 @@ public class ImportInvoice {
 
     //khoa ngoai toi chi tiet phieu nhap
     @JsonIgnore
-    @OneToMany(mappedBy = "importInvoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "importInvoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ImportInvoiceDetail> importInvoiceDetails;
 }

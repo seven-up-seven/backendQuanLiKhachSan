@@ -33,4 +33,9 @@ public class Supply {
     @JsonIgnore
     @OneToMany(mappedBy = "supply", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StockRequisitionInvoiceDetail> stockRequisitionInvoiceDetails;
+
+    //khoa ngoai toi RoomSupply
+    @JsonIgnore
+    @OneToMany(mappedBy = "supply", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RoomsSupply> roomsSupplies;
 }
