@@ -31,7 +31,7 @@ public class Room {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROOMTYPE_ID", referencedColumnName = "ID", insertable = false, updatable = false) // only for extracting related information, not create or update
+    @JoinColumn(name = "ROOMTYPE_ID", referencedColumnName = "ID") // only for extracting related information, not create or update
     private RoomType roomType;
 
     @Column(name ="FLOOR_ID") // foreign key references Floor
@@ -39,7 +39,7 @@ public class Room {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FLOOR_ID", referencedColumnName = "ID", insertable = false, updatable = false) // only for extracting related information, not create or update
+    @JoinColumn(name = "FLOOR_ID", referencedColumnName = "ID") // only for extracting related information, not create or update
     private Floor floor;
 
     //TODO: add OneToMay relationship Facility. A room have many facilities.

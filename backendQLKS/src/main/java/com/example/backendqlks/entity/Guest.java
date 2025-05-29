@@ -6,6 +6,9 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "GUEST")
 @Data
@@ -34,5 +37,11 @@ public class Guest {
     @Column(name = "NATIONALITY")
     private  String nationality;
 
-    //TODO: add 2 ManyToMany relationships Guest_Invoice and Guest_BookingForm and Guest_PenaltyForm
+    @JsonIgnore
+    @OneToMany(mappedBy = "payingGuest", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Invoice> invoiceList = new ArrayList<>();
+
+   @JsonIgnore
+   @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true)
+   private List<RentalFormDetail> rentalFormDetailList = new ArrayList<>();
 }

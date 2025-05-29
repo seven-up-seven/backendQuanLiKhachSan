@@ -27,6 +27,6 @@ public class Floor {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(columnDefinition = "BLOCK_ID", referencedColumnName = "ID", updatable = false, insertable = false)
+    @JoinColumn(name = "BLOCK_ID", referencedColumnName = "ID")
     private Block block;
 }

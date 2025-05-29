@@ -21,7 +21,7 @@ public class RevenueReportDetail {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "REVENUE_REPORT_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "REVENUE_REPORT_ID", referencedColumnName = "ID")
     private RevenueReport revenueReport;
 
     @Column(name = "ROOMTYPE_ID")
@@ -29,6 +29,6 @@ public class RevenueReportDetail {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROOMTYPE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "ROOMTYPE_ID", referencedColumnName = "ID")
     private RoomType roomType;
 }
