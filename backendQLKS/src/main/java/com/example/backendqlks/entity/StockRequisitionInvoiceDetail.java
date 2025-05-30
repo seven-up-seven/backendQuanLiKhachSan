@@ -13,17 +13,17 @@ public class StockRequisitionInvoiceDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "TOTAL_NUMBER")
-    private int totalNumber;
+    @Column(name = "TOTAL_QUANTITY")
+    private short totalQuantity;
 
     //khoa ngoai toi vat tu
-    @Column(name = "SUPPLY_ID")
-    private int supplyId;
+    @Column(name = "FACILITY_ID")
+    private int facilityId;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SUPPLY_ID", referencedColumnName = "ID", updatable = false, insertable = false)
-    private Supply supply;
+    @JoinColumn(name = "FACILITY_ID", referencedColumnName = "ID", updatable = false, insertable = false)
+    private Facility facility;
 
     //khoa ngoai toi phieu trich xuat
     @Column(name = "STOCK_REQUISITION_INVOICE_ID")

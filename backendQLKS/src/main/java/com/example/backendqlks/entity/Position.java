@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "USER_TYPE")
-public class UserType {
+@Table(name = "POSITION")
+public class Position {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +15,6 @@ public class UserType {
     @Column(name="NAME")
     private String name;
 
-    @Column(name="MINIMUM_WAGE")
-    private double minimumWage;
+    @Column(name="BASE_SALARY")
+    private double baseSalary;
 }

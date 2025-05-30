@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,7 +27,7 @@ public class Room {
     private String note;
 
     @Column(name = "ROOM_STATE")
-    private RoomState state;
+    private RoomState roomState;
 
     //khoa ngoai cho loai phong
     @Column(name = "ROOMTYPE_ID") // foreign key references RoomType
@@ -34,13 +35,13 @@ public class Room {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROOMTYPE_ID", referencedColumnName = "ID") // only for extracting related information, not create or update
+    @JoinColumn(name = "ROOMTYPE_ID", referencedColumnName = "ID", insertable = false, updatable = false) // only for extracting related information, not create or update
     private RoomType roomType;
 
     //Khoa ngoai cho phieu trich xuat
     @JsonIgnore
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<StockRequisitionInvoice> stockRequisitionInvoices;
+    private List<StockRequisitionInvoice> stockRequisitionInvoices = new ArrayList<>();
 
 
     //khoa ngoai cho tang
@@ -55,5 +56,5 @@ public class Room {
     //khoa ngoai toi RoomSupply (cho vat tu)
     @JsonIgnore
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RoomsSupply> roomsSupplies;
+    private List<RoomFacility> roomFacilities = new ArrayList<>();
 }

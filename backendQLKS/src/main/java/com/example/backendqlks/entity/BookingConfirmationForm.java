@@ -1,6 +1,7 @@
 package com.example.backendqlks.entity;
 
 import jakarta.persistence.*;
+import jdk.jfr.Unsigned;
 import lombok.Data;
 
 @Entity

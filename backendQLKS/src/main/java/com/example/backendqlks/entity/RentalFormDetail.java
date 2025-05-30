@@ -20,7 +20,7 @@ public class RentalFormDetail {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RENTAL_FORM_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "RENTAL_FORM_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private RentalForm rentalForm;
 
     @Column(name = "GUEST_ID")
@@ -28,6 +28,6 @@ public class RentalFormDetail {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "GUEST_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "GUEST_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private Guest guest;
 }

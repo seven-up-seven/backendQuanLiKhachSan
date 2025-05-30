@@ -18,9 +18,9 @@ public class RentalExtensionForm {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RENTAL_FORM_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "RENTAL_FORM_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private RentalFormDetail rentalForm;
 
     @Column(name = "NUMBER_OF_RENTAL_DAY")
-    private int numberOfRentalDays;
+    private short numberOfRentalDays;
 }

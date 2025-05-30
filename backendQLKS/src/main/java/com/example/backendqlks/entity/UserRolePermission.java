@@ -9,10 +9,10 @@ import lombok.Data;
 @Table(name="ROLE_PERMISSION")
 @Data
 @IdClass(RolePermissionPrimaryKey.class)
-public class RolePermission {
+public class UserRolePermission {
     @Id
-    @Column(name="ROLE_ID")
-    private int roleId;
+    @Column(name="USER_ROLE_ID")
+    private int userRoleId;
 
     @Id
     @Column(name = "PERMISSION_ID")
@@ -20,8 +20,8 @@ public class RolePermission {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    private Role role;
+    @JoinColumn(name = "USER_ROLE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private UserRole userRole;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

@@ -3,7 +3,6 @@ package com.example.backendqlks.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.query.sql.internal.ParameterRecognizerImpl;
 
 @Entity
 @Table(name = "FACILITY_COMPENSATION")
@@ -18,8 +17,16 @@ public class FacilityCompensation {
     @Column(name = "INVOICE_DETAIL_ID")
     private int invoiceDetailId;
 
-    //TODO: add 2 entity with many to one relationships
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FACILITY_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private Facility facility;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "INVOICE_DETAIL_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private InvoiceDetail invoiceDetail;
 
     @Column(name = "QUANTITY")
-    private int quantity;
+    private short quantity;
 }

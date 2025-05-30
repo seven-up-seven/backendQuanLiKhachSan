@@ -35,7 +35,7 @@ public class RentalForm {
     private LocalDateTime rentalDate;
 
     @Column(name = "NUMBER_OF_RENTAL_DAY")
-    private int numberOfRentalDays;
+    private short numberOfRentalDays;
 
     @Column(name = "NOTE")
     private String note;
@@ -45,10 +45,10 @@ public class RentalForm {
     private InvoiceDetail invoiceDetail;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "rentalForm", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RentalFormDetail> rentalFormDetailList = new ArrayList<>();
+    @OneToMany(mappedBy = "rentalForm", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<RentalFormDetail> rentalFormDetails = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "rentalForm", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RentalExtensionForm> rentalExtensionFormList;
+    @OneToMany(mappedBy = "rentalForm", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<RentalExtensionForm> rentalExtensionForms = new ArrayList<>();
 }

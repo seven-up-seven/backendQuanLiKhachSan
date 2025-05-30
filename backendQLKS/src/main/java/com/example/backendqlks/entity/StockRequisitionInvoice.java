@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.criteria.Fetch;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,13 +17,13 @@ public class StockRequisitionInvoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="NUMBER")
-    private int number;
+    @Column(name="QUANTITY")
+    private short quantity;
 
     //khoa ngoai toi chi tiet phieu trich xuat
     @JsonIgnore
     @OneToMany(mappedBy = "stockRequisitionInvoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<StockRequisitionInvoiceDetail> stockRequisitionInvoiceDetails;
+    private List<StockRequisitionInvoiceDetail> stockRequisitionInvoiceDetails = new ArrayList<>();
 
     //khoa ngoai toi phong
     @Column(name = "ROOM_ID")

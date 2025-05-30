@@ -9,20 +9,20 @@ import lombok.Data;
 @Data
 @Table(name = "ROOM_SUPPLY")
 @IdClass(RoomSupplyPrimaryKey.class)
-public class RoomsSupply {
+public class RoomFacility {
     @Id
     @Column(name = "ROOM_ID")
     private String roomId;
 
     @Id
-    @Column(name = "SUPPLY_ID")
-    private int supplyId;
+    @Column(name = "FACILITY_ID")
+    private int facilityId;
 
-    @Column(name = "TOTAL_NUMBER")
-    private int totalNumber;
+    @Column(name = "TOTAL_QUANTITY")
+    private byte totalQuantity;
 
-    @Column(name = "DAMAGED_NUMBER")
-    private int damagedNumber;
+    @Column(name = "DAMAGED_QUANTITY")
+    private byte damagedQuantity;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,6 +31,6 @@ public class RoomsSupply {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SUPPLY_ID", referencedColumnName = "ID", updatable = false, insertable = false)
-    private Supply supply;
+    @JoinColumn(name = "FACILITY_ID", referencedColumnName = "ID", updatable = false, insertable = false)
+    private Facility facility;
 }

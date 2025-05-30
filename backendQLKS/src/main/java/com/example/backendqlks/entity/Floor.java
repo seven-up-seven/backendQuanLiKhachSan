@@ -19,7 +19,7 @@ public class Floor {
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "floor", cascade = CascadeType.ALL, orphanRemoval = true) // TODO: check later if orphanRemoval should be false or true
+    @OneToMany(mappedBy = "floor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY) // TODO: check later if orphanRemoval should be false or true
     private List<Room> roomList = new ArrayList<>();
 
     @Column(name = "BLOCK_ID")
@@ -27,6 +27,6 @@ public class Floor {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BLOCK_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "BLOCK_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private Block block;
 }

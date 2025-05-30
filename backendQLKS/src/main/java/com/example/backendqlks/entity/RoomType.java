@@ -23,10 +23,10 @@ public class RoomType {
     private  Double price;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL, orphanRemoval = true) // TODO: check later if orphanRemoval should be false or true
-    private List<Room> roomList = new ArrayList<>();
+    @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY) // TODO: check later if orphanRemoval should be false or true
+    private List<Room> rooms = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL, orphanRemoval = true) // TODO: check later if orphanRemoval should be false or true
-    private List<RevenueReportDetail> revenueReportDetailList = new ArrayList<>();
+    @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY) // TODO: check later if orphanRemoval should be false or true
+    private List<RevenueReportDetail> revenueReportDetails = new ArrayList<>();
 }

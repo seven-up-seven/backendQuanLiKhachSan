@@ -1,6 +1,5 @@
 package com.example.backendqlks.entity.compositekeys;
 
-import com.example.backendqlks.entity.RolePermission;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

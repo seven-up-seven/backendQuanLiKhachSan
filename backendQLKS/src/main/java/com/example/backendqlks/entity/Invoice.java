@@ -13,8 +13,8 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "TOTAL_INVOICES_VALUE")
-    private double totalInvoicesValue;
+    @Column(name = "TOTAL_RESERVATION_COST")
+    private double totalReservationCost;
 
     @Column(name = "PAYING_GUEST_ID")
     private int payingGuestId;
@@ -27,9 +27,9 @@ public class Invoice {
     @Column(name = "STAFF_ID")
     private int staffId;
 
-//    @JsonIgnore
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "STAFF_ID", referencedColumnName = "ID")
-    //private Staff staff;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STAFF_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private Staff staff;
     //TODO: add OneToMany relationship in Staff
 }

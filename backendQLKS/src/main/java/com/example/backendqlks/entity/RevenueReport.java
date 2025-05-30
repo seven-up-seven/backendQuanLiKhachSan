@@ -27,6 +27,6 @@ public class RevenueReport {
     private double totalMonthRevenue;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "revenueReport", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RevenueReportDetail> revenueReportDetailList = new ArrayList<>();
+    @OneToMany(mappedBy = "revenueReport", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<RevenueReportDetail> revenueReportDetails = new ArrayList<>();
 }

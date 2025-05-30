@@ -20,11 +20,11 @@ public class Account {
     private String password;
 
     //khoa ngoai toi vai tro cua tai khoan
-    @Column(name = "ROLE_ID")
-    private int roleId;
+    @Column(name = "USER_ROLE_ID")
+    private int userRoleId;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    private Role role;
+    @JoinColumn(name = "USER_ROLE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private UserRole userRole;
 }

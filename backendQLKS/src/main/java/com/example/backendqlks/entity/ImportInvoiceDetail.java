@@ -13,14 +13,14 @@ public class ImportInvoiceDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "NUMBER")
-    private int number;
+    @Column(name = "QUANTITY")
+    private short number;
 
     @Column(name = "COST")
     private double cost;
 
-    @Column(name = "SUPPLY_ID")
-    private int supplyId;
+    @Column(name = "FACILITY_ID")
+    private int facilityId;
 
     @Column(name = "IMPORT_INVOICE_ID")
     private int importInvoiceId;
@@ -28,8 +28,8 @@ public class ImportInvoiceDetail {
     //khoa ngoai toi vat tu (Supply)
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SUPPLY_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    private Supply supply;
+    @JoinColumn(name = "FACILITY_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private Facility facility;
 
     //khoa ngoai toi phieu nhap
     @JsonIgnore

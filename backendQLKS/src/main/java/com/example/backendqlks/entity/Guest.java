@@ -25,8 +25,9 @@ public class Guest {
     private Sex sex;
 
     @Column(name = "AGE")
-    private byte  age;
+    private short  age;
 
+    @Nullable
     @Column(name = "IDENTIFICATION_NUMBER")
     private String identificationNumber;
 
@@ -34,14 +35,18 @@ public class Guest {
     @Nullable
     private String address;
 
+    @Column(name = "PHONE_NUMBER")
+    @Nullable
+    private String phoneNumber;
+
     @Column(name = "NATIONALITY")
     private  String nationality;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "payingGuest", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Invoice> invoiceList = new ArrayList<>();
+    @OneToMany(mappedBy = "payingGuest", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Invoice> invoices = new ArrayList<>();
 
    @JsonIgnore
-   @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true)
-   private List<RentalFormDetail> rentalFormDetailList = new ArrayList<>();
+   @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+   private List<RentalFormDetail> rentalFormDetails = new ArrayList<>();
 }

@@ -21,17 +21,17 @@ public class InvoiceDetail {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "INVOICE_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "INVOICE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private Invoice invoice;
 
-    @Column(name = "INVOICE_VALUE")
-    private double invoiceValue;
+    @Column(name = "RESERVATION_COST")
+    private double reservationCost;
 
     @Column(name = "RENTAL_FORM_ID")
     private int rentalFormId;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RENTAL_FORM_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "RENTAL_FORM_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private RentalForm rentalForm;
 }

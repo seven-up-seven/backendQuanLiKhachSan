@@ -1,9 +1,9 @@
 package com.example.backendqlks.entity;
 
+import com.example.backendqlks.entity.enums.Sex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.context.annotation.EnableMBeanExport;
 
 @Entity
 @Data
@@ -20,26 +20,26 @@ public class Staff {
     @Column(name="AGE")
     private int age;
 
-    @Column(name="CCCD")
-    private String cccd;
+    @Column(name="IDENTIFICATION_NUMBER")
+    private String identificationNumber;
 
     @Column(name="ADDRESS")
     private String address;
 
-    @Column(name="GENDER")
-    private boolean gender;
+    @Column(name="SEX")
+    private Sex sex;
 
     @Column(name="SALARY_MULTIPLIER")
-    private double salaryMultiplier;
+    private float salaryMultiplier;
 
-    //khoa ngoai toi chuc vu (UserType)
-    @Column(name = "USER_TYPE_ID")
-    private int userTypeId;
+    //khoa ngoai toi chuc vu (Position)
+    @Column(name = "POSITION_ID")
+    private int positionId;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_TYPE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    private UserType userType;
+    @JoinColumn(name = "POSITION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private Position position;
 
     //khoa ngoai toi tai khoan (Account)
     @Column(name = "ACCOUNT_ID")
