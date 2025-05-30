@@ -1,6 +1,7 @@
 package com.example.backendqlks.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -24,12 +25,13 @@ public class RentalForm {
     @JoinColumn(name = "ROOM_ID", referencedColumnName = "ID")
     private Room room;
 
-//TODO: add relationship with staff after merging branches
-//    @JsonIgnore
-//    @Column(name = "STAFF_ID")
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "STAFF_ID", referencedColumnName = "ID")
-//    private Staff staff;
+    @Column(name = "STAFF_ID")
+    private int staffId;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STAFF_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private Staff staff;
 
     @Column(name = "RENTAL_DATE")
     private LocalDateTime rentalDate;
@@ -38,6 +40,7 @@ public class RentalForm {
     private short numberOfRentalDays;
 
     @Column(name = "NOTE")
+    @Nullable
     private String note;
 
     @JsonIgnore

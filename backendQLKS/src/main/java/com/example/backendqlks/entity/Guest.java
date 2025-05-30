@@ -40,6 +40,10 @@ public class Guest {
     @Nullable
     private String phoneNumber;
 
+    @Column(name = "EMAIL")
+    @Nullable
+    private String email;
+
     @Column(name = "NATIONALITY")
     private  String nationality;
 
