@@ -27,6 +27,7 @@ public class Room {
     private String note;
 
     @Column(name = "ROOM_STATE")
+    @Enumerated(EnumType.STRING)
     private RoomState roomState;
 
     //khoa ngoai cho loai phong

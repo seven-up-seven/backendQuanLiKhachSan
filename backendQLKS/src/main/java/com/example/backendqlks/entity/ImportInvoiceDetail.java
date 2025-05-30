@@ -14,7 +14,7 @@ public class ImportInvoiceDetail {
     private int id;
 
     @Column(name = "QUANTITY")
-    private short number;
+    private short quantity;
 
     @Column(name = "COST")
     private double cost;

@@ -27,6 +27,7 @@ public class Staff {
     private String address;
 
     @Column(name="SEX")
+    @Enumerated(EnumType.STRING)
     private Sex sex;
 
     @Column(name="SALARY_MULTIPLIER")

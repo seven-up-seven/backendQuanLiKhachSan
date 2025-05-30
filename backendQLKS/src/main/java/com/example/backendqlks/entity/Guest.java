@@ -22,6 +22,7 @@ public class Guest {
     private String name;
 
     @Column(name = "SEX")
+    @Enumerated(EnumType.STRING)
     private Sex sex;
 
     @Column(name = "AGE")
