@@ -40,7 +40,7 @@ public class Room {
     //Khoa ngoai cho phieu trich xuat
     @JsonIgnore
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<StockRequisitionInvoiceDetail> stockRequisitionInvoiceDetails;
+    private List<StockRequisitionInvoice> stockRequisitionInvoices;
 
 
     //khoa ngoai cho tang
@@ -49,7 +49,7 @@ public class Room {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FLOOR_ID", referencedColumnName = "ID") // only for extracting related information, not create or update
+    @JoinColumn(name = "FLOOR_ID", referencedColumnName = "ID", insertable = false, updatable = false) // only for extracting related information, not create or update
     private Floor floor;
 
     //khoa ngoai toi RoomSupply (cho vat tu)

@@ -26,7 +26,7 @@ public class StockRequisitionInvoice {
 
     //khoa ngoai toi phong
     @Column(name = "ROOM_ID")
-    private String roomId;
+    private int roomId;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,0 +1,22 @@
+services:
+  mysql:
+    container_name: hotel-db
+    image: 'mysql:latest'
+    restart: always
+    #user: "999:999" #su dung khi dung linux can phan quyen UID/GID
+    environment:
+      MYSQL_ROOT_PASSWORD: root #root password mac dinh cua mysql
+      MYSQL_DATABASE: HotelManagement
+      MYSQL_USER: hotel
+      MYSQL_PASSWORD: hotel
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
+    ports:
+      - '3307:3306'
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./sql/InitSampleData.sql:/docker-entrypoint-initdb.d/InitSampleData.sql
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --init-connect='SET NAMES utf8mb4'z
