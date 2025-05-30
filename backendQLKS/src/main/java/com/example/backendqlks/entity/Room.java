@@ -18,10 +18,7 @@ public class Room {
     private int id;
 
     @Column(name = "NAME")
-    private  String name;
-
-    @Column(name = "PRICE")
-    private  double price;
+    private String name;
 
     @Column(name =  "NOTE")
     private String note;

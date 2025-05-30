@@ -20,7 +20,7 @@ public class RoomType {
     private  String name;
 
     @Column(name = "PRICE")
-    private  Double price;
+    private double price;
 
     @JsonIgnore
     @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY) // TODO: check later if orphanRemoval should be false or true
