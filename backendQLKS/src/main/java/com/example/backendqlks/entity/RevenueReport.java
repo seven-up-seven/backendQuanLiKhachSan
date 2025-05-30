@@ -18,7 +18,7 @@ public class RevenueReport {
     private int id;
 
     @Column(name = "YEAR")
-    private byte year;
+    private short year;
 
     @Column(name = "MONTH")
     private byte month;
