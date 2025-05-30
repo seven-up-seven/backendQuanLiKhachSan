@@ -31,5 +31,4 @@ public class Invoice {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STAFF_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private Staff staff;
-    //TODO: add OneToMany relationship in Staff
 }
