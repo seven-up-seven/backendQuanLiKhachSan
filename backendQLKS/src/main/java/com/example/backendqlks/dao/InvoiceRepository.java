@@ -1,6 +1,5 @@
 package com.example.backendqlks.dao;
 
-import com.example.backendqlks.entity.Facility;
 import com.example.backendqlks.entity.Guest;
 import com.example.backendqlks.entity.Invoice;
 import com.example.backendqlks.entity.Staff;
