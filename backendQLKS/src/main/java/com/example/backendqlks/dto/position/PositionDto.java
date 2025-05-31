@@ -2,13 +2,14 @@ package com.example.backendqlks.dto.position;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public class PositionDto {
-    @NotBlank
+    @NotBlank(message = "Name must not be null")
     private String name;
 
-    @Positive
-    @NotBlank
-    private double baseSalary;
+    @Positive(message = "Base salary must be positive")
+    @NotNull(message = "Base salary must not be null")
+    private Double baseSalary;
 }

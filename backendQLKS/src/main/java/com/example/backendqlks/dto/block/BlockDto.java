@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 @Builder
 public class BlockDto {
-    @NotBlank
+    @NotBlank(message = "Block name must not be null or empty")
     private String name;
 }

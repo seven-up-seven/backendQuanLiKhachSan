@@ -1,9 +1,11 @@
 package com.example.backendqlks.entity;
 
 import com.example.backendqlks.entity.enums.BookingState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jdk.jfr.Unsigned;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "BOOKING_CONFIRMATION_FORM")
@@ -14,22 +16,23 @@ public class BookingConfirmationForm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "BOOKING_PERSON_NAME")
-    private String bookingPersonName;
+    @Column(name = "BOOKING_GUEST_ID")
+    private int bookingGuestId;
 
-    @Column(name = "BOOKING_PERSON_IDENTIFICATION_NUMBER")
-    private String bookingPersonIdentificationNumber;
-
-    @Column(name = "BOOKING_PERSON_PHONE_NUMBER")
-    private String bookingPersonPhoneNumber;
-
-    @Column(name = "BOOKING_PERSON_EMAIL")
-    private String bookingPersonEmail;
-
-    @Column(name = "BOOKING_PERSON_AGE")
-    private byte bookingPersonAge;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "BOOKING_GUEST_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private Guest bookingGuest;
 
     @Column(name = "BOOKING_STATE")
     @Enumerated(EnumType.STRING)
     private BookingState bookingState;
+
+    @Column(name = "CREATED_AT")
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

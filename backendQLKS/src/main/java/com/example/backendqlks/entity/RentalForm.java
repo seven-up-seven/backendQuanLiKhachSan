@@ -54,4 +54,12 @@ public class RentalForm {
     @JsonIgnore
     @OneToMany(mappedBy = "rentalForm", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RentalExtensionForm> rentalExtensionForms = new ArrayList<>();
+
+    @Column(name = "CREATED_AT")
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

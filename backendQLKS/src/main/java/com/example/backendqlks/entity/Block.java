@@ -20,6 +20,6 @@ public class Block {
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY) // TODO: check later if orphanRemoval should be false or true
+    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Floor> floors = new ArrayList<>();
 }

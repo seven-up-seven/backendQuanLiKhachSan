@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "RENTAL_EXTENSION_FORM")
 @Data
@@ -23,4 +25,12 @@ public class RentalExtensionForm {
 
     @Column(name = "NUMBER_OF_RENTAL_DAY")
     private short numberOfRentalDays;
+
+    @Column(name = "CREATED_AT")
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }
