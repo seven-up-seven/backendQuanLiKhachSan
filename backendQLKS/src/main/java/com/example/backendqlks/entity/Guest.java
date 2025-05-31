@@ -32,10 +32,6 @@ public class Guest {
     @Column(name = "IDENTIFICATION_NUMBER")
     private String identificationNumber;
 
-    @Column(name = "ADDRESS")
-    @Nullable
-    private String address;
-
     @Column(name = "PHONE_NUMBER")
     @Nullable
     private String phoneNumber;
@@ -44,14 +40,19 @@ public class Guest {
     @Nullable
     private String email;
 
-    @Column(name = "NATIONALITY")
-    private  String nationality;
+    @Column(name = "ACCOUNT_ID")
+    @Nullable
+    private Integer accountId; // using integer instead of int to contains null value - we are making a chaotic design
 
     @JsonIgnore
     @OneToMany(mappedBy = "payingGuest", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Invoice> invoices = new ArrayList<>();
 
-   @JsonIgnore
-   @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-   private List<RentalFormDetail> rentalFormDetails = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<RentalFormDetail> rentalFormDetails = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "bookingGuest", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<BookingConfirmationForm> bookingConfirmationForms = new ArrayList<>();
 }

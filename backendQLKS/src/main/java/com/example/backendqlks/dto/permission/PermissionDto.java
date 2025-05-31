@@ -4,6 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 
 public class PermissionDto {
-    @NotBlank
+    @NotBlank(message = "Name must not be null or empty")
     private String name;
 }

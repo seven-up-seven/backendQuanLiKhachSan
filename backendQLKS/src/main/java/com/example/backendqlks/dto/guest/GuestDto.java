@@ -8,28 +8,25 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 
 public class GuestDto {
-    @NotBlank
+    @NotBlank(message = "Name must not be null or empty")
     private String name;
 
-    @NotNull
+    @NotNull(message = "Sex must not be null")
     private Sex sex;
 
-    @Positive
-    private short  age;
+    @Positive(message = "Age must be positive")
+    @NotNull(message = "Age must not be null")
+    private Short age;
 
-    //TODO: add another option for foreigners
     @Pattern(regexp = "^[1-9]\\d{11}$", message = "Identification number must be a 12-digit number")
     private String identificationNumber;
 
-    private String address;
-
-    @Pattern(regexp = "^\\d+$\n")
+    @Pattern(regexp = "^\\d{10,11}$", message = "Phone number must be 10 or 11 digits")
     private String phoneNumber;
 
-    @Email
+    @Email(message = "Must be email type")
     private String email;
 
-    //TODO: change from string to Enum or Entity Type
-    @NotBlank
-    private  String nationality;
+    @Positive(message = "Account id must be positive")
+    private Integer accountId;
 }

@@ -20,7 +20,7 @@ public class Floor {
 
     @JsonIgnore
     @OneToMany(mappedBy = "floor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY) // TODO: check later if orphanRemoval should be false or true
-    private List<Room> roomList = new ArrayList<>();
+    private List<Room> rooms = new ArrayList<>();
 
     @Column(name = "BLOCK_ID")
     private int blockId;

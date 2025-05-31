@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name="ROLE_PERMISSION")
+@Table(name="USER_ROLE_PERMISSION")
 @Data
 @IdClass(RolePermissionPrimaryKey.class)
 public class UserRolePermission {

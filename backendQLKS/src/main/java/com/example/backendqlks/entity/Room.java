@@ -36,12 +36,6 @@ public class Room {
     @JoinColumn(name = "ROOMTYPE_ID", referencedColumnName = "ID", insertable = false, updatable = false) // only for extracting related information, not create or update
     private RoomType roomType;
 
-    //Khoa ngoai cho phieu trich xuat
-    @JsonIgnore
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<StockRequisitionInvoice> stockRequisitionInvoices = new ArrayList<>();
-
-
     //khoa ngoai cho tang
     @Column(name ="FLOOR_ID") // foreign key references Floor
     private int  floorId;
@@ -50,9 +44,4 @@ public class Room {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FLOOR_ID", referencedColumnName = "ID", insertable = false, updatable = false) // only for extracting related information, not create or update
     private Floor floor;
-
-    //khoa ngoai toi RoomSupply (cho vat tu)
-    @JsonIgnore
-    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RoomFacility> roomFacilities = new ArrayList<>();
 }
