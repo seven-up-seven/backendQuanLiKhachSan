@@ -1,12 +1,12 @@
 package com.example.backendqlks.dto.guest;
 
 import com.example.backendqlks.entity.enums.Sex;
-import jakarta.annotation.Nullable;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
+import lombok.Data;
 
+@Data
+@Builder
 public class GuestDto {
     @NotBlank(message = "Name must not be null or empty")
     private String name;

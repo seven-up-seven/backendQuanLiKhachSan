@@ -8,5 +8,5 @@ import java.util.List;
 public class ResponseBlockDto {
     private int id;
     private String name;
-    private List<Floor> floors;
+    private List<Integer> floorIds;
 }

@@ -46,7 +46,7 @@ public class Staff {
 
     //khoa ngoai toi tai khoan (Account)
     @Column(name = "ACCOUNT_ID")
-    private int accountId;
+    private Integer accountId;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

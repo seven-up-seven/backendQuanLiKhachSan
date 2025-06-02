@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface BlockRepository extends JpaRepository<Block, Integer> {
     List<Block> findByNameContainingIgnoreCase(String name);
+
+    boolean existsByName(String name);
 }

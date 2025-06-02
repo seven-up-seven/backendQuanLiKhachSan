@@ -44,4 +44,8 @@ public class Room {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FLOOR_ID", referencedColumnName = "ID", insertable = false, updatable = false) // only for extracting related information, not create or update
     private Floor floor;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<BookingConfirmationForm> bookingConfirmationForms = new ArrayList<>();
 }

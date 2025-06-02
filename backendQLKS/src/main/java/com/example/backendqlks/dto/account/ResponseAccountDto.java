@@ -11,5 +11,5 @@ public class ResponseAccountDto {
     private int id;
     private String username;
     private String password;
-    private UserRole userRole; // needn't send userRoleId when we can send the whole userRole
+    private UserRole userRole;
 }

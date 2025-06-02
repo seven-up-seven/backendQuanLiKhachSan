@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "INVOICE")
@@ -33,6 +35,10 @@ public class Invoice {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STAFF_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private Staff staff;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<InvoiceDetail> invoiceDetails = new ArrayList<>();
 
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;

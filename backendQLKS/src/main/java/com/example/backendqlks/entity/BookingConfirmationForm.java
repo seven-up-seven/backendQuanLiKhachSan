@@ -28,6 +28,14 @@ public class BookingConfirmationForm {
     @Enumerated(EnumType.STRING)
     private BookingState bookingState;
 
+    @Column(name = "ROOM_ID")
+    private int roomId;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ROOM_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private Room room;
+
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 

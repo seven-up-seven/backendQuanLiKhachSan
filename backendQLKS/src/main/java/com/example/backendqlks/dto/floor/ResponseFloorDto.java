@@ -11,6 +11,6 @@ import java.util.List;
 public class ResponseFloorDto {
     private int id;
     private String name;
-    private List<Room> rooms;
+    private List<Integer> roomIds;
     private Block block;
 }

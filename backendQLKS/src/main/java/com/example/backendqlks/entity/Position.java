@@ -1,7 +1,10 @@
 package com.example.backendqlks.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -17,4 +20,8 @@ public class Position {
 
     @Column(name="BASE_SALARY")
     private double baseSalary;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "position", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Staff> staffs;
 }

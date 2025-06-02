@@ -12,4 +12,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     Optional<Account> findByUsernameContainingIgnoreCase(String username);
 
     Page<Account> findAccountsByUserRoleId(int userRoleId, Pageable pageable);
+
+    boolean existsByUsername(String username);
 }

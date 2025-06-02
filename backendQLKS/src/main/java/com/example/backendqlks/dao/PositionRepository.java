@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface PositionRepository extends JpaRepository<Position, Integer> {
     List<Position> findByBaseSalary(double baseSalary);
+
+    boolean existsByName(String name);
 }

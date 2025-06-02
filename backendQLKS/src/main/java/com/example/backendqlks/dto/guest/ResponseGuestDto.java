@@ -14,12 +14,11 @@ public class ResponseGuestDto {
     private int id;
     private String name;
     private Sex sex;
-    private short  age;
+    private short age;
     private String identificationNumber;
-    private String address;
     private String phoneNumber;
     private String email;
-    private  String nationality;
-    private List<Invoice> invoices;
-    private List<RentalFormDetail> rentalFormDetails;
+    private List<Integer> invoiceIds;
+    private List<Integer> rentalFormDetailIds;
+    private List<Integer> bookingConfirmationFormIds;
 }

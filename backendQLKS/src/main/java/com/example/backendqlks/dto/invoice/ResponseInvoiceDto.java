@@ -8,9 +8,14 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 public class ResponseInvoiceDto {
     private int id;
     private double totalReservationCost;
     private Guest payingGuest;
     private Staff staff;
+    private LocalDateTime createdAt;
+    private List<Integer> invoiceDetailIds;
 }

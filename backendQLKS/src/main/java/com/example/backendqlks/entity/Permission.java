@@ -20,5 +20,5 @@ public class Permission {
 
     @JsonIgnore
     @OneToMany(mappedBy = "permission", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<UserRolePermission> rolePermissions;
+    private List<UserRolePermission> userRolePermissions;
 }
