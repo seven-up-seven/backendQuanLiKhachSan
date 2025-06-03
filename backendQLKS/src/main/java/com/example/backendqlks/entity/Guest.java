@@ -40,10 +40,17 @@ public class Guest {
     @Nullable
     private String email;
 
+    //khoa ngoai toi Account
     @Column(name = "ACCOUNT_ID")
     @Nullable
     private Integer accountId; // using integer instead of int to contains null value - we are making a chaotic design
 
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ACCOUNT_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private Account account;
+
+    //cac khoa ngoai toi cac form lien quan
     @JsonIgnore
     @OneToMany(mappedBy = "payingGuest", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Invoice> invoices = new ArrayList<>();
