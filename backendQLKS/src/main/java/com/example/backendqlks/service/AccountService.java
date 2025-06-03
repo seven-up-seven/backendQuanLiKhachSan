@@ -62,7 +62,7 @@ public class AccountService {
         accountRepository.save(existingAccount);
         return accountMapper.toResponseDto(existingAccount);
     }
-    //TODO: modify later
+
     public void delete(int accountId){
         var existingAccount = accountRepository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect account id"));

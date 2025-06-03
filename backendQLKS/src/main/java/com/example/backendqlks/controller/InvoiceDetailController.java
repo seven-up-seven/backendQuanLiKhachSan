@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Validated
@@ -74,6 +75,21 @@ public class InvoiceDetailController {
             return ResponseEntity.ok("Invoice detail deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting invoice detail: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/invoice/{invoiceId}")
+    public ResponseEntity<?> createInvoiceDetailForInvoice(@PathVariable int invoiceId,
+                                                            @Valid @RequestBody List<Integer> rentalFormIds,
+                                                            BindingResult result) {
+        try {
+            if (result.hasErrors()) {
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+            }
+            var createdInvoiceDetails = invoiceDetailService.createInvoiceDetails(invoiceId, rentalFormIds);
+            return ResponseEntity.ok(createdInvoiceDetails);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error creating invoice details for invoice: " + e.getMessage());
         }
     }
 }

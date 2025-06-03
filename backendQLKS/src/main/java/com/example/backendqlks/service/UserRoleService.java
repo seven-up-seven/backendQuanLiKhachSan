@@ -34,7 +34,11 @@ public class UserRoleService {
         return userRoleMapper.toResponseDto(userRole);
     }
 
+    //kiểm tra xem có user role nào có tên giống với tên trong userRoleDto không, sau đó mới cho tạo user role
     public ResponseUserRoleDto createUserRole(UserRoleDto userRoleDto) {
+        if (userRoleRepository.findByNameEqualsIgnoreCase(userRoleDto.getName()).isPresent()) {
+            throw new IllegalArgumentException("User Role with this name already exists");
+        }
         UserRole userRole = userRoleMapper.toEntity(userRoleDto);
         userRoleRepository.save(userRole);
         return userRoleMapper.toResponseDto(userRole);
@@ -51,7 +55,6 @@ public class UserRoleService {
     public void deleteUserRoleById(int id) {
         UserRole userRole = userRoleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User Role with this ID cannot be found"));
-        //considering checking foreign key relation before deleting
-        //userRoleRepository.delete(userRole);
+        userRoleRepository.delete(userRole);
     }
 }

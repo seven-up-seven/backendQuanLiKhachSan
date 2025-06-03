@@ -67,6 +67,6 @@ public class FloorService {
     public void delete(int floorId){
         var existingFloor = floorRepository.findById(floorId)
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect floor id"));
-
+        floorRepository.delete(existingFloor);
     }
 }

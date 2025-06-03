@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/rentalForm")
 public class RentalFormController {
@@ -41,7 +43,7 @@ public class RentalFormController {
     @PostMapping
     public ResponseEntity<?> createRentalForm(@RequestBody @Valid RentalFormDto rentalFormDto, BindingResult result) {
         try {
-            if (result.hasErrors()) return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+            if (result.hasErrors()) return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             ResponseRentalFormDto createdRentalForm = rentalFormService.createRentalForm(rentalFormDto);
             return ResponseEntity.ok(createdRentalForm);
         }
@@ -55,7 +57,7 @@ public class RentalFormController {
                                               @PathVariable int id,
                                               BindingResult result) {
         try {
-            if (result.hasErrors()) return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+            if (result.hasErrors()) return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             ResponseRentalFormDto updatedRentalForm=rentalFormService.updateRentalForm(id, rentalFormDto);
             return ResponseEntity.ok(updatedRentalForm);
         }

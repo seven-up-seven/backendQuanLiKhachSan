@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/rentalExtensionForm")
 public class RentalExtensionFormController {
@@ -43,7 +45,7 @@ public class RentalExtensionFormController {
     @PostMapping
     public ResponseEntity<?> createRentalExtensionForm(@RequestBody @Valid RentalExtensionFormDto rentalExtensionFormDto, BindingResult result) {
         try {
-            if (result.hasErrors()) return ResponseEntity.status(500).body(result.getFieldError().getDefaultMessage());
+            if (result.hasErrors()) return ResponseEntity.status(500).body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             ResponseRentalExtensionFormDto createdRentalExtensionForm=rentalExtensionFormService.createRentalExtensionForm(rentalExtensionFormDto);
             return ResponseEntity.ok(createdRentalExtensionForm);
         }
@@ -57,7 +59,7 @@ public class RentalExtensionFormController {
                                                        @PathVariable int id,
                                                        BindingResult result) {
         try {
-            if (result.hasErrors()) return ResponseEntity.status(500).body(result.getFieldError().getDefaultMessage());
+            if (result.hasErrors()) return ResponseEntity.status(500).body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             ResponseRentalExtensionFormDto updatedRentalExtensionForm=rentalExtensionFormService.updateRentalExtensionForm(id, rentalExtensionFormDto);
             return ResponseEntity.ok(updatedRentalExtensionForm);
         }

@@ -1,8 +1,10 @@
 package com.example.backendqlks.service;
 
+import com.example.backendqlks.dao.AccountRepository;
 import com.example.backendqlks.dao.PositionRepository;
 import com.example.backendqlks.dto.position.PositionDto;
 import com.example.backendqlks.dto.position.ResponsePositionDto;
+import com.example.backendqlks.entity.Staff;
 import com.example.backendqlks.mapper.PositionMapper;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
@@ -10,17 +12,21 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Objects;
 
 @Transactional
 @Service
 public class PositionService {
     private final PositionRepository positionRepository;
+    private final AccountRepository accountRepository;
     private final PositionMapper positionMapper;
 
     public PositionService(PositionRepository positionRepository,
-                           PositionMapper positionMapper){
+                           PositionMapper positionMapper,
+                           AccountRepository accountRepository) {
         this.positionMapper = positionMapper;
         this.positionRepository = positionRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Transactional(readOnly = true)
@@ -55,9 +61,19 @@ public class PositionService {
         return positionMapper.toResponseDto(existingPosition);
     }
 
-    //TODO: modify later
+    // xoá position sẽ xoá luôn các staff có account
     public void delete(int positionId){
         var existingPosition = positionRepository.findById(positionId)
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect position id"));
+        var staffsAccountIds = existingPosition.getStaffs()
+                .stream()
+                .map(Staff::getAccountId)
+                .filter(Objects::nonNull)
+                .toList();
+        staffsAccountIds.forEach(id-> {
+            var account = accountRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Account of a staff in list staff of Position entity not found"));
+            accountRepository.save(account);
+        });
     }
 }

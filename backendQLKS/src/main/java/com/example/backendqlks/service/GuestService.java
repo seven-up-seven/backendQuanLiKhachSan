@@ -1,5 +1,6 @@
 package com.example.backendqlks.service;
 
+import com.example.backendqlks.dao.AccountRepository;
 import com.example.backendqlks.dao.GuestRepository;
 import com.example.backendqlks.dto.guest.GuestDto;
 import com.example.backendqlks.dto.guest.ResponseGuestDto;
@@ -13,12 +14,15 @@ import java.util.List;
 @Service
 public class GuestService {
     private final GuestRepository guestRepository;
+    private final AccountRepository accountRepository;
     private final GuestMapper guestMapper;
 
     public GuestService(GuestRepository guestRepository,
-                        GuestMapper guestMapper){
+                        GuestMapper guestMapper,
+                        AccountRepository accountRepository){
         this.guestMapper = guestMapper;
         this.guestRepository = guestRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Transactional(readOnly = true)
@@ -55,10 +59,14 @@ public class GuestService {
         guestRepository.save(existingGuest);
         return guestMapper.toResponseDto(existingGuest);
     }
-    //TODO: modify later
+    //TODO: lúc xoá guest thì xoá luôn account nếu có
     public void delete(int guestId){
         var existingGuest = guestRepository.findById(guestId)
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect floor id"));
-
+        var accountId = existingGuest.getAccountId();
+        if(accountId != null){
+            accountRepository.deleteById(accountId);
+        }
+        guestRepository.deleteById(guestId);
     }
 }

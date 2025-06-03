@@ -57,7 +57,7 @@ public class BlockService {
     public void delete(int blockId){
         var existingBlock = blockRepository.findById(blockId)
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect account id"));
-
+        blockRepository.delete(existingBlock);
     }
 }
 

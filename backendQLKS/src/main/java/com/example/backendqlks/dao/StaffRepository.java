@@ -25,4 +25,6 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
     Page<Staff> findByPositionId(Integer positionId, Pageable pageable);
 
     Optional<Staff> findByAccountId(Integer accountId);
+
+    boolean existsByIdentificationNumber(String identificationNumber);
 }

@@ -36,11 +36,13 @@ public class RentalExtensionFormService {
         return rentalExtensionFormMapper.toResponseDto(extensionForm);
     }
 
+    //TODO: check tổng số ngày trong rental extension form của rental form có vượt quá số ngày tối đa không?
+    // nếu có thì không cho tạo, nếu không thì cho tạo số ngày <= số ngày tối đa - tổng ngày đã gia hạn
     public ResponseRentalExtensionFormDto createRentalExtensionForm(RentalExtensionFormDto extensionFormDto) {
         RentalExtensionForm extensionForm = rentalExtensionFormMapper.toEntity(extensionFormDto);
         rentalExtensionFormRepository.save(extensionForm);
         return rentalExtensionFormMapper.toResponseDto(extensionForm);
-        //TODO: Check for rental form or rental form detail???
+
     }
 
     public ResponseRentalExtensionFormDto updateRentalExtensionForm(int id, RentalExtensionFormDto extensionFormDto) {
@@ -54,9 +56,6 @@ public class RentalExtensionFormService {
     public void deleteRentalExtensionFormById(int id) {
         RentalExtensionForm extensionForm = rentalExtensionFormRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Rental Extension Form with this ID cannot be found"));
-        //Delete this rental extension form in related rental form
-        RentalForm rentalForm=extensionForm.getRentalForm().getRentalForm();
-        rentalForm.getRentalExtensionForms().remove(extensionForm);
         rentalExtensionFormRepository.delete(extensionForm);
     }
 }

@@ -35,6 +35,9 @@ public class StaffService {
     }
 
     public ResponseStaffDto createStaff(StaffDto staffDto) {
+        if (staffRepository.existsByIdentificationNumber(staffDto.getIdentificationNumber())) {
+            throw new IllegalArgumentException("Staff with this email already exists");
+        }
         Staff staff = staffMapper.toEntity(staffDto);
         staffRepository.save(staff);
         return staffMapper.toResponseDto(staff);
@@ -51,7 +54,6 @@ public class StaffService {
     public void deleteStaffById(int id) {
         Staff staff = staffRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Staff with this ID cannot be found"));
-        //considering checking foreign key relation before deleting
-        //staffRepository.delete(staff);
+        staffRepository.delete(staff);
     }
 }

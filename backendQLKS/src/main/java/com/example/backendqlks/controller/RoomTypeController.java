@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/roomType")
 public class RoomTypeController {
@@ -40,7 +42,7 @@ public class RoomTypeController {
     public ResponseEntity<?> createRoomType(@RequestBody @Valid RoomTypeDto roomTypeDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
             ResponseRoomTypeDto createdRoomType = roomTypeService.createRoomType(roomTypeDto);
             return ResponseEntity.ok(createdRoomType);
@@ -53,7 +55,7 @@ public class RoomTypeController {
     public ResponseEntity<?> updateRoomType(@PathVariable int id, @RequestBody @Valid RoomTypeDto roomTypeDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
             ResponseRoomTypeDto updatedRoomType = roomTypeService.updateRoomType(id, roomTypeDto);
             return ResponseEntity.ok(updatedRoomType);

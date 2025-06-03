@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/room")
 public class RoomController {
@@ -53,7 +55,7 @@ public class RoomController {
     public ResponseEntity<?> createRoom(@RequestBody @Valid RoomDto roomDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
             ResponseRoomDto createdRoom = roomService.createRoom(roomDto);
             return ResponseEntity.ok(createdRoom);
@@ -66,7 +68,7 @@ public class RoomController {
     public ResponseEntity<?> updateRoom(@PathVariable int id, @RequestBody @Valid RoomDto roomDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
             ResponseRoomDto updatedRoom = roomService.updateRoom(id, roomDto);
             return ResponseEntity.ok(updatedRoom);

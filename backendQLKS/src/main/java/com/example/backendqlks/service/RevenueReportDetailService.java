@@ -54,10 +54,6 @@ public class RevenueReportDetailService {
     public void deleteRevenueReportDetailById(int id) {
         RevenueReportDetail reportDetail = revenueReportDetailRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Revenue Report Detail with this ID cannot be found"));
-        RevenueReport revenueReport = reportDetail.getRevenueReport();
-        revenueReport.getRevenueReportDetails().remove(reportDetail);
-        RoomType roomType=reportDetail.getRoomType();
-        roomType.getRevenueReportDetails().remove(reportDetail);
         revenueReportDetailRepository.delete(reportDetail);
     }
 }

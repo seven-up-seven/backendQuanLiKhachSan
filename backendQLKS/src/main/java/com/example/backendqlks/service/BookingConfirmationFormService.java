@@ -50,8 +50,8 @@ public class BookingConfirmationFormService {
     }
     //TODO: modify later
     public void delete(int bookingConfirmationFormId){
-        var existingBlock = bookingConfirmationFormRepository.findById(bookingConfirmationFormId)
+        var existingBookingConfirmationForm = bookingConfirmationFormRepository.findById(bookingConfirmationFormId)
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect booking confirmation form id"));
-
+        bookingConfirmationFormRepository.delete(existingBookingConfirmationForm);
     }
 }

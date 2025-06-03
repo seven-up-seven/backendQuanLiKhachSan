@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/revenueReportDetail")
 public class RevenueReportDetailController {
@@ -40,7 +42,7 @@ public class RevenueReportDetailController {
     public ResponseEntity<?> createRevenueReportDetail(@RequestBody @Valid RevenueReportDetailDto revenueReportDetailDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
             ResponseRevenueReportDetailDto createdRevenueReportDetail = revenueReportDetailService.createRevenueReportDetail(revenueReportDetailDto);
             return ResponseEntity.ok(createdRevenueReportDetail);
@@ -53,7 +55,7 @@ public class RevenueReportDetailController {
     public ResponseEntity<?> updateRevenueReportDetail(@PathVariable int id, @RequestBody @Valid RevenueReportDetailDto revenueReportDetailDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
             ResponseRevenueReportDetailDto updatedRevenueReportDetail = revenueReportDetailService.updateRevenueReportDetail(id, revenueReportDetailDto);
             return ResponseEntity.ok(updatedRevenueReportDetail);

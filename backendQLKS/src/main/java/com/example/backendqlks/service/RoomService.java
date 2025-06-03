@@ -1,5 +1,6 @@
 package com.example.backendqlks.service;
 
+import com.example.backendqlks.dao.FloorRepository;
 import com.example.backendqlks.dao.RoomRepository;
 import com.example.backendqlks.dto.room.ResponseRoomDto;
 import com.example.backendqlks.dto.room.RoomDto;
@@ -22,10 +23,12 @@ import java.util.List;
 public class RoomService {
     private final RoomRepository roomRepository;
     private final RoomMapper roomMapper;
+    private final FloorRepository floorRepository;
 
-    public RoomService(RoomMapper roomMapper, RoomRepository roomRepository) {
+    public RoomService(RoomMapper roomMapper, RoomRepository roomRepository, FloorRepository floorRepository) {
         this.roomMapper = roomMapper;
         this.roomRepository = roomRepository;
+        this.floorRepository = floorRepository;
     }
 
     @Transactional(readOnly = true)
@@ -47,8 +50,20 @@ public class RoomService {
         return roomMapper.toResponseDtoList(roomPage.getContent());
     }
 
+    //check hợp lệ, sau đó check xem trùng tên k mới cho tạo mới
     public ResponseRoomDto createRoom(RoomDto roomDto) {
+        var floorId = roomDto.getFloorId();
+        if(floorId == null) {
+            throw new IllegalArgumentException("Floor ID cannot be null");
+        }
+        var floor = floorRepository.findById(floorId);
+        if(floor.isEmpty()) {
+            throw new IllegalArgumentException("Floor with this ID cannot be found");
+        }
         Room room = roomMapper.toEntity(roomDto);
+        if(floor.get().getRooms().stream().anyMatch(r -> r.getName().equalsIgnoreCase(room.getName()))) {
+            throw new IllegalArgumentException("Room already exists on this floor");
+        }
         roomRepository.save(room);
         return roomMapper.toResponseDto(room);
     }
@@ -64,11 +79,6 @@ public class RoomService {
     public void deleteRoomById(int id) {
         Room room = roomRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Room with this ID cannot be found"));
-        //delete related foreign fields
-        RoomType roomType = room.getRoomType();
-        roomType.getRooms().remove(room);
-        Floor floor=room.getFloor();
-        floor.getRooms().remove(room);
         roomRepository.delete(room);
     }
 }

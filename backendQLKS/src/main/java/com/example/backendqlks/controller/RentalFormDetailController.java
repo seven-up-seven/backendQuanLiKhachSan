@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/rentalFormDetail")
 public class RentalFormDetailController {
@@ -40,7 +43,7 @@ public class RentalFormDetailController {
     public ResponseEntity<?> createRentalFormDetail(@RequestBody @Valid RentalFormDetailDto rentalFormDetailDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
             ResponseRentalFormDetailDto createdRentalFormDetail = rentalFormDetailService.createRentalFormDetail(rentalFormDetailDto);
             return ResponseEntity.ok(createdRentalFormDetail);
@@ -49,11 +52,24 @@ public class RentalFormDetailController {
         }
     }
 
+    @PostMapping("/rental-form/{rentalFormId}")
+    public ResponseEntity<?> createRentalFormDetails(@PathVariable int rentalFormId, @RequestBody List<Integer> guestIds, BindingResult result) {
+        try {
+            if (result.hasErrors()) {
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+            }
+            var createdRentalFormDetails = rentalFormDetailService.createRentalFormDetails(rentalFormId, guestIds);
+            return ResponseEntity.ok(createdRentalFormDetails);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error creating rental form details: " + e.getMessage());
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRentalFormDetail(@PathVariable int id, @RequestBody @Valid RentalFormDetailDto rentalFormDetailDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
             ResponseRentalFormDetailDto updatedRentalFormDetail = rentalFormDetailService.updateRentalFormDetail(id, rentalFormDetailDto);
             return ResponseEntity.ok(updatedRentalFormDetail);

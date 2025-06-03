@@ -60,5 +60,6 @@ public class PermissionService {
     public void delete(int permissionId){
         var existingPermission = permissionRepository.findById(permissionId)
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect permission id"));
+        permissionRepository.delete(existingPermission);
     }
 }

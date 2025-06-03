@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/userRole")
 public class UserRoleController {
@@ -40,7 +42,7 @@ public class UserRoleController {
     public ResponseEntity<?> createUserRole(@RequestBody @Valid UserRoleDto userRoleDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
             ResponseUserRoleDto createdUserRole = userRoleService.createUserRole(userRoleDto);
             return ResponseEntity.ok(createdUserRole);
@@ -53,7 +55,7 @@ public class UserRoleController {
     public ResponseEntity<?> updateUserRole(@PathVariable int id, @RequestBody @Valid UserRoleDto userRoleDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
             ResponseUserRoleDto updatedUserRole = userRoleService.updateUserRole(id, userRoleDto);
             return ResponseEntity.ok(updatedUserRole);

@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/staff")
 public class StaffController {
@@ -40,7 +42,7 @@ public class StaffController {
     public ResponseEntity<?> createStaff(@RequestBody @Valid StaffDto staffDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
             ResponseStaffDto createdStaff = staffService.createStaff(staffDto);
             return ResponseEntity.ok(createdStaff);
@@ -53,7 +55,7 @@ public class StaffController {
     public ResponseEntity<?> updateStaff(@PathVariable int id, @RequestBody @Valid StaffDto staffDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
             ResponseStaffDto updatedStaff = staffService.updateStaff(id, staffDto);
             return ResponseEntity.ok(updatedStaff);

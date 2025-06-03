@@ -50,20 +50,7 @@ public class InvoiceService {
     }
 
     //TODO: add try catch
-    //after checking all detail, we will create an invoice
-    public ResponseInvoiceDto create(InvoiceDto invoiceDto, List<InvoiceDetailDto> invoiceDetailDtos){
-        invoiceDetailDtos.stream().filter(Objects::nonNull)
-                .forEach(invoiceDetailDto -> {
-                    var rentalForm = rentalFormRepository.findById(invoiceDetailDto.getRentalFormId())
-                            .orElseThrow(() -> new IllegalArgumentException("Incorrect rental form id"));
-//TODO: check xem rental form tương ứng hợp lệ không, nếu không (đã trả rồi) thì quăng ra lỗi
-//        if(rentalForm.getIsPaidAt()){
-//            throw new IllegalArgumentException("Rental form has been paid")
-//        }
-                    var invoiceDetail = invoiceDetailMapper.toEntity(invoiceDetailDto);
-                    invoiceDetailRepository.save(invoiceDetail);
-                });
-
+    public ResponseInvoiceDto create(InvoiceDto invoiceDto){
         var newInvoice = invoiceMapper.toEntity(invoiceDto);
         invoiceRepository.save(newInvoice);
         return invoiceMapper.toResponseDto(newInvoice);
@@ -82,5 +69,6 @@ public class InvoiceService {
     public void delete(int invoiceId){
         var existingInvoice = invoiceRepository.findById(invoiceId)
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect invoice id"));
+        invoiceRepository.delete(existingInvoice);
     }
 }

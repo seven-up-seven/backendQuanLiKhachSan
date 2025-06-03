@@ -34,7 +34,10 @@ public class RoomTypeService {
         return roomTypeMapper.toResponseDto(roomType);
     }
 
+    //check xem có room type nào có tên giống với tên trong roomTypeDto không
     public ResponseRoomTypeDto createRoomType(RoomTypeDto roomTypeDto) {
+        if(roomTypeRepository.findByNameContainingIgnoreCase(roomTypeDto.getName()).isPresent())
+            throw new IllegalArgumentException("Room Type with this name already exists");
         RoomType roomType = roomTypeMapper.toEntity(roomTypeDto);
         roomTypeRepository.save(roomType);
         return roomTypeMapper.toResponseDto(roomType);
@@ -51,7 +54,6 @@ public class RoomTypeService {
     public void deleteRoomTypeById(int id) {
         RoomType roomType = roomTypeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Room Type with this ID cannot be found"));
-        //considering checking foreign key relation before deleting
-        //roomTypeRepository.delete(roomType);
+        roomTypeRepository.delete(roomType);
     }
 }
