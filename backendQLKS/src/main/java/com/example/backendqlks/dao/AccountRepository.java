@@ -14,4 +14,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     Page<Account> findAccountsByUserRoleId(int userRoleId, Pageable pageable);
 
     boolean existsByUsername(String username);
+
+    Optional<Account> findByUsername(String username);
 }
