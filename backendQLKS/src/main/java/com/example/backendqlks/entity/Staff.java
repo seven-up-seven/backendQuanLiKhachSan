@@ -57,4 +57,9 @@ public class Staff {
     @JsonIgnore
     @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Invoice> invoices;
+
+    //khoa ngoai toi rental form
+    @JsonIgnore
+    @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RentalForm> rentalForms;
 }

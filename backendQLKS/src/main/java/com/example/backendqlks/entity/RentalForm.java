@@ -36,6 +36,10 @@ public class RentalForm {
     @Column(name = "RENTAL_DATE")
     private LocalDateTime rentalDate;
 
+    @Column(name = "IS_PAID_AT")
+    @Nullable
+    private LocalDateTime isPaidAt;
+
     @Column(name = "NUMBER_OF_RENTAL_DAY")
     private short numberOfRentalDays;
 
@@ -43,14 +47,17 @@ public class RentalForm {
     @Nullable
     private String note;
 
+    //khoa ngoai toi InvoiceDetail
     @JsonIgnore
-    @OneToOne(mappedBy = "rentalForm", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "rentalForm", cascade = CascadeType.ALL, orphanRemoval = true)
     private InvoiceDetail invoiceDetail;
 
+    //khoa ngoai toi RentalFormDetail
     @JsonIgnore
     @OneToMany(mappedBy = "rentalForm", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RentalFormDetail> rentalFormDetails = new ArrayList<>();
 
+    //khoa ngoai toi RentalExtensionForm
     @JsonIgnore
     @OneToMany(mappedBy = "rentalForm", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RentalExtensionForm> rentalExtensionForms = new ArrayList<>();
