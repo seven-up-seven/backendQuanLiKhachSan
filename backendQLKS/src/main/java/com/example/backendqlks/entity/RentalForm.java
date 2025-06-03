@@ -22,7 +22,7 @@ public class RentalForm {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROOM_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "ROOM_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private Room room;
 
     @Column(name = "STAFF_ID")

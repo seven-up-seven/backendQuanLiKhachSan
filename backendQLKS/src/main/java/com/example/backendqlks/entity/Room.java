@@ -45,7 +45,13 @@ public class Room {
     @JoinColumn(name = "FLOOR_ID", referencedColumnName = "ID", insertable = false, updatable = false) // only for extracting related information, not create or update
     private Floor floor;
 
+    //khoa ngoai cho booking confirmation form
     @JsonIgnore
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BookingConfirmationForm> bookingConfirmationForms = new ArrayList<>();
+
+    //khoa ngoai cho rental form
+    @JsonIgnore
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<RentalForm> rentalForms = new ArrayList<>();
 }

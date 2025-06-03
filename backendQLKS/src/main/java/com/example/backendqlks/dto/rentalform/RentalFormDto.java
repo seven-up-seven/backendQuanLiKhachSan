@@ -23,5 +23,11 @@ public class RentalFormDto {
     @Min(value = 1, message = "Number of rental day must be at least 1")
     private Short numberOfRentalDays;
 
+    @NotNull(message = "Created date can not be null")
+    @PastOrPresent(message = "Created date can not be in the future")
+    private LocalDateTime createdAt;
+
+    private LocalDateTime isPaidAt;
+
     private String note;
 }

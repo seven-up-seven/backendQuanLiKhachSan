@@ -21,4 +21,8 @@ public class ResponseRentalFormDto {
     private Short numberOfRentalDays;
 
     private String note;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime isPaidAt;
 }
