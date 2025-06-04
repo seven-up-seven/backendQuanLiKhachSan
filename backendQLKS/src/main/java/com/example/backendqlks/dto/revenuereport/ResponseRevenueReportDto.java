@@ -17,5 +17,5 @@ public class ResponseRevenueReportDto {
 
     private Double totalMonthRevenue;
 
-    private List<RevenueReportDetail> revenueReportDetails;
+    private List<Integer> revenueReportDetailIds;
 }

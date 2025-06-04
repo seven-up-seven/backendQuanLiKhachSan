@@ -29,6 +29,14 @@ public class RentalExtensionForm {
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 
+    @Column(name = "STAFF_ID")
+    private int staffId;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STAFF_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private Staff staff;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();

@@ -45,6 +45,11 @@ public class Guest {
     private Integer accountId; // using integer instead of int to contains null value - we are making a chaotic design
 
     @JsonIgnore
+    @OneToOne()
+    private Account account;
+
+
+    @JsonIgnore
     @OneToMany(mappedBy = "payingGuest", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Invoice> invoices = new ArrayList<>();
 

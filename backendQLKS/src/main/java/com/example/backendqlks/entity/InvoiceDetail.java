@@ -31,7 +31,7 @@ public class InvoiceDetail {
     private int rentalFormId;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "RENTAL_FORM_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private RentalForm rentalForm;
 }

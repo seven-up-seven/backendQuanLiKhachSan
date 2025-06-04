@@ -23,5 +23,8 @@ public class RentalFormDto {
     @Min(value = 1, message = "Number of rental day must be at least 1")
     private Short numberOfRentalDays;
 
+    //chi cap nhat sau khi da thanh toan
+    private LocalDateTime isPaidAt;
+
     private String note;
 }

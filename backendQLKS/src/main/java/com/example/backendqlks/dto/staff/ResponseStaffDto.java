@@ -6,6 +6,8 @@ import com.example.backendqlks.entity.enums.Sex;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 public class ResponseStaffDto {
@@ -26,4 +28,10 @@ public class ResponseStaffDto {
     private Position position;
 
     private Account account;
+
+    private List<Integer> invoiceIds;
+
+    private List<Integer> rentalExtensionFormIds;
+
+    private List<Integer> rentalFormIds;
 }

@@ -21,8 +21,8 @@ public class RentalForm {
     private int roomId;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade =  CascadeType.PERSIST)
-    @JoinColumn(name = "ROOM_ID", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "ROOM_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private Room room;
 
     @Column(name = "STAFF_ID")
