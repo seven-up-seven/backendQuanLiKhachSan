@@ -1,5 +1,6 @@
 package com.example.backendqlks.service;
 
+import com.example.backendqlks.dao.AccountRepository;
 import com.example.backendqlks.dao.StaffRepository;
 import com.example.backendqlks.dto.staff.ResponseStaffDto;
 import com.example.backendqlks.dto.staff.StaffDto;
@@ -15,10 +16,12 @@ import java.util.List;
 public class StaffService {
     private final StaffRepository staffRepository;
     private final StaffMapper staffMapper;
+    private final AccountRepository accountRepository;
 
-    public StaffService(StaffMapper staffMapper, StaffRepository staffRepository) {
+    public StaffService(StaffMapper staffMapper, StaffRepository staffRepository, AccountRepository accountRepository) {
         this.staffMapper = staffMapper;
         this.staffRepository = staffRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Transactional(readOnly = true)
@@ -51,9 +54,19 @@ public class StaffService {
         return staffMapper.toResponseDto(staff);
     }
 
+    //delete related account if exists
     public void deleteStaffById(int id) {
         Staff staff = staffRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Staff with this ID cannot be found"));
+        var accountId = staff.getAccountId();
+        if(accountId != null) {
+            var account = accountRepository.findById(accountId);
+            if (account.isPresent()) {
+                accountRepository.delete(account.get());
+            } else {
+                throw new IllegalArgumentException("Account with this ID cannot be found");
+            }
+        }
         staffRepository.delete(staff);
     }
 }
