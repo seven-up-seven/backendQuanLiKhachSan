@@ -27,4 +27,14 @@ public class Account {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ROLE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private UserRole userRole;
+
+    //khoa ngoai toi Guest
+    @JsonIgnore
+    @OneToOne(mappedBy = "account", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private Guest guest;
+
+    //khoa ngoai toi Staff
+    @JsonIgnore
+    @OneToOne(mappedBy = "account", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private Staff staff;
 }
