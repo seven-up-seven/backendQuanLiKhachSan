@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/api/rentalExtensionForm")
+@RequestMapping("/api/rental-extension-form")
 public class RentalExtensionFormController {
     private final RentalExtensionFormService rentalExtensionFormService;
 

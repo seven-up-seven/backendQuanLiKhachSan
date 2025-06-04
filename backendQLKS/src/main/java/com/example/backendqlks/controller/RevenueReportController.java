@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/api/revenueReport")
+@RequestMapping("/api/revenue-report")
 public class RevenueReportController {
     private final RevenueReportService revenueReportService;
 

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/api/rentalFormDetail")
+@RequestMapping("/api/rental-form-detail")
 public class RentalFormDetailController {
     private final RentalFormDetailService rentalFormDetailService;
 

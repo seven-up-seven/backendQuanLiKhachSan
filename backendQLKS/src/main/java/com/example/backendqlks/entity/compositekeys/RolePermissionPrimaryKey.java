@@ -9,11 +9,11 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 public class RolePermissionPrimaryKey implements Serializable {
-    private int roleId;
+    private int userRoleId;
     private int permissionId;
 
-    public RolePermissionPrimaryKey(int roleId, int permissionId) {
-        this.roleId = roleId;
+    public RolePermissionPrimaryKey(int userRoleId, int permissionId) {
+        this.userRoleId = userRoleId;
         this.permissionId = permissionId;
     }
 
@@ -21,7 +21,7 @@ public class RolePermissionPrimaryKey implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o instanceof RolePermissionPrimaryKey other) {
-            return (this.roleId==other.roleId) && (this.permissionId==other.permissionId);
+            return (this.userRoleId==other.userRoleId) && (this.permissionId==other.permissionId);
         }
         return false;
     }
@@ -29,6 +29,6 @@ public class RolePermissionPrimaryKey implements Serializable {
     @Override
     public int hashCode()
     {
-        return Objects.hash(roleId, permissionId);
+        return Objects.hash(userRoleId, permissionId);
     }
 }

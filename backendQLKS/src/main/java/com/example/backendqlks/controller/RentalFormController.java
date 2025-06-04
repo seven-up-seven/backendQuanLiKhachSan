@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/api/rentalForm")
+@RequestMapping("/api/rental-form")
 public class RentalFormController {
     private final RentalFormService rentalFormService;
 
