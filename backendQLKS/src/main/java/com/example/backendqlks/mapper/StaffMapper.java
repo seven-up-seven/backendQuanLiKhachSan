@@ -3,9 +3,12 @@ package com.example.backendqlks.mapper;
 import com.example.backendqlks.dto.staff.ResponseStaffDto;
 import com.example.backendqlks.dto.staff.StaffDto;
 import com.example.backendqlks.entity.*;
+import jakarta.persistence.NamedEntityGraph;
+import jdk.jfr.Name;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,7 @@ public interface StaffMapper {
     @Mapping(target = "rentalFormIds", source = "rentalForms", qualifiedByName = "rentalFormIdsToIds")
     List<ResponseStaffDto> toResponseDtoList(List<Staff> staffs);
 
+    @Named(value = "invoicesToIds")
     default List<Integer> invoicesToIds(List<Invoice> invoices) {
         if(invoices == null) {
             return new ArrayList<>();
@@ -38,6 +42,7 @@ public interface StaffMapper {
                 .toList();
     }
 
+    @Named(value = "rentalExtensionFormsToIds")
     default List<Integer> rentalExtensionFormsToIds(List<RentalExtensionForm> rentalExtensionForms) {
         if(rentalExtensionForms == null) {
             return new ArrayList<>();
@@ -48,6 +53,7 @@ public interface StaffMapper {
                 .toList();
     }
 
+    @Named(value = "rentalFormIdsToIds")
     default List<Integer> rentalFormIdsToIds(List<RentalForm> rentalForms) {
         if(rentalForms == null) {
             return new ArrayList<>();

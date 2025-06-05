@@ -6,10 +6,12 @@ import com.example.backendqlks.entity.enums.Sex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class ResponseGuestDto {
     private int id;
     private String name;

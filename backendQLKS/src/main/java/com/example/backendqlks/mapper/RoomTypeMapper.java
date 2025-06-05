@@ -5,9 +5,11 @@ import com.example.backendqlks.dto.roomtype.RoomTypeDto;
 import com.example.backendqlks.entity.RevenueReportDetail;
 import com.example.backendqlks.entity.Room;
 import com.example.backendqlks.entity.RoomType;
+import jdk.jfr.Name;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +30,16 @@ public interface RoomTypeMapper {
     @Mapping(target = "revenueReportDetailIds", source = "revenueReportDetails", qualifiedByName = "revenueReportDetailsToIds")
     List<ResponseRoomTypeDto> toResponseDtoList(List<RoomType> roomTypes);
 
-    default List<Integer> roomsToIds(List<Room> roomIds) {
-        if(roomIds == null) return new ArrayList<>();
-        return roomIds.stream()
+    @Named(value = "roomsToIds")
+    default List<Integer> roomsToIds(List<Room> rooms) {
+        if(rooms == null) return new ArrayList<>();
+        return rooms.stream()
                 .filter(Objects::nonNull)
                 .map(Room::getId)
                 .toList();
     }
 
+    @Named(value = "revenueReportDetailsToIds")
     default List<Integer> revenueReportDetailsToIds(List<RevenueReportDetail> revenueReportDetails) {
         if(revenueReportDetails == null) return new ArrayList<>();
         return revenueReportDetails.stream()

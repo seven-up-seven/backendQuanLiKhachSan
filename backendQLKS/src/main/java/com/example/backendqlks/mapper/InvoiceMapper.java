@@ -11,6 +11,7 @@ import com.example.backendqlks.entity.RentalFormDetail;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +24,12 @@ public interface InvoiceMapper {
 
     @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(InvoiceDto invoiceDto, @MappingTarget Invoice invoice);
-    @Mapping(target = "invoiceDetailIds", source = "invoiceDetails")
+    @Mapping(target = "invoiceDetailIds", source = "invoiceDetails", qualifiedByName = "invoiceDetailsToInvoiceDetailIds")
     ResponseInvoiceDto toResponseDto(Invoice invoice);
-    @Mapping(target = "invoiceDetailIds", source = "invoiceDetails")
+    @Mapping(target = "invoiceDetailIds", source = "invoiceDetails", qualifiedByName = "invoiceDetailsToInvoiceDetailIds")
     List<ResponseInvoiceDto> toResponseDtoList(List<Invoice> invoices);
 
+    @Named(value = "invoiceDetailsToInvoiceDetailIds")
     default List<Integer> invoiceDetailsToInvoiceDetailIds(List<InvoiceDetail> invoiceDetails){
         if(invoiceDetails == null) return new ArrayList<>();
         return invoiceDetails.stream()

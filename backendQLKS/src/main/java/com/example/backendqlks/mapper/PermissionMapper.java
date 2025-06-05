@@ -7,6 +7,7 @@ import com.example.backendqlks.entity.UserRolePermission;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,12 @@ public interface PermissionMapper {
     @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(PermissionDto permissionDto, @MappingTarget Permission permission);
 
-    @Mapping(target = "userRoleIds", source = "userRolePermissions")
+    @Mapping(target = "userRoleIds", source = "userRolePermissions", qualifiedByName = "userRolePermissionsToUserRoleIds")
     ResponsePermissionDto toResponseDto(Permission permission);
-    @Mapping(target = "userRoleIds", source = "userRolePermissions")
+    @Mapping(target = "userRoleIds", source = "userRolePermissions", qualifiedByName = "userRolePermissionsToUserRoleIds")
     List<ResponsePermissionDto> toResponseDtoList(List<Permission> permissions);
 
+    @Named(value = "userRolePermissionsToUserRoleIds")
     default List<Integer> userRolePermissionsToUserRoleIds(List<UserRolePermission> userRolePermissions){
         if(userRolePermissions == null) return new ArrayList<>();
         return userRolePermissions.stream()

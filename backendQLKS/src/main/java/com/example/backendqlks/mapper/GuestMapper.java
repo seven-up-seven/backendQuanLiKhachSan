@@ -8,6 +8,7 @@ import com.example.backendqlks.entity.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +21,16 @@ public interface GuestMapper {
 
     @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(GuestDto guestDto, @MappingTarget Guest guest);
-    @Mapping(target = "invoiceIds", source = "invoices")
-    @Mapping(target = "rentalFormDetailIds", source = "rentalFormDetails")
-    @Mapping(target = "bookingConfirmationFormIds", source = "bookingConfirmationForms")
+    @Mapping(target = "invoiceIds", source = "invoices", qualifiedByName = "invoicesToInvoiceIds")
+    @Mapping(target = "rentalFormDetailIds", source = "rentalFormDetails", qualifiedByName = "rentalFormDetailsToRentalFormDetailIds")
+    @Mapping(target = "bookingConfirmationFormIds", source = "bookingConfirmationForms", qualifiedByName = "bookingConfirmationFormsToBookingConfirmationFormIds")
     ResponseGuestDto toResponseDto(Guest guest);
-    @Mapping(target = "invoiceIds", source = "invoices")
-    @Mapping(target = "rentalFormDetailIds", source = "rentalFormDetails")
-    @Mapping(target = "bookingConfirmationFormIds", source = "bookingConfirmationForms")
+    @Mapping(target = "invoiceIds", source = "invoices", qualifiedByName = "invoicesToInvoiceIds")
+    @Mapping(target = "rentalFormDetailIds", source = "rentalFormDetails", qualifiedByName = "rentalFormDetailsToRentalFormDetailIds")
+    @Mapping(target = "bookingConfirmationFormIds", source = "bookingConfirmationForms", qualifiedByName = "bookingConfirmationFormsToBookingConfirmationFormIds")
     List<ResponseGuestDto> toResponseDtoList(List<Guest> guests);
 
+    @Named(value = "invoicesToInvoiceIds")
     default List<Integer> invoicesToInvoiceIds(List<Invoice> invoices){
         if(invoices == null) return new ArrayList<>();
         return invoices.stream()
@@ -37,6 +39,7 @@ public interface GuestMapper {
                 .toList();
     }
 
+    @Named(value = "rentalFormDetailsToRentalFormDetailIds")
     default List<Integer> rentalFormDetailToRentalFormDetailIds(List<RentalFormDetail> rentalFormDetails){
         if(rentalFormDetails == null) return new ArrayList<>();
         return rentalFormDetails.stream()
@@ -45,6 +48,7 @@ public interface GuestMapper {
                 .toList();
     }
 
+    @Named(value = "bookingConfirmationFormsToBookingConfirmationFormIds")
     default List<Integer> bookingConfirmationFormsToBookingConfirmationFormIds(List<BookingConfirmationForm> bookingConfirmationForms){
         if(bookingConfirmationForms == null) return new ArrayList<>();
         return bookingConfirmationForms.stream()

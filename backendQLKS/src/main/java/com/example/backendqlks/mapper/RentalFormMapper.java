@@ -8,6 +8,7 @@ import com.example.backendqlks.entity.RentalFormDetail;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public interface RentalFormMapper {
     @Mapping(target = "rentalExtensionFormIds", source = "rentalExtensionForms", qualifiedByName = "rentalExtensionFormToIds")
     List<ResponseRentalFormDto> toResponseDtoList(List<RentalForm> rentalForms);
 
+    @Named(value = "rentalFormDetailsToIds")
     default List<Integer> rentalFormDetailsToIds(List<RentalFormDetail> rentalFormDetails) {
         if(rentalFormDetails == null) return new ArrayList<>();
         return rentalFormDetails.stream().filter(Objects::nonNull)
@@ -35,6 +37,7 @@ public interface RentalFormMapper {
                 .toList();
     }
 
+    @Named(value = "rentalExtensionFormToIds")
     default List<Integer> rentalExtensionFormToIds(List<RentalExtensionForm> rentalExtensionForms) {
         if (rentalExtensionForms == null) return new ArrayList<>();
         return rentalExtensionForms.stream()

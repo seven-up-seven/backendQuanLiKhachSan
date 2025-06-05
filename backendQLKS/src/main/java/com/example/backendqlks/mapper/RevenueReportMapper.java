@@ -7,6 +7,7 @@ import com.example.backendqlks.entity.RevenueReportDetail;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public interface RevenueReportMapper {
     @Mapping(target = "revenueReportDetailIds", source = "revenueReportDetails", qualifiedByName = "revenueReportDetailsToListIds")
     List<ResponseRevenueReportDto> toResponseDtoList(List<RevenueReport> revenueReports);
 
+    @Named(value = "revenueReportDetailsToListIds")
     default List<Integer> revenueReportDetailsToListIds(List<RevenueReportDetail> revenueReportDetails){
         if(revenueReportDetails==null) return new ArrayList<>();
         return revenueReportDetails.stream().filter(Objects::nonNull)

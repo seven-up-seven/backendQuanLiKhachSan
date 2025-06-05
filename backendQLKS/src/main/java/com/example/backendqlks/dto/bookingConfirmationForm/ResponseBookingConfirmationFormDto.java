@@ -5,9 +5,11 @@ import com.example.backendqlks.entity.enums.BookingState;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 public class ResponseBookingConfirmationFormDto {
     private int id;
     private Guest bookingGuest;
