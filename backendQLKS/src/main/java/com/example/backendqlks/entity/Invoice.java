@@ -25,7 +25,7 @@ public class Invoice {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PAYING_GUEST_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "PAYING_GUEST_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private Guest payingGuest;
 
     @Column(name = "STAFF_ID")
