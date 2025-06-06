@@ -22,8 +22,10 @@ public interface PermissionMapper {
     void updateEntityFromDto(PermissionDto permissionDto, @MappingTarget Permission permission);
 
     @Mapping(target = "userRoleIds", source = "userRolePermissions", qualifiedByName = "userRolePermissionsToUserRoleIds")
+    @Mapping(target = "userRoleNames", source = "userRolePermissions", qualifiedByName = "userRolePermissionsToUserRoleNames")
     ResponsePermissionDto toResponseDto(Permission permission);
     @Mapping(target = "userRoleIds", source = "userRolePermissions", qualifiedByName = "userRolePermissionsToUserRoleIds")
+    @Mapping(target = "userRoleNames", source = "userRolePermissions", qualifiedByName = "userRolePermissionsToUserRoleNames")
     List<ResponsePermissionDto> toResponseDtoList(List<Permission> permissions);
 
     @Named(value = "userRolePermissionsToUserRoleIds")
@@ -32,6 +34,16 @@ public interface PermissionMapper {
         return userRolePermissions.stream()
                 .filter(Objects::nonNull)
                 .map(UserRolePermission::getUserRoleId)
+                .toList();
+    }
+
+    @Named(value = "userRolePermissionsToUserRoleNames")
+    default List<String> userRolePermissionsToUserRoleNames(List<UserRolePermission> userRolePermissions){
+        if(userRolePermissions == null) return new ArrayList<>();
+        return userRolePermissions.stream()
+                .filter(Objects::nonNull)
+                .map(urp -> urp.getUserRole() != null ? urp.getUserRole().getName() : null)
+                .filter(Objects::nonNull)
                 .toList();
     }
 }

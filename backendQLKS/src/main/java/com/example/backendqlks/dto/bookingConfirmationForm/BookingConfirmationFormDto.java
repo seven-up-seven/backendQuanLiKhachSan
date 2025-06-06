@@ -14,4 +14,7 @@ public class BookingConfirmationFormDto {
 
     @NotNull(message = "Booking state must not be null")
     private BookingState bookingState;
+
+    @NotNull(message = "Room id must not be null or empty")
+    private Integer roomId;
 }

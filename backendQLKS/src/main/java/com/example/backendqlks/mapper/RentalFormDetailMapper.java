@@ -17,6 +17,19 @@ public interface RentalFormDetailMapper {
     @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(RentalFormDetailDto rentalFormDto, @MappingTarget RentalFormDetail rentalForm);
 
+    @Mapping(target = "rentalFormId", source = "rentalForm.id")
+    @Mapping(target = "guestId", source = "guest.id")
+    @Mapping(target = "guestName", source = "guest.name")
+    @Mapping(target = "guestPhoneNumber", source = "guest.phoneNumber")
+    @Mapping(target = "guestEmail", source = "guest.email")
+    @Mapping(target = "guestIdentificationNumber", source = "guest.identificationNumber")
     ResponseRentalFormDetailDto toResponseDto(RentalFormDetail rentalFormDetail);
+
+    @Mapping(target = "rentalFormId", source = "rentalForm.id")
+    @Mapping(target = "guestId", source = "guest.id")
+    @Mapping(target = "guestName", source = "guest.name")
+    @Mapping(target = "guestPhoneNumber", source = "guest.phoneNumber")
+    @Mapping(target = "guestEmail", source = "guest.email")
+    @Mapping(target = "guestIdentificationNumber", source = "guest.identificationNumber")
     List<ResponseRentalFormDetailDto> toResponseDtoList(List<RentalFormDetail> rentalFormDetails);
 }

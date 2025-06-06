@@ -8,7 +8,9 @@ import lombok.Data;
 @Data
 @Builder
 public class ResponseUserRolePermissionDto {
-    private UserRole userRole;
+    private int userRoleId;
+    private String userRoleName;
 
-    private Permission permission;
+    private int permissionId;
+    private String permissionName;
 }

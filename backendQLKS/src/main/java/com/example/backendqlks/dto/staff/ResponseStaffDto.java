@@ -25,9 +25,13 @@ public class ResponseStaffDto {
 
     private Float salaryMultiplier;
 
-    private Position position;
+    private int positionId;
 
-    private Account account;
+    private String positionName;
+
+    private int accountId;
+
+    private String accountUsername;
 
     private List<Integer> invoiceIds;
 

@@ -23,10 +23,14 @@ public interface UserRoleMapper {
     void updateEntityFromDto(UserRoleDto userRoleDto, @MappingTarget UserRole userRole);
 
     @Mapping(target = "accountIds", source = "accounts", qualifiedByName = "accountsToIds")
+    @Mapping(target = "accountUsernames", source = "accounts", qualifiedByName = "accountsToUsernames")
     @Mapping(target = "permissionIds", source = "userRolePermissions", qualifiedByName = "userRolePermissionsToIds")
+    @Mapping(target = "permissionNames", source = "userRolePermissions", qualifiedByName = "userRolePermissionsToNames")
     ResponseUserRoleDto toResponseDto(UserRole userRole);
     @Mapping(target = "accountIds", source = "accounts", qualifiedByName = "accountsToIds")
+    @Mapping(target = "accountUsernames", source = "accounts", qualifiedByName = "accountsToUsernames")
     @Mapping(target = "permissionIds", source = "userRolePermissions", qualifiedByName = "userRolePermissionsToIds")
+    @Mapping(target = "permissionNames", source = "userRolePermissions", qualifiedByName = "userRolePermissionsToNames")
     List<ResponseUserRoleDto> toResponseDtoList(List<UserRole> userRoles);
 
     @Named(value = "accountsToIds")
@@ -40,6 +44,15 @@ public interface UserRoleMapper {
                 .toList();
     }
 
+    @Named(value = "accountsToUsernames")
+    default List<String> accountsToUsernames(List<Account> accounts) {
+        if(accounts == null) return new ArrayList<>();
+        return accounts.stream()
+                .filter(Objects::nonNull)
+                .map(Account::getUsername)
+                .toList();
+    }
+
     @Named(value = "userRolePermissionsToIds")
     default List<Integer> userRolePermissionsToIds(List<UserRolePermission> userRolePermissions) {
         if(userRolePermissions == null) {
@@ -47,7 +60,17 @@ public interface UserRoleMapper {
         }
         return userRolePermissions.stream()
                 .filter(Objects::nonNull)
-                .map(UserRolePermission::getPermissionId) // quan hệ n-n, bảng hiện tại là userRole nên lấy permissionIds
+                .map(UserRolePermission::getPermissionId)
+                .toList();
+    }
+
+    @Named(value = "userRolePermissionsToNames")
+    default List<String> userRolePermissionsToNames(List<UserRolePermission> userRolePermissions) {
+        if(userRolePermissions == null) return new ArrayList<>();
+        return userRolePermissions.stream()
+                .filter(Objects::nonNull)
+                .map(urp -> urp.getPermission() != null ? urp.getPermission().getName() : null)
+                .filter(Objects::nonNull)
                 .toList();
     }
 }

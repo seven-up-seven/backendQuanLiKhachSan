@@ -19,6 +19,13 @@ public interface RevenueReportDetailMapper {
     @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(RevenueReportDetailDto revenueReportDetailDto, @MappingTarget RevenueReportDetail revenueReportDetail);
 
+    @Mapping(target = "revenueReportId", source = "revenueReport.id")
+    @Mapping(target = "roomTypeId", source = "roomType.id")
+    @Mapping(target = "roomTypeName", source = "roomType.name")
     ResponseRevenueReportDetailDto toResponseDto(RevenueReportDetail revenueReportDetail);
+
+    @Mapping(target = "revenueReportId", source = "revenueReport.id")
+    @Mapping(target = "roomTypeId", source = "roomType.id")
+    @Mapping(target = "roomTypeName", source = "roomType.name")
     List<ResponseRevenueReportDetailDto> toResponseDtoList(List<RevenueReportDetail> revenueReportDetails);
 }

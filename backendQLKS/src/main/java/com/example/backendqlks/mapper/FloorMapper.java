@@ -26,8 +26,14 @@ public interface FloorMapper {
     void updateEntityFromDto(FloorDto floorDto, @MappingTarget Floor floor);
 
     @Mapping(target = "roomIds", source = "rooms", qualifiedByName = "roomsToRoomIds")
+    @Mapping(target = "roomNames", source = "rooms", qualifiedByName = "roomsToRoomNames")
+    @Mapping(target = "blockName", source = "block", qualifiedByName = "toBlockName")
+    @Mapping(target = "blockId", source = "block", qualifiedByName = "toBlockId")
     ResponseFloorDto toResponseDto(Floor floor);
     @Mapping(target = "roomIds", source = "rooms", qualifiedByName = "roomsToRoomIds")
+    @Mapping(target = "roomNames", source = "rooms", qualifiedByName = "roomsToRoomNames")
+    @Mapping(target = "blockName", source = "block", qualifiedByName = "toBlockName")
+    @Mapping(target = "blockId", source = "block", qualifiedByName = "toBlockId")
     List<ResponseFloorDto> toResponseDtoList(List<Floor> floors);
 
     @Named(value = "roomsToRoomIds")
@@ -37,5 +43,24 @@ public interface FloorMapper {
                 .filter(Objects::nonNull)
                 .map(Room::getId)
                 .toList();
+    }
+
+    @Named(value = "roomsToRoomNames")
+    default List<String> roomsToRoomNames(List<Room> rooms){
+        if(rooms == null) return new ArrayList<>();
+        return rooms.stream()
+                .filter(Objects::nonNull)
+                .map(Room::getName)
+                .toList();
+    }
+
+    @Named("toBlockName")
+    default String toBlockName(Block block) {
+        return block != null ? block.getName() : null;
+    }
+
+    @Named("toBlockId")
+    default int toBlockId(Block block) {
+        return block != null ? block.getId() : 0;
     }
 }

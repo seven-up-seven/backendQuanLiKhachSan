@@ -24,8 +24,10 @@ public interface PositionMapper {
     @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(PositionDto positionDto, @MappingTarget Position position);
     @Mapping(target = "staffIds", source = "staffs", qualifiedByName = "staffsToStaffIds")
+    @Mapping(target = "staffNames", source = "staffs", qualifiedByName = "staffsToStaffNames")
     ResponsePositionDto toResponseDto(Position position);
     @Mapping(target = "staffIds", source = "staffs", qualifiedByName = "staffsToStaffIds")
+    @Mapping(target = "staffNames", source = "staffs", qualifiedByName = "staffsToStaffNames")
     List<ResponsePositionDto> toResponseDtoList(List<Position> positions);
 
     @Named(value = "staffsToStaffIds")
@@ -34,6 +36,15 @@ public interface PositionMapper {
         return staffs.stream()
                 .filter(Objects::nonNull)
                 .map(Staff::getId)
+                .toList();
+    }
+
+    @Named(value = "staffsToStaffNames")
+    default List<String> staffsToStaffNames(List<Staff> staffs){
+        if(staffs == null) return new ArrayList<>();
+        return staffs.stream()
+                .filter(Objects::nonNull)
+                .map(Staff::getFullName)
                 .toList();
     }
 }

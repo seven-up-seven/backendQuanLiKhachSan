@@ -22,10 +22,19 @@ public interface StaffMapper {
     @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(StaffDto staffDto, @MappingTarget Staff staff);
 
+    @Mapping(target = "positionId", source = "position.id")
+    @Mapping(target = "positionName", source = "position.name")
+    @Mapping(target = "accountId", source = "account.id")
+    @Mapping(target = "accountUsername", source = "account.username")
     @Mapping(target = "invoiceIds", source = "invoices", qualifiedByName = "invoicesToIds")
     @Mapping(target = "rentalExtensionFormIds", source = "rentalExtensionForms", qualifiedByName = "rentalExtensionFormsToIds")
     @Mapping(target = "rentalFormIds", source = "rentalForms", qualifiedByName = "rentalFormIdsToIds")
     ResponseStaffDto toResponseDto(Staff staff);
+
+    @Mapping(target = "positionId", source = "position.id")
+    @Mapping(target = "positionName", source = "position.name")
+    @Mapping(target = "accountId", source = "account.id")
+    @Mapping(target = "accountUsername", source = "account.username")
     @Mapping(target = "invoiceIds", source = "invoices", qualifiedByName = "invoicesToIds")
     @Mapping(target = "rentalExtensionFormIds", source = "rentalExtensionForms", qualifiedByName = "rentalExtensionFormsToIds")
     @Mapping(target = "rentalFormIds", source = "rentalForms", qualifiedByName = "rentalFormIdsToIds")

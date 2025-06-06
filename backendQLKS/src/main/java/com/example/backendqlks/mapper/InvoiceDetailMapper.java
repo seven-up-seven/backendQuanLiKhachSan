@@ -9,6 +9,7 @@ import com.example.backendqlks.entity.InvoiceDetail;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 import java.util.List;
 
@@ -20,6 +21,17 @@ public interface InvoiceDetailMapper {
     @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(InvoiceDetailDto invoiceDetailDto, @MappingTarget InvoiceDetail invoiceDetail);
 
+    @Mapping(target = "invoiceId", source = "invoice.id")
+    @Mapping(target = "rentalFormId", source = "rentalForm.id")
+    @Mapping(target = "roomId", source = "rentalForm", qualifiedByName = "toRoomId")
     ResponseInvoiceDetailDto toResponseDto(InvoiceDetail invoiceDetail);
+    @Mapping(target = "invoiceId", source = "invoice.id")
+    @Mapping(target = "rentalFormId", source = "rentalForm.id")
+    @Mapping(target = "roomId", source = "rentalForm", qualifiedByName = "toRoomId")
     List<ResponseInvoiceDetailDto> toResponseDtoList(List<InvoiceDetail> invoiceDetails);
+
+    @Named("toRoomId")
+    default int toRoomId(com.example.backendqlks.entity.RentalForm rentalForm) {
+        return rentalForm != null ? rentalForm.getRoomId() : 0;
+    }
 }

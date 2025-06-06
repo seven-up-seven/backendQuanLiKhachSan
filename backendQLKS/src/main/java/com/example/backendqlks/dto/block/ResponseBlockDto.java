@@ -11,4 +11,5 @@ public class ResponseBlockDto {
     private int id;
     private String name;
     private List<Integer> floorIds;
+    private List<String> floorNames;
 }

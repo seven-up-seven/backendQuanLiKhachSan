@@ -22,9 +22,18 @@ public interface RoomMapper {
     @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(RoomDto roomDto, @MappingTarget Room room);
 
+    @Mapping(target = "roomTypeId", source = "roomType.id")
+    @Mapping(target = "roomTypeName", source = "roomType.name")
+    @Mapping(target = "floorId", source = "floor.id")
+    @Mapping(target = "floorName", source = "floor.name")
     @Mapping(target = "bookingConfirmationFormIds", source = "bookingConfirmationForms", qualifiedByName = "bookingConfirmationFormsToIds")
     @Mapping(target = "rentalFormIds", source = "rentalForms", qualifiedByName = "rentalFormsToIds")
     ResponseRoomDto toResponseDto(Room room);
+
+    @Mapping(target = "roomTypeId", source = "roomType.id")
+    @Mapping(target = "roomTypeName", source = "roomType.name")
+    @Mapping(target = "floorId", source = "floor.id")
+    @Mapping(target = "floorName", source = "floor.name")
     @Mapping(target = "bookingConfirmationFormIds", source = "bookingConfirmationForms", qualifiedByName = "bookingConfirmationFormsToIds")
     @Mapping(target = "rentalFormIds", source = "rentalForms", qualifiedByName = "rentalFormsToIds")
     List<ResponseRoomDto> toResponseDtoList(List<Room> rooms);

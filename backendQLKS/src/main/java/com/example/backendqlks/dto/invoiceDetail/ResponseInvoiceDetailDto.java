@@ -8,7 +8,8 @@ import lombok.Data;
 public class ResponseInvoiceDetailDto {
     private int id;
     private int numberOfRentalDays; // this column is updated after calculating total rental days of RentalForm and RentalExtensionForm
-    private Invoice invoice;
+    private int invoiceId;
     private double reservationCost;
-    private RentalForm rentalForm;
+    private int rentalFormId;
+    private int roomId;
 }

@@ -23,8 +23,10 @@ public interface BlockMapper {
     void updateEntityFromDto(BlockDto blockDto, @MappingTarget Block block);
 
     @Mapping(target = "floorIds", source = "floors", qualifiedByName = "floorsToFloorIds")
+    @Mapping(target = "floorNames", source = "floors", qualifiedByName = "floorsToFloorNames")
     ResponseBlockDto toResponseDto(Block block);
     @Mapping(target = "floorIds", source = "floors", qualifiedByName = "floorsToFloorIds")
+    @Mapping(target = "floorNames", source = "floors", qualifiedByName = "floorsToFloorNames")
     List<ResponseBlockDto> toResponseDtoList(List<Block> blocks);
 
     @Named(value = "floorsToFloorIds")
@@ -33,6 +35,15 @@ public interface BlockMapper {
         return floors.stream()
                 .filter(Objects::nonNull)
                 .map(Floor::getId)
+                .toList();
+    }
+
+    @Named(value = "floorsToFloorNames")
+    default List<String> floorsToFloorNames(List<Floor> floors){
+        if(floors == null) return new ArrayList<>(); // return an empty list instead
+        return floors.stream()
+                .filter(Objects::nonNull)
+                .map(Floor::getName)
                 .toList();
     }
 }

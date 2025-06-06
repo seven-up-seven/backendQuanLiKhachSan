@@ -4,6 +4,7 @@ import com.example.backendqlks.entity.Block;
 import com.example.backendqlks.entity.Room;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,5 +17,7 @@ public class ResponseFloorDto {
     private int id;
     private String name;
     private List<Integer> roomIds;
-    private Block block;
+    private List<String> roomNames;
+    private String blockName;
+    private int blockId;
 }

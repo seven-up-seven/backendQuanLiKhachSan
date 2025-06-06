@@ -17,6 +17,15 @@ public interface UserRolePermissionMapper {
 
     void updateEntityFromDto(UserRolePermissionDto userRolePermissionDto, @MappingTarget UserRolePermission userRolePermission);
 
+    @Mapping(target = "userRoleId", source = "userRole.id")
+    @Mapping(target = "userRoleName", source = "userRole.name")
+    @Mapping(target = "permissionId", source = "permission.id")
+    @Mapping(target = "permissionName", source = "permission.name")
     ResponseUserRolePermissionDto toResponseDto(UserRolePermission userRolePermission);
+
+    @Mapping(target = "userRoleId", source = "userRole.id")
+    @Mapping(target = "userRoleName", source = "userRole.name")
+    @Mapping(target = "permissionId", source = "permission.id")
+    @Mapping(target = "permissionName", source = "permission.name")
     List<ResponseUserRolePermissionDto> toResponseDtoList(List<UserRolePermission> userRolePermissions);
 }
