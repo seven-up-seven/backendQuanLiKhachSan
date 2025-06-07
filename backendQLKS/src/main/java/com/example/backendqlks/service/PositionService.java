@@ -75,5 +75,6 @@ public class PositionService {
                     .orElseThrow(() -> new IllegalArgumentException("Account of a staff in list staff of Position entity not found"));
             accountRepository.save(account);
         });
+        positionRepository.delete(existingPosition);
     }
 }

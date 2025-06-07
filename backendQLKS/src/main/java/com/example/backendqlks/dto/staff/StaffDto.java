@@ -27,13 +27,11 @@ public class StaffDto {
     @NotNull(message = "Sex is required")
     private Sex sex;
 
-    @NotNull(message = "Salary multiplier is required")
     @Positive(message = "Salary multiplier must be positive")
     private Float salaryMultiplier;
 
     @NotNull(message = "Position ID is required")
     private Integer positionId;
 
-    @NotNull(message = "Account ID is required")
     private Integer accountId;
 }
