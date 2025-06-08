@@ -10,6 +10,7 @@ import com.example.backendqlks.mapper.RentalExtensionFormMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,8 +88,17 @@ public class RentalExtensionFormService {
         int totalDaysExtended = rentalForm.getRentalExtensionForms().stream()
                 .mapToInt(RentalExtensionForm::getNumberOfRentalDays)
                 .sum();
-        if(rentalForm.getIsPaidAt() != null)
+        var finalPaidTime = rentalForm.getRentalDate().plusDays(5);
+        if(LocalDateTime.now().isAfter(finalPaidTime))
             return 0; // Rental form is already paid, no days remain for extension
         return 5 - totalDaysExtended;
+    }
+
+    public List<ResponseRentalExtensionFormDto> getRentalExtensionFormsByRentalFormId(int rentalFormId) {
+        RentalForm rentalForm = rentalFormRepository
+                .findById(rentalFormId)
+                .orElseThrow(() -> new IllegalArgumentException("Rental Form with this ID cannot be found"));
+        List<RentalExtensionForm> extensionForms = rentalExtensionFormRepository.findRentalExtensionFormsByRentalFormId(rentalFormId);
+        return rentalExtensionFormMapper.toResponseDtoList(extensionForms);
     }
 }

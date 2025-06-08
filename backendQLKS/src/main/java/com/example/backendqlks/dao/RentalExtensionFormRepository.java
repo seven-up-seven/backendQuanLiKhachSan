@@ -13,4 +13,6 @@ public interface RentalExtensionFormRepository extends JpaRepository<RentalExten
     Page<RentalExtensionForm> findAll(Pageable pageable);
 
     List<RentalExtensionForm> findByRentalFormId(int rentalFormId);
+
+    List<RentalExtensionForm> findRentalExtensionFormsByRentalFormId(int rentalFormId);
 }

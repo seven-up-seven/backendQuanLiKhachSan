@@ -76,4 +76,13 @@ public class InvoiceController {
             return ResponseEntity.status(500).body("Error deleting invoice: " + e.getMessage());
         }
     }
+    @GetMapping("/re-calculate/{id}")
+    public ResponseEntity<?> reCalculateInvoice(@PathVariable int id) {
+        try {
+            var recalculatedInvoice = invoiceService.reCalculateInvoice(id);
+            return ResponseEntity.ok(recalculatedInvoice);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error recalculating invoice: " + e.getMessage());
+        }
+    }
 }

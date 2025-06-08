@@ -88,4 +88,13 @@ public class RentalExtensionFormController {
             return ResponseEntity.status(500).body("Error fetching day remains: " + e.getMessage());
         }
     }
+    @GetMapping("/rental-form/{rentalFormId}")
+    public ResponseEntity<?> getRentalExtensionFormByRentalFormId(@PathVariable int rentalFormId) {
+        try {
+            var responseDtos = rentalExtensionFormService.getRentalExtensionFormsByRentalFormId(rentalFormId);
+            return ResponseEntity.ok(responseDtos);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching rental extension form by rental form id: " + e.getMessage());
+        }
+    }
 }
