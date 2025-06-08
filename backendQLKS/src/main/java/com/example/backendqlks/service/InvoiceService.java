@@ -76,4 +76,26 @@ public class InvoiceService {
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect invoice id"));
         invoiceRepository.delete(existingInvoice);
     }
+    public ResponseInvoiceDto reCalculateInvoice(int invoiceId) {
+        var existingInvoice = invoiceRepository.findById(invoiceId)
+                .orElseThrow(() -> new IllegalArgumentException("Incorrect invoice id"));
+        var details = existingInvoice.getInvoiceDetails();
+        if (details == null || details.isEmpty()) {
+            throw new IllegalArgumentException("Invoice has no details to recalculate");
+        }
+        double totalAmount = 0;
+        for (var detail : details) {
+            var rentalForm = rentalFormRepository.findById(detail.getRentalForm().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Rental Form with this ID cannot be found"));
+            var rentalDays = rentalForm.getNumberOfRentalDays();
+            var pricePerDay = rentalForm.getRoom().getRoomType().getPrice();
+            var amount = rentalDays * pricePerDay;
+            detail.setReservationCost(amount);
+            invoiceDetailRepository.save(detail);
+            totalAmount += amount;
+        }
+        existingInvoice.setTotalReservationCost(totalAmount);
+        invoiceRepository.save(existingInvoice);
+        return invoiceMapper.toResponseDto(existingInvoice);
+    }
 }

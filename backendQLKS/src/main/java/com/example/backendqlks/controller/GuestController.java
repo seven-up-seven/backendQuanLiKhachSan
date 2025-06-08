@@ -1,6 +1,7 @@
 package com.example.backendqlks.controller;
 
 import com.example.backendqlks.dto.guest.GuestDto;
+import com.example.backendqlks.dto.guest.SearchGuestDto;
 import com.example.backendqlks.service.GuestService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -76,6 +77,16 @@ public class GuestController {
             return ResponseEntity.ok("Guest deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting guest: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<?> findByMultipleCriteria(@RequestBody @Valid SearchGuestDto searchGuestDto) {
+        try {
+            var guest = guestService.findByMultipleCriteria(searchGuestDto.getId(), searchGuestDto.getIdentificationNumber(), searchGuestDto.getEmail(), searchGuestDto.getPhoneNumber(), searchGuestDto.getAccountId());
+            return ResponseEntity.ok(guest);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error finding guest: " + e.getMessage());
         }
     }
 }

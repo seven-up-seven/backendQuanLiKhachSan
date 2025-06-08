@@ -1,6 +1,7 @@
 package com.example.backendqlks.service;
 
 import com.example.backendqlks.dao.AccountRepository;
+import com.example.backendqlks.dao.PositionRepository;
 import com.example.backendqlks.dao.StaffRepository;
 import com.example.backendqlks.dto.staff.ResponseStaffDto;
 import com.example.backendqlks.dto.staff.StaffDto;
@@ -20,11 +21,13 @@ public class StaffService {
     private final StaffRepository staffRepository;
     private final StaffMapper staffMapper;
     private final AccountRepository accountRepository;
+    private final PositionRepository positionRepository;
 
-    public StaffService(StaffMapper staffMapper, StaffRepository staffRepository, AccountRepository accountRepository) {
+    public StaffService(StaffMapper staffMapper, StaffRepository staffRepository, AccountRepository accountRepository, PositionRepository positionRepository) {
         this.staffMapper = staffMapper;
         this.staffRepository = staffRepository;
         this.accountRepository = accountRepository;
+        this.positionRepository = positionRepository;
     }
 
     @Transactional(readOnly = true)
@@ -46,6 +49,7 @@ public class StaffService {
             throw new IllegalArgumentException("Staff with this email already exists");
         }
         Staff staff = staffMapper.toEntity(staffDto);
+        staff.setSalaryMultiplier(1.0f); // Default salary multiplier
         staffRepository.save(staff);
         return staffMapper.toResponseDto(staff);
     }

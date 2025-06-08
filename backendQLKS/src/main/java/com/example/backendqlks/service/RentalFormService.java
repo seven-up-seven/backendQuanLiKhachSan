@@ -56,6 +56,8 @@ public class RentalFormService {
 
         var rentalForm = rentalFormMapper.toEntity(rentalFormDto);
         rentalFormRepository.save(rentalForm);
+        room.get().setRoomState(RoomState.BEING_RENTED);
+        roomRepository.save(room.get());
         return rentalFormMapper.toResponseDto(rentalForm);
     }
 

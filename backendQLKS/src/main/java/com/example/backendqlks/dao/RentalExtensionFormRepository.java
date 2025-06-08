@@ -11,4 +11,6 @@ import java.util.List;
 
 public interface RentalExtensionFormRepository extends JpaRepository<RentalExtensionForm, Integer> {
     List<RentalExtensionForm> findByRentalFormId(int rentalFormId);
+
+    List<RentalExtensionForm> findRentalExtensionFormsByRentalFormId(int rentalFormId);
 }
