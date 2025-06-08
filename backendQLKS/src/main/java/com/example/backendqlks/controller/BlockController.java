@@ -4,6 +4,7 @@ import com.example.backendqlks.dto.block.BlockDto;
 import com.example.backendqlks.service.BlockService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,7 @@ public class BlockController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createBlock(@Valid @RequestBody BlockDto blockDto,
                                          BindingResult result){

@@ -10,6 +10,9 @@ import com.example.backendqlks.entity.Staff;
 import com.example.backendqlks.mapper.AccountMapper;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -34,17 +37,28 @@ public class AccountService {
         this.staffRepository = staffRepository;
         this.guestRepository = guestRepository;
     }
+
     @Transactional(readOnly = true)
     public ResponseAccountDto get(int accountId){
         var existingAccount = accountRepository.findById(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("Incorrect account id"));
+                .orElseThrow(() -> new IllegalArgumentException("Can't find account with id: " + accountId));
         return accountMapper.toResponseDto(existingAccount);
     }
+
     @Transactional(readOnly = true)
-    public List<ResponseAccountDto> getAll(){
-        var allAccount = accountRepository.findAll();
-        return accountMapper.toResponseDtoList(allAccount);
+    public ResponseAccountDto getByUsername(String username){
+        var existingAccount = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Can not find account with username " + username));
+        return accountMapper.toResponseDto(existingAccount);
     }
+
+    @Transactional(readOnly = true)
+    public Page<ResponseAccountDto> getAll(Pageable pageable){
+        var accountPage = accountRepository.findAll(pageable);
+        List<ResponseAccountDto> accountDtos = accountMapper.toResponseDtoList(accountPage.getContent());
+        return new PageImpl<>(accountDtos, pageable, accountPage.getTotalElements());
+    }
+
     //TODO: add password encoder BCryptPasswordEncoder, try catch
     public ResponseAccountDto create(AccountDto accountDto){
         if(accountRepository.existsByUsername(accountDto.getUserName())){
@@ -54,6 +68,7 @@ public class AccountService {
         accountRepository.save(newAccount);
         return accountMapper.toResponseDto(newAccount);
     }
+
     //TODO: add password encoder BCryptPasswordEncoder, try catch
     public ResponseAccountDto update(int accountId, AccountDto accountDto){
         var existingAccount = accountRepository.findById(accountId)

@@ -3,6 +3,8 @@ package com.example.backendqlks.controller;
 import com.example.backendqlks.dto.account.AccountDto;
 import com.example.backendqlks.service.AccountService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -30,9 +32,9 @@ public class AccountController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllAccounts(){
+    public ResponseEntity<?> getAllAccounts(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try{
-            return ResponseEntity.ok(accountService.getAll());
+            return ResponseEntity.ok(accountService.getAll(pageable));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching accounts: " + e.getMessage());
         }

@@ -16,11 +16,13 @@ import java.util.List;
 public class UserRolePermissionService {
     private final UserRolePermissionRepository rolePermissionRepository;
     private final UserRolePermissionMapper userRolePermissionMapper;
+    private final UserRolePermissionRepository userRolePermissionRepository;
 
     public UserRolePermissionService(UserRolePermissionRepository rolePermissionRepository,
-                                     UserRolePermissionMapper userRolePermissionMapper) {
+                                     UserRolePermissionMapper userRolePermissionMapper, UserRolePermissionRepository userRolePermissionRepository) {
         this.rolePermissionRepository = rolePermissionRepository;
         this.userRolePermissionMapper = userRolePermissionMapper;
+        this.userRolePermissionRepository = userRolePermissionRepository;
     }
 
     @Transactional(readOnly = true)
@@ -34,6 +36,12 @@ public class UserRolePermissionService {
         UserRolePermission permission = rolePermissionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("UserRolePermission with this ID cannot be found"));
         return userRolePermissionMapper.toResponseDto(permission);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseUserRolePermissionDto> getUserRolePermissionsByRoleId(int id) {
+        List<UserRolePermission> userRolePermissionList=userRolePermissionRepository.findByUserRoleId(id);
+        return userRolePermissionMapper.toResponseDtoList(userRolePermissionList);
     }
 
     public ResponseUserRolePermissionDto createUserRolePermission(UserRolePermissionDto dto) {

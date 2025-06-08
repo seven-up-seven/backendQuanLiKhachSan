@@ -4,6 +4,8 @@ import com.example.backendqlks.dto.staff.ResponseStaffDto;
 import com.example.backendqlks.dto.staff.StaffDto;
 import com.example.backendqlks.service.StaffService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +22,9 @@ public class StaffController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllStaffs() {
+    public ResponseEntity<?> getAllStaffs(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try {
-            return ResponseEntity.ok(staffService.getAllStaffs());
+            return ResponseEntity.ok(staffService.getAllStaffs(pageable));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching staff list: " + e.getMessage());
         }

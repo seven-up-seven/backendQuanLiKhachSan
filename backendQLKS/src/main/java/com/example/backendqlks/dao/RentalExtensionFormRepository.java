@@ -10,7 +10,5 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface RentalExtensionFormRepository extends JpaRepository<RentalExtensionForm, Integer> {
-    Page<RentalExtensionForm> findAll(Pageable pageable);
-
     List<RentalExtensionForm> findByRentalFormId(int rentalFormId);
 }

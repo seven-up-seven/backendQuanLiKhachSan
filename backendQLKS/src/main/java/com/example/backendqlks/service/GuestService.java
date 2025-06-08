@@ -4,7 +4,11 @@ import com.example.backendqlks.dao.AccountRepository;
 import com.example.backendqlks.dao.GuestRepository;
 import com.example.backendqlks.dto.guest.GuestDto;
 import com.example.backendqlks.dto.guest.ResponseGuestDto;
+import com.example.backendqlks.entity.Guest;
 import com.example.backendqlks.mapper.GuestMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,11 +35,14 @@ public class GuestService {
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect floor id"));
         return guestMapper.toResponseDto(existingGuest);
     }
+
     @Transactional(readOnly = true)
-    public List<ResponseGuestDto> getAll(){
-        var allGuest = guestRepository.findAll();
-        return guestMapper.toResponseDtoList(allGuest);
+    public Page<ResponseGuestDto> getAll(Pageable pageable){
+        Page<Guest> guestPage = guestRepository.findAll(pageable);
+        List<ResponseGuestDto> guests=guestMapper.toResponseDtoList(guestPage.getContent());
+        return new PageImpl<>(guests, pageable, guestPage.getTotalElements());
     }
+
     //TODO: add try catch
     public ResponseGuestDto create(GuestDto guestDto){
         if(guestRepository.findByIdentificationNumber(guestDto.getIdentificationNumber()).isPresent()){
@@ -51,6 +58,7 @@ public class GuestService {
         guestRepository.save(guest);
         return guestMapper.toResponseDto(guest);
     }
+
     //TODO: add try catch
     public ResponseGuestDto update(int guestId, GuestDto guestDto){
         var existingGuest = guestRepository.findById(guestId)
@@ -59,6 +67,7 @@ public class GuestService {
         guestRepository.save(existingGuest);
         return guestMapper.toResponseDto(existingGuest);
     }
+
     //TODO: lúc xoá guest thì xoá luôn account nếu có
     public void delete(int guestId){
         var existingGuest = guestRepository.findById(guestId)

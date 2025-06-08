@@ -11,6 +11,10 @@ import com.example.backendqlks.entity.InvoiceDetail;
 import com.example.backendqlks.entity.RentalForm;
 import com.example.backendqlks.entity.enums.RoomState;
 import com.example.backendqlks.mapper.InvoiceDetailMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,9 +52,10 @@ public class InvoiceDetailService {
     }
 
     @Transactional(readOnly = true)
-    public List<ResponseInvoiceDetailDto> getAll() {
-        var allInvoiceDetails = invoiceDetailRepository.findAll();
-        return invoiceDetailMapper.toResponseDtoList(allInvoiceDetails);
+    public Page<ResponseInvoiceDetailDto> getAll(Pageable pageable) {
+        var invoiceDetailPage = invoiceDetailRepository.findAll(pageable);
+        List<ResponseInvoiceDetailDto> invoiceDetails = invoiceDetailMapper.toResponseDtoList(invoiceDetailPage.getContent());
+        return new PageImpl<>(invoiceDetails, pageable, invoiceDetailPage.getTotalElements());
     }
 
     public ResponseInvoiceDetailDto create(InvoiceDetailDto invoiceDetailDto) {

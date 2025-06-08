@@ -41,7 +41,7 @@ public class RoomController {
         }
     }
 
-    @GetMapping("/{roomState}")
+    @GetMapping("/room-state/{roomState}")
     public ResponseEntity<?> getRoomByRoomState(@PathVariable RoomState roomState, @PageableDefault(page=0, size=10) Pageable pageable) {
         try {
             return ResponseEntity.ok(roomService.getRoomByRoomState(roomState, pageable));

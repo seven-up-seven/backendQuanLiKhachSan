@@ -6,6 +6,9 @@ import com.example.backendqlks.dto.staff.ResponseStaffDto;
 import com.example.backendqlks.dto.staff.StaffDto;
 import com.example.backendqlks.entity.Staff;
 import com.example.backendqlks.mapper.StaffMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +28,10 @@ public class StaffService {
     }
 
     @Transactional(readOnly = true)
-    public List<ResponseStaffDto> getAllStaffs() {
-        List<Staff> staffs = staffRepository.findAll();
-        return staffMapper.toResponseDtoList(staffs);
+    public Page<ResponseStaffDto> getAllStaffs(Pageable pageable) {
+        Page<Staff> staffPage = staffRepository.findAll(pageable);
+        List<ResponseStaffDto> staffs=staffMapper.toResponseDtoList(staffPage.getContent());
+        return new PageImpl<>(staffs, pageable, staffPage.getTotalElements());
     }
 
     @Transactional(readOnly = true)

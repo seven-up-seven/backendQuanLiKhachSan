@@ -6,6 +6,8 @@ import com.example.backendqlks.dto.rentalform.RentalFormDto;
 import com.example.backendqlks.entity.RentalExtensionForm;
 import com.example.backendqlks.service.RentalExtensionFormService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +24,9 @@ public class RentalExtensionFormController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllRentalExtensionForms() {
+    public ResponseEntity<?> getAllRentalExtensionForms(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try {
-            return ResponseEntity.ok(rentalExtensionFormService.getAllRentalExtensionForms());
+            return ResponseEntity.ok(rentalExtensionFormService.getAllRentalExtensionForms(pageable));
         }
         catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching rental extension forms: "+e.getMessage());

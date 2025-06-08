@@ -3,6 +3,8 @@ package com.example.backendqlks.controller;
 import com.example.backendqlks.dto.invoice.InvoiceDto;
 import com.example.backendqlks.service.InvoiceService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -30,9 +32,9 @@ public class InvoiceController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllInvoices(){
+    public ResponseEntity<?> getAllInvoices(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try{
-            return ResponseEntity.ok(invoiceService.getAll());
+            return ResponseEntity.ok(invoiceService.getAll(pageable));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching invoices: " + e.getMessage());
         }
