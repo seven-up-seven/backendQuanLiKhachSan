@@ -1,10 +1,14 @@
 package com.example.backendqlks.dto.authentication;
 
-import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public record LoginDto (
-        String username,
-        String password
-) {}
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class LoginDto {
+    private String username;
+    private String password;
+}
