@@ -203,18 +203,16 @@ INSERT INTO `USER_ROLE` (`NAME`) VALUES
                                      ('Guest');
 
 INSERT INTO `PERMISSION` (`NAME`) VALUES
-                                      ('VIEW_ROOMS'),
-                                      ('BOOK_ROOM'),
-                                      ('MANAGE_STAFF'),
-                                      ('VIEW_INVOICES'),
-                                      ('VIEW_REPORTS');
+                                      ('ADMIN'),
+                                      ('RECEPTIONIST'),
+                                      ('MANAGER'),
+                                      ('ACCOUNTANT');
 
 INSERT INTO `USER_ROLE_PERMISSION` (`USER_ROLE_ID`, `PERMISSION_ID`) VALUES
                                                                          (1, 1),
                                                                          (1, 2),
                                                                          (1, 3),
                                                                          (1, 4),
-                                                                         (1, 5),
                                                                          (2, 1),
                                                                          (2, 2),
                                                                          (2, 4),
