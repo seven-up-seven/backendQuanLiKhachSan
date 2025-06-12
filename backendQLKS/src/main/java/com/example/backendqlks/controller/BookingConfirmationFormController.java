@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Validated
@@ -37,6 +38,16 @@ public class BookingConfirmationFormController {
             return ResponseEntity.ok(bookingConfirmationFormService.getAll(pageable));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching booking confirmation forms: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/list-id/{ids}")
+    public ResponseEntity<?> getByListId(@PathVariable List<Integer> ids) {
+        try {
+            return ResponseEntity.ok(bookingConfirmationFormService.getByListIds(ids));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching booking confirmation form: " + e.getMessage());
         }
     }
 

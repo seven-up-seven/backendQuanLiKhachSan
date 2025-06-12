@@ -52,6 +52,13 @@ public class RoomService {
         return new PageImpl<>(dtoList, pageable, roomPage.getTotalElements());
     }
 
+    @Transactional(readOnly = true)
+    public Page<ResponseRoomDto> getRoomByListState(List<RoomState> roomStateList, Pageable pageable) {
+        Page<Room> roomPage=roomRepository.findByRoomStateIn(roomStateList, pageable);
+        List<ResponseRoomDto> dtoList = roomMapper.toResponseDtoList(roomPage.getContent());
+        return new PageImpl<>(dtoList, pageable, roomPage.getTotalElements());
+    }
+
     //check hợp lệ, sau đó check xem trùng tên k mới cho tạo mới
     public ResponseRoomDto createRoom(RoomDto roomDto) {
         var floorId = roomDto.getFloorId();

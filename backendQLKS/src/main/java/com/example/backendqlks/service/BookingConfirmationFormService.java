@@ -38,6 +38,12 @@ public class BookingConfirmationFormService {
         return new PageImpl<>(bookingConfirmationForms, pageable, bookingConfirmationFormPage.getTotalElements());
     }
 
+    @Transactional(readOnly = true)
+    public List<ResponseBookingConfirmationFormDto> getByListIds(List<Integer> ids){
+        var bookingConfirmationForms=bookingConfirmationFormRepository.findAllById(ids);
+        return bookingConfirmationFormMapper.toResponseDtoList(bookingConfirmationForms);
+    }
+
     //TODO: add try catch
     public ResponseBookingConfirmationFormDto create(BookingConfirmationFormDto bookingConfirmationFormDto){
         var newBookingConfirmationForm = bookingConfirmationFormMapper.toEntity(bookingConfirmationFormDto);
