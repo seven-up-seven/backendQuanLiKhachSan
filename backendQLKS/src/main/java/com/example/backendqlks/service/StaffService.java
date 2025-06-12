@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -40,6 +41,13 @@ public class StaffService {
     @Transactional(readOnly = true)
     public ResponseStaffDto getStaffById(int id) {
         Staff staff = staffRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Staff with this ID cannot be found"));
+        return staffMapper.toResponseDto(staff);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseStaffDto getStaffByAccountId(int accountId) {
+        Staff staff=staffRepository.findByAccountId(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Staff with this ID cannot be found"));
         return staffMapper.toResponseDto(staff);
     }

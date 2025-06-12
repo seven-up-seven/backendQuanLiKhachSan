@@ -1,5 +1,6 @@
 package com.example.backendqlks.controller;
 
+import com.example.backendqlks.dto.account.AccountDto;
 import com.example.backendqlks.dto.staff.ResponseStaffDto;
 import com.example.backendqlks.dto.staff.StaffDto;
 import com.example.backendqlks.service.StaffService;
@@ -36,6 +37,17 @@ public class StaffController {
             ResponseStaffDto staff = staffService.getStaffById(id);
             return ResponseEntity.ok(staff);
         } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching staff with id: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/account-id/{accountId}")
+    public ResponseEntity<?> getStaffByAccountId(@PathVariable int accountId) {
+        try {
+            ResponseStaffDto staff=staffService.getStaffByAccountId(accountId);
+            return ResponseEntity.ok(staff);
+        }
+        catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching staff with id: " + e.getMessage());
         }
     }
