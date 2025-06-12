@@ -28,10 +28,10 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginDto loginDto, BindingResult bindingResult) {
-        Optional<Account> accountOptional=accountRepository.findByUsername(loginDto.username());
+        Optional<Account> accountOptional=accountRepository.findByUsername(loginDto.getUsername());
         if (accountOptional.isEmpty()) return ResponseEntity.status(400).body("Invalid username");
         Account account=accountOptional.get();
-        if (!account.getPassword().equals(loginDto.password())) {
+        if (!account.getPassword().equals(loginDto.getPassword())) {
             return ResponseEntity.status(400).body("Invalid password");
         }
         if (account.getUserRole()==null) return ResponseEntity.status(400).body("Invalid user role");
@@ -45,7 +45,7 @@ public class AuthenticationController {
     public ResponseEntity<?> refresh(@Valid @RequestBody RefreshTokenDto refreshToken) {
         int accountId;
         try {
-            accountId=Integer.parseInt(jwtUtils.validateAndExtractIdRefreshToken(refreshToken.refreshToken()));
+            accountId=Integer.parseInt(jwtUtils.validateAndExtractIdRefreshToken(refreshToken.getRefreshToken()));
         }
         catch (JwtException e) {
             return ResponseEntity.status(400).body("Invalid refresh token");

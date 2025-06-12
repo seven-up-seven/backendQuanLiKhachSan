@@ -8,6 +8,9 @@ import com.example.backendqlks.dto.rentalformdetail.ResponseRentalFormDetailDto;
 import com.example.backendqlks.entity.RentalForm;
 import com.example.backendqlks.entity.RentalFormDetail;
 import com.example.backendqlks.mapper.RentalFormDetailMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +33,10 @@ public class RentalFormDetailService {
     }
 
     @Transactional(readOnly = true)
-    public List<ResponseRentalFormDetailDto> getAllRentalFormDetails() {
-        List<RentalFormDetail> rentalFormDetails = rentalFormDetailRepository.findAll();
-        return rentalFormDetailMapper.toResponseDtoList(rentalFormDetails);
+    public Page<ResponseRentalFormDetailDto> getAllRentalFormDetails(Pageable pageable) {
+        Page<RentalFormDetail> rentalFormDetailPage = rentalFormDetailRepository.findAll(pageable);
+        List<ResponseRentalFormDetailDto> rentalFormDetails=rentalFormDetailMapper.toResponseDtoList(rentalFormDetailPage.getContent());
+        return new PageImpl<>(rentalFormDetails, pageable, rentalFormDetailPage.getTotalElements());
     }
 
     @Transactional(readOnly = true)

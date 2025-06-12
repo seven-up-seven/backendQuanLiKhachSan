@@ -10,6 +10,7 @@ import com.example.backendqlks.entity.RoomType;
 import com.example.backendqlks.entity.enums.RoomState;
 import com.example.backendqlks.mapper.RoomMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -45,9 +46,10 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
-    public List<ResponseRoomDto> getRoomByRoomState(RoomState roomState, Pageable pageable) {
+    public Page<ResponseRoomDto> getRoomByRoomState(RoomState roomState, Pageable pageable) {
         Page<Room> roomPage=roomRepository.findRoomsByRoomState(roomState, pageable);
-        return roomMapper.toResponseDtoList(roomPage.getContent());
+        List<ResponseRoomDto> dtoList = roomMapper.toResponseDtoList(roomPage.getContent());
+        return new PageImpl<>(dtoList, pageable, roomPage.getTotalElements());
     }
 
     //check hợp lệ, sau đó check xem trùng tên k mới cho tạo mới

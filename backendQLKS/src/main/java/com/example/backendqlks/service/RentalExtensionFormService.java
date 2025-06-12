@@ -7,6 +7,9 @@ import com.example.backendqlks.dto.rentalextensionform.ResponseRentalExtensionFo
 import com.example.backendqlks.entity.RentalExtensionForm;
 import com.example.backendqlks.entity.RentalForm;
 import com.example.backendqlks.mapper.RentalExtensionFormMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,9 +32,9 @@ public class RentalExtensionFormService {
     }
 
     @Transactional(readOnly = true)
-    public List<ResponseRentalExtensionFormDto> getAllRentalExtensionForms() {
-        List<RentalExtensionForm> extensionForms = rentalExtensionFormRepository.findAll();
-        var responseDtos = new ArrayList<ResponseRentalExtensionFormDto>(); 
+    public Page<ResponseRentalExtensionFormDto> getAllRentalExtensionForms(Pageable pageable) {
+        Page<RentalExtensionForm> extensionForms = rentalExtensionFormRepository.findAll(pageable);
+        var responseDtos = new ArrayList<ResponseRentalExtensionFormDto>();
         for (var extensionForm : extensionForms) {
             RentalForm rentalForm = extensionForm.getRentalForm();
             int totalDaysExtended = rentalForm.getRentalExtensionForms().stream()
@@ -41,7 +44,7 @@ public class RentalExtensionFormService {
             responseDto.setDayRemains(totalDaysExtended);
             responseDtos.add(responseDto);
         }
-        return responseDtos;
+        return new PageImpl<>(responseDtos, pageable, extensionForms.getTotalElements());
     }
 
     @Transactional(readOnly = true)

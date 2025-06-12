@@ -1,12 +1,12 @@
 package com.example.backendqlks.dto.authentication;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-public record ResponseLoginDto (
-        String accessToken,
-        String refreshToken,
-        //Don't know why I added message to the response, I'm getting crazy
-        String message
-) {}
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ResponseLoginDto {
+    private String accessToken;
+    private String refreshToken;
+    private String message;
+}

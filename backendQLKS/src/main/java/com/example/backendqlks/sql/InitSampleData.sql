@@ -203,18 +203,16 @@ INSERT INTO `USER_ROLE` (`NAME`) VALUES
                                      ('Guest');
 
 INSERT INTO `PERMISSION` (`NAME`) VALUES
-                                      ('VIEW_ROOMS'),
-                                      ('BOOK_ROOM'),
-                                      ('MANAGE_STAFF'),
-                                      ('VIEW_INVOICES'),
-                                      ('VIEW_REPORTS');
+                                      ('ADMIN'),
+                                      ('RECEPTIONIST'),
+                                      ('MANAGER'),
+                                      ('ACCOUNTANT');
 
 INSERT INTO `USER_ROLE_PERMISSION` (`USER_ROLE_ID`, `PERMISSION_ID`) VALUES
                                                                          (1, 1),
                                                                          (1, 2),
                                                                          (1, 3),
                                                                          (1, 4),
-                                                                         (1, 5),
                                                                          (2, 1),
                                                                          (2, 2),
                                                                          (2, 4),
@@ -286,9 +284,9 @@ INSERT INTO `BOOKING_CONFIRMATION_FORM` (`BOOKING_GUEST_ID`, `BOOKING_STATE`, `R
 
 INSERT INTO `RENTAL_FORM` (`ROOM_ID`, `STAFF_ID`, `RENTAL_DATE`, `IS_PAID_AT`, `NUMBER_OF_RENTAL_DAY`, `NOTE`) VALUES
                                                                                                                    (1, 1, NOW(), NOW(), 3, 'No note'),
-                                                                                                                   (2, 2, NOW(), NULL, 2, 'VIP guest'),
+                                                                                                                   (2, 2, NOW(), NOW(), 2, 'VIP guest'),
                                                                                                                    (3, 3, NOW(), NOW(), 1, 'Needs late checkout'),
-                                                                                                                   (4, 4, NOW(), NULL, 5, 'Birthday booking'),
+                                                                                                                   (4, 4, NOW(), NOW(), 5, 'Birthday booking'),
                                                                                                                    (5, 5, NOW(), NOW(), 7, 'Company event');
 
 INSERT INTO `RENTAL_FORM_DETAIL` (`RENTAL_FORM_ID`, `GUEST_ID`) VALUES

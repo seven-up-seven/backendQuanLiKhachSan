@@ -7,6 +7,7 @@ import com.example.backendqlks.dto.block.BlockDto;
 import com.example.backendqlks.dto.block.ResponseBlockDto;
 import com.example.backendqlks.mapper.BlockMapper;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -31,11 +32,13 @@ public class BlockService {
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect block id"));
         return blockMapper.toResponseDto(existingBlock);
     }
+
     @Transactional(readOnly = true)
     public List<ResponseBlockDto> getAll(){
         var allBlock = blockRepository.findAll();
         return blockMapper.toResponseDtoList(allBlock);
     }
+
     //TODO: add try catch
     public ResponseBlockDto create(BlockDto blockDto){
         if(blockRepository.existsByName((blockDto.getName()))){
@@ -45,6 +48,7 @@ public class BlockService {
         blockRepository.save(newBlock);
         return blockMapper.toResponseDto(newBlock);
     }
+
     //TODO: add try catch
     public ResponseBlockDto update(int blockId, BlockDto blockDto){
         var existingBlock = blockRepository.findById(blockId)

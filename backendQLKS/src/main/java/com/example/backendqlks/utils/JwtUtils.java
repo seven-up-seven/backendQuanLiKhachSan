@@ -44,7 +44,7 @@ public class JwtUtils {
     }
 
     public String generateAccessToken(int accountId, UserRole role) {
-        int ttl=2*60*60*1000;
+        int ttl=30*60*1000; //30 minutes 
         return Jwts.builder().subject(String.valueOf(accountId))
                 .claim("role", role.getName())
                 .claim("type", "access")

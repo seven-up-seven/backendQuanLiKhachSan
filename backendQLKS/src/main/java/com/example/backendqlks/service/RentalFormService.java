@@ -9,6 +9,9 @@ import com.example.backendqlks.dto.rentalform.SearchRentalFormDto;
 import com.example.backendqlks.entity.*;
 import com.example.backendqlks.entity.enums.RoomState;
 import com.example.backendqlks.mapper.RentalFormMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +36,10 @@ public class RentalFormService {
     }
 
     @Transactional(readOnly = true)
-    public List<ResponseRentalFormDto> getAllRentalForms() {
-        List<RentalForm> rentalForms = rentalFormRepository.findAll();
-        return rentalFormMapper.toResponseDtoList(rentalForms);
+    public Page<ResponseRentalFormDto> getAllRentalForms(Pageable pageable) {
+        Page<RentalForm> rentalFormPage = rentalFormRepository.findAll(pageable);
+        List<ResponseRentalFormDto> rentalForms = rentalFormMapper.toResponseDtoList(rentalFormPage.getContent());
+        return new PageImpl<>(rentalForms, pageable, rentalFormPage.getTotalElements());
     }
 
     @Transactional(readOnly = true)

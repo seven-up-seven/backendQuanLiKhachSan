@@ -6,6 +6,9 @@ import com.example.backendqlks.dto.bookingConfirmationForm.BookingConfirmationFo
 import com.example.backendqlks.dto.bookingConfirmationForm.ResponseBookingConfirmationFormDto;
 import com.example.backendqlks.entity.enums.RoomState;
 import com.example.backendqlks.mapper.BookingConfirmationFormMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +36,10 @@ public class BookingConfirmationFormService {
     }
 
     @Transactional(readOnly = true)
-    public List<ResponseBookingConfirmationFormDto> getAll(){
-        var allBookingConfirmationForm = bookingConfirmationFormRepository.findAll();
-        return bookingConfirmationFormMapper.toResponseDtoList(allBookingConfirmationForm);
+    public Page<ResponseBookingConfirmationFormDto> getAll(Pageable pageable){
+        var bookingConfirmationFormPage = bookingConfirmationFormRepository.findAll(pageable);
+        List<ResponseBookingConfirmationFormDto> bookingConfirmationForms=bookingConfirmationFormMapper.toResponseDtoList(bookingConfirmationFormPage.getContent());
+        return new PageImpl<>(bookingConfirmationForms, pageable, bookingConfirmationFormPage.getTotalElements());
     }
 
     //TODO: add try catch

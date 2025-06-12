@@ -11,6 +11,9 @@ import com.example.backendqlks.entity.enums.RoomState;
 import com.example.backendqlks.mapper.InvoiceDetailMapper;
 import com.example.backendqlks.mapper.InvoiceMapper;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -45,9 +48,10 @@ public class InvoiceService {
     }
 
     @Transactional(readOnly = true)
-    public List<ResponseInvoiceDto> getAll(){
-        var allInvoice = invoiceRepository.findAll();
-        return invoiceMapper.toResponseDtoList(allInvoice);
+    public Page<ResponseInvoiceDto> getAll(Pageable pageable){
+        Page<Invoice> invoicePage = invoiceRepository.findAll(pageable);
+        List<ResponseInvoiceDto> invoices=invoiceMapper.toResponseDtoList(invoicePage.getContent());
+        return new PageImpl<>(invoices, pageable, invoicePage.getTotalElements());
     }
 
     //TODO: add try catch
