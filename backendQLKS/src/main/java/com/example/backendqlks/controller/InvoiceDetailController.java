@@ -45,7 +45,7 @@ public class InvoiceDetailController {
     @GetMapping("/page")
     public ResponseEntity<?> getAllInvoiceDetails(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try{
-            return ResponseEntity.ok(invoiceDetailService.getAll(pageable));
+            return ResponseEntity.ok(invoiceDetailService.getAllPage(pageable));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching invoice details: " + e.getMessage());
         }
