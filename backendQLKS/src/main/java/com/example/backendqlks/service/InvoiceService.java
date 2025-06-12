@@ -7,6 +7,7 @@ import com.example.backendqlks.dao.RoomRepository;
 import com.example.backendqlks.dto.invoice.InvoiceDto;
 import com.example.backendqlks.dto.invoice.ResponseInvoiceDto;
 import com.example.backendqlks.dto.invoiceDetail.InvoiceDetailDto;
+import com.example.backendqlks.entity.Invoice;
 import com.example.backendqlks.entity.enums.RoomState;
 import com.example.backendqlks.mapper.InvoiceDetailMapper;
 import com.example.backendqlks.mapper.InvoiceMapper;
