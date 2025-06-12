@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -45,6 +46,16 @@ public class RoomController {
     public ResponseEntity<?> getRoomByRoomState(@PathVariable RoomState roomState, @PageableDefault(page=0, size=10) Pageable pageable) {
         try {
             return ResponseEntity.ok(roomService.getRoomByRoomState(roomState, pageable));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching room with state: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/list-state/{roomStateList}")
+    public ResponseEntity<?> getRoomByListState(@PathVariable List<RoomState> roomStateList, @PageableDefault(page=0, size=10) Pageable pageable) {
+        try {
+            return ResponseEntity.ok(roomService.getRoomByListState(roomStateList, pageable));
         }
         catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching room with state: " + e.getMessage());

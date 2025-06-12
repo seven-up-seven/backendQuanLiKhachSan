@@ -52,7 +52,7 @@ public class InvoiceDetailService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseInvoiceDetailDto> getAll(Pageable pageable) {
+    public Page<ResponseInvoiceDetailDto> getAllPage(Pageable pageable) {
         var invoiceDetailPage = invoiceDetailRepository.findAll(pageable);
         List<ResponseInvoiceDetailDto> invoiceDetails = invoiceDetailMapper.toResponseDtoList(invoiceDetailPage.getContent());
         return new PageImpl<>(invoiceDetails, pageable, invoiceDetailPage.getTotalElements());
@@ -61,6 +61,11 @@ public class InvoiceDetailService {
     public List<ResponseInvoiceDetailDto> getAll() {
         var invoiceDetails = invoiceDetailRepository.findAll();
         return invoiceDetailMapper.toResponseDtoList(invoiceDetails);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseInvoiceDetailDto> getAll() {
+         return invoiceDetailMapper.toResponseDtoList(invoiceDetailRepository.findAll());
     }
 
     public ResponseInvoiceDetailDto create(InvoiceDetailDto invoiceDetailDto) {
