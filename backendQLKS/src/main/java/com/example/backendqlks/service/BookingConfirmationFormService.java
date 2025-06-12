@@ -1,8 +1,10 @@
 package com.example.backendqlks.service;
 
 import com.example.backendqlks.dao.BookingConfirmationFormRepository;
+import com.example.backendqlks.dao.RoomRepository;
 import com.example.backendqlks.dto.bookingConfirmationForm.BookingConfirmationFormDto;
 import com.example.backendqlks.dto.bookingConfirmationForm.ResponseBookingConfirmationFormDto;
+import com.example.backendqlks.entity.enums.RoomState;
 import com.example.backendqlks.mapper.BookingConfirmationFormMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,11 +19,13 @@ import java.util.List;
 public class BookingConfirmationFormService {
     private final BookingConfirmationFormRepository bookingConfirmationFormRepository;
     private final BookingConfirmationFormMapper bookingConfirmationFormMapper;
+    private final RoomRepository roomRepository;
 
     public BookingConfirmationFormService(BookingConfirmationFormRepository bookingConfirmationFormRepository,
-                                          BookingConfirmationFormMapper bookingConfirmationFormMapper){
+                                          BookingConfirmationFormMapper bookingConfirmationFormMapper, RoomRepository roomRepository){
         this.bookingConfirmationFormMapper = bookingConfirmationFormMapper;
         this.bookingConfirmationFormRepository = bookingConfirmationFormRepository;
+        this.roomRepository = roomRepository;
     }
 
     @Transactional(readOnly = true)
@@ -48,6 +52,12 @@ public class BookingConfirmationFormService {
     public ResponseBookingConfirmationFormDto create(BookingConfirmationFormDto bookingConfirmationFormDto){
         var newBookingConfirmationForm = bookingConfirmationFormMapper.toEntity(bookingConfirmationFormDto);
         bookingConfirmationFormRepository.save(newBookingConfirmationForm);
+        var room = roomRepository.findById(bookingConfirmationFormDto.getRoomId());
+        if (room.isEmpty()) {
+            throw new IllegalArgumentException("Room not found with id: " + bookingConfirmationFormDto.getRoomId());
+        }
+        room.get().setRoomState(RoomState.BOOKED);
+        roomRepository.save(room.get());
         return bookingConfirmationFormMapper.toResponseDto(newBookingConfirmationForm);
     }
     //TODO: add try catch
