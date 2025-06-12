@@ -79,8 +79,8 @@ public class GuestService {
         guestRepository.deleteById(guestId);
     }
 
-    public List<ResponseGuestDto> findByMultipleCriteria(Integer id, String identificationNumber, String email, String phoneNumber, Integer accountId) {
-        var guest = guestRepository.findByMultipleCriteria(id, null, phoneNumber, identificationNumber, email, accountId);
+    public List<ResponseGuestDto> findByMultipleCriteria(Integer id, String name ,String identificationNumber, String email, String phoneNumber, Integer accountId) {
+        var guest = guestRepository.findByMultipleCriteria(id, name, phoneNumber, identificationNumber, email, accountId);
         return guestMapper.toResponseDtoList(guest);
     }
 }

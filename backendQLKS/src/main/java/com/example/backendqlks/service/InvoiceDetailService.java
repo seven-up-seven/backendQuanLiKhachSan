@@ -61,12 +61,14 @@ public class InvoiceDetailService {
     public ResponseInvoiceDetailDto create(InvoiceDetailDto invoiceDetailDto) {
         var rentalForm = rentalFormRepository.findById(invoiceDetailDto.getRentalFormId())
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect rental form id"));
-//TODO: check xem rental form tương ứng hợp lệ không, nếu không (đã trả rồi) thì quăng ra lỗi
-//        if(!rentalForm.getIsPaidAt()){
-//            throw new IllegalArgumentException("")
-//        }
+        if(rentalForm.getIsPaidAt() == null){
+            throw new IllegalArgumentException("Rental form has been paid ");
+        }
         var invoiceDetail = invoiceDetailMapper.toEntity(invoiceDetailDto);
         invoiceDetailRepository.save(invoiceDetail);
+        rentalForm.setIsPaidAt(LocalDateTime.now());
+        rentalForm.getRoom().setRoomState(RoomState.BEING_CLEANED);
+        rentalFormRepository.save(rentalForm);
         return invoiceDetailMapper.toResponseDto(invoiceDetail);
     }
 
