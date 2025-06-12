@@ -25,6 +25,8 @@ DROP TABLE IF EXISTS `RENTAL_FORM_DETAIL`;
 DROP TABLE IF EXISTS `RENTAL_FORM`;
 DROP TABLE IF EXISTS `REVENUE_REPORT_DETAIL`;
 DROP TABLE IF EXISTS `REVENUE_REPORT`;
+DROP TABLE IF EXISTS `HISTORY`;
+DROP TABLE IF EXISTS `VARIABLE`;
 
 -- Create tables
 CREATE TABLE `USER_ROLE` (
@@ -190,6 +192,24 @@ CREATE TABLE `REVENUE_REPORT_DETAIL` (
                                          `ROOMTYPE_ID` INT,
                                          FOREIGN KEY (`REVENUE_REPORT_ID`) REFERENCES `REVENUE_REPORT`(`ID`),
                                          FOREIGN KEY (`ROOMTYPE_ID`) REFERENCES `ROOMTYPE`(`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `HISTORY` (
+                           `ID` INT AUTO_INCREMENT PRIMARY KEY,
+                           `IMPACTOR` VARCHAR(255) NOT NULL,
+                           `IMPACTOR_ID` INT NOT NULL,
+                           `AFFECTED_OBJECT` VARCHAR(255) NOT NULL,
+                           `AFFECTED_OBJECT_ID` INT NOT NULL,
+                           `ACTION` VARCHAR(20) NOT NULL,
+                           `EXECUTE_AT` DATETIME DEFAULT CURRENT_TIMESTAMP,
+                           `CONTENT` TEXT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `VARIABLE` (
+                            `ID` INT AUTO_INCREMENT PRIMARY KEY,
+                            `NAME` VARCHAR(255) NOT NULL,
+                            `VALUE` DOUBLE NOT NULL,
+                            `DESCRIPTION` TEXT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 

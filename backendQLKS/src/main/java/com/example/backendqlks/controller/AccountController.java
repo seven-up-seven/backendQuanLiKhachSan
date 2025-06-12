@@ -40,39 +40,45 @@ public class AccountController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createAccount(@Valid @RequestBody AccountDto accountDto,
-                                           BindingResult result){
-        try{
-            if(result.hasErrors()){
-                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
-            }
-            var createdAccount = accountService.create(accountDto);
-            return ResponseEntity.ok(createdAccount);
-        }catch (Exception e){
-            return ResponseEntity.status(500).body("Error creating author: " + e.getMessage());
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateAccount(@PathVariable int id,
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createAccount(@PathVariable int impactorId,
+                                           @PathVariable String impactor,
                                            @Valid @RequestBody AccountDto accountDto,
                                            BindingResult result){
         try{
             if(result.hasErrors()){
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            var updatedAccount = accountService.update(id, accountDto);
+            var createdAccount = accountService.create(accountDto, impactorId, impactor);
+            return ResponseEntity.ok(createdAccount);
+        }catch (Exception e){
+            return ResponseEntity.status(500).body("Error creating author: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateAccount(@PathVariable int id,
+                                           @PathVariable int impactorId,
+                                           @PathVariable String impactor,
+                                           @Valid @RequestBody AccountDto accountDto,
+                                           BindingResult result){
+        try{
+            if(result.hasErrors()){
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+            }
+            var updatedAccount = accountService.update(id, accountDto, impactorId, impactor);
             return ResponseEntity.ok(updatedAccount);
         }catch (Exception e){
             return ResponseEntity.status(500).body("Error updating account: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAccount(@PathVariable int id){
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteAccount(@PathVariable int id,
+                                           @PathVariable int impactorId,
+                                           @PathVariable String impactor){
         try{
-            accountService.delete(id);
+            accountService.delete(id, impactorId, impactor);
             return ResponseEntity.ok("Account deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting account: " + e.getMessage());
