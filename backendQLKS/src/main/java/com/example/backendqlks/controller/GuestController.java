@@ -81,7 +81,7 @@ public class GuestController {
     @PostMapping("/search")
     public ResponseEntity<?> findByMultipleCriteria(@RequestBody @Valid SearchGuestDto searchGuestDto) {
         try {
-            var guest = guestService.findByMultipleCriteria(searchGuestDto.getId(), searchGuestDto.getIdentificationNumber(), searchGuestDto.getEmail(), searchGuestDto.getPhoneNumber(), searchGuestDto.getAccountId());
+            var guest = guestService.findByMultipleCriteria(searchGuestDto.getId(), searchGuestDto.getName(), searchGuestDto.getIdentificationNumber(), searchGuestDto.getEmail(), searchGuestDto.getPhoneNumber(), searchGuestDto.getAccountId());
             return ResponseEntity.ok(guest);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error finding guest: " + e.getMessage());

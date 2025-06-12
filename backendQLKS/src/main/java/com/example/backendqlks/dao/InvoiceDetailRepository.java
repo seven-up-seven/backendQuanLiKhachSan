@@ -1,6 +1,7 @@
 package com.example.backendqlks.dao;
 
 import com.example.backendqlks.entity.InvoiceDetail;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.swing.text.html.Option;

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface RentalFormRepository extends JpaRepository<RentalForm, Integer> {
@@ -18,4 +19,18 @@ public interface RentalFormRepository extends JpaRepository<RentalForm, Integer>
     Page<RentalForm> findByRentalDate(LocalDateTime rentalDate, Pageable pageable);
 
     Optional<RentalForm> findByInvoiceDetailId(Integer invoiceDetailId);
+
+    @Query(value = """
+                select rf from RentalForm rf
+                join fetch rf.room where (rf.room.id = :roomId or :roomId is null) and (rf.room.name like concat('%', :roomName, '%') or :roomName is null)
+                and (rf.id = :rfId or :rfId is null)
+""", nativeQuery = false)
+    List<RentalForm> findByRoomIdAndRoomNameAndRentalFormId(
+            @Param("roomId") Integer roomId,
+            @Param("roomName") String roomName,
+            @Param("rfId") Integer rfId
+    );
+
+    @Query(value = "select rf from RentalForm rf join fetch rf.room where rf.id = :id")
+    Optional<RentalForm> findByIdWithRoom(@Param("id") Integer id);
 }

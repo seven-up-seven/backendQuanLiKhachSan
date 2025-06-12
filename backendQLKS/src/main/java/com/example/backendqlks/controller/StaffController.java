@@ -73,4 +73,27 @@ public class StaffController {
             return ResponseEntity.status(500).body("Error deleting staff with id: " + e.getMessage());
         }
     }
+
+    @GetMapping("/{id}/salary")
+    public ResponseEntity<?> getStaffSalary(@PathVariable int id) {
+        try {
+            double salary = staffService.getStaffSalary(id);
+            return ResponseEntity.ok(salary);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching salary for staff with id: " + e.getMessage());
+        }
+    }
+
+    @PatchMapping("/{id}/salary-multiplier")
+    public ResponseEntity<?> updateStaffSalaryMultiplier(@PathVariable int id, @RequestParam double salaryMultiplier) {
+        try {
+            if (salaryMultiplier < 0) {
+                return ResponseEntity.badRequest().body("Salary multiplier must be greater than or equal to 0");
+            }
+            ResponseStaffDto updatedStaff = staffService.updateStaffSalaryMultiplier(id, salaryMultiplier);
+            return ResponseEntity.ok(updatedStaff);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error updating salary multiplier: " + e.getMessage());
+        }
+    }
 }

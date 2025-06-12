@@ -17,8 +17,6 @@ public class RevenueReportDto {
     @Max(value = 12, message = "Month must be between 1 and 12")
     private Byte month;
 
-    @NotNull(message = "Total month revenue is required")
-    @Min(value = 0, message = "Total month revenue must be non-negative")
     private Double totalMonthRevenue;
 }
 

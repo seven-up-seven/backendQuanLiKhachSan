@@ -73,4 +73,21 @@ public class StaffService {
         }
         staffRepository.delete(staff);
     }
+
+    public ResponseStaffDto updateStaffSalaryMultiplier(int id, double salaryMultiplier) {
+        Staff staff = staffRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Staff with this ID cannot be found"));
+        if (salaryMultiplier < 0) {
+            throw new IllegalArgumentException("Salary multiplier must be greater than or equal to 0");
+        }
+        staff.setSalaryMultiplier((float) salaryMultiplier);
+        staffRepository.save(staff);
+        return staffMapper.toResponseDto(staff);
+    }
+
+    public double getStaffSalary(int id) {
+        Staff staff = staffRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Staff with this ID cannot be found"));
+        return staff.getSalaryMultiplier() * staff.getPosition().getBaseSalary();
+    }
 }

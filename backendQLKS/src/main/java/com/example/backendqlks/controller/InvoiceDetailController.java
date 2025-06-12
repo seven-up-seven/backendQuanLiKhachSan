@@ -33,7 +33,8 @@ public class InvoiceDetailController {
     @GetMapping
     public ResponseEntity<?> getAllInvoiceDetails(){
         try{
-            return ResponseEntity.ok(invoiceDetailService.getAll());
+            var invoiceDetails = invoiceDetailService.getAll();
+            return ResponseEntity.ok(invoiceDetails);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching invoice details: " + e.getMessage());
         }
