@@ -11,15 +11,15 @@ import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = VariableMapper.class)
 public interface VariableMapper {
     VariableDto toDto(Variable variable);
 
     Variable toEntity(VariableDto variableDto);
 
     @Mapping(target = "id", ignore = true)
-    void updateEntityFromDto(VariableDto variableDto,@MappingTarget Variable variable);
-
+    void updateEntityFromDto(VariableDto variableDto, @MappingTarget Variable variable);
+    
     ResponseVariableDto toResponseDto(Variable variable);
 
     List<ResponseVariableDto> toResponseDtoList(List<Variable> variables);

@@ -59,6 +59,11 @@ public class InvoiceDetailService {
         List<ResponseInvoiceDetailDto> invoiceDetails = invoiceDetailMapper.toResponseDtoList(invoiceDetailPage.getContent());
         return new PageImpl<>(invoiceDetails, pageable, invoiceDetailPage.getTotalElements());
     }
+    @Transactional(readOnly = true)
+    public List<ResponseInvoiceDetailDto> getAll() {
+        var invoiceDetails = invoiceDetailRepository.findAll();
+        return invoiceDetailMapper.toResponseDtoList(invoiceDetails);
+    }
 
     @Transactional(readOnly = true)
     public List<ResponseInvoiceDetailDto> getAll() {
