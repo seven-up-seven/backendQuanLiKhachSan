@@ -52,36 +52,45 @@ public class StaffController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createStaff(@RequestBody @Valid StaffDto staffDto, BindingResult result) {
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createStaff(@PathVariable int impactorId,
+                                         @PathVariable String impactor,
+                                         @RequestBody @Valid StaffDto staffDto,
+                                         BindingResult result) {
         try {
             if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            ResponseStaffDto createdStaff = staffService.createStaff(staffDto);
+            ResponseStaffDto createdStaff = staffService.createStaff(staffDto, impactorId, impactor);
             return ResponseEntity.ok(createdStaff);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating staff: " + e.getMessage());
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateStaff(@PathVariable int id, @RequestBody @Valid StaffDto staffDto, BindingResult result) {
+    @PutMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateStaff(@PathVariable int id,
+                                         @PathVariable int impactorId,
+                                         @PathVariable String impactor,
+                                         @RequestBody @Valid StaffDto staffDto,
+                                         BindingResult result) {
         try {
             if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            ResponseStaffDto updatedStaff = staffService.updateStaff(id, staffDto);
+            ResponseStaffDto updatedStaff = staffService.updateStaff(id, staffDto, impactorId, impactor);
             return ResponseEntity.ok(updatedStaff);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating staff: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteStaff(@PathVariable int id) {
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteStaff(@PathVariable int id,
+                                         @PathVariable int impactorId,
+                                         @PathVariable String impactor) {
         try {
-            staffService.deleteStaffById(id);
+            staffService.deleteStaffById(id, impactorId, impactor);
             return ResponseEntity.ok("Deleted staff with id: " + id);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting staff with id: " + e.getMessage());
@@ -98,13 +107,16 @@ public class StaffController {
         }
     }
 
-    @PatchMapping("/{id}/salary-multiplier")
-    public ResponseEntity<?> updateStaffSalaryMultiplier(@PathVariable int id, @RequestParam double salaryMultiplier) {
+    @PatchMapping("/{id}/salary-multiplier/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateStaffSalaryMultiplier(@PathVariable int id,
+                                                         @PathVariable int impactorId,
+                                                         @PathVariable String impactor,
+                                                         @RequestParam double salaryMultiplier) {
         try {
             if (salaryMultiplier < 0) {
                 return ResponseEntity.badRequest().body("Salary multiplier must be greater than or equal to 0");
             }
-            ResponseStaffDto updatedStaff = staffService.updateStaffSalaryMultiplier(id, salaryMultiplier);
+            ResponseStaffDto updatedStaff = staffService.updateStaffSalaryMultiplier(id, salaryMultiplier, impactorId, impactor);
             return ResponseEntity.ok(updatedStaff);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating salary multiplier: " + e.getMessage());

@@ -38,36 +38,45 @@ public class UserRoleController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createUserRole(@RequestBody @Valid UserRoleDto userRoleDto, BindingResult result) {
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createUserRole(@PathVariable int impactorId,
+                                            @PathVariable String impactor,
+                                            @RequestBody @Valid UserRoleDto userRoleDto,
+                                            BindingResult result) {
         try {
             if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            ResponseUserRoleDto createdUserRole = userRoleService.createUserRole(userRoleDto);
+            ResponseUserRoleDto createdUserRole = userRoleService.createUserRole(userRoleDto, impactorId, impactor);
             return ResponseEntity.ok(createdUserRole);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating user role: " + e.getMessage());
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUserRole(@PathVariable int id, @RequestBody @Valid UserRoleDto userRoleDto, BindingResult result) {
+    @PutMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateUserRole(@PathVariable int id,
+                                            @PathVariable int impactorId,
+                                            @PathVariable String impactor,
+                                            @RequestBody @Valid UserRoleDto userRoleDto,
+                                            BindingResult result) {
         try {
             if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            ResponseUserRoleDto updatedUserRole = userRoleService.updateUserRole(id, userRoleDto);
+            ResponseUserRoleDto updatedUserRole = userRoleService.updateUserRole(id, userRoleDto, impactorId, impactor);
             return ResponseEntity.ok(updatedUserRole);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating user role: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUserRole(@PathVariable int id) {
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteUserRole(@PathVariable int id,
+                                            @PathVariable int impactorId,
+                                            @PathVariable String impactor) {
         try {
-            userRoleService.deleteUserRoleById(id);
+            userRoleService.deleteUserRoleById(id, impactorId, impactor);
             return ResponseEntity.ok("Deleted user role with id: " + id);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting user role with id: " + e.getMessage());

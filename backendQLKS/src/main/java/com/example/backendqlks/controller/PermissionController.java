@@ -38,39 +38,45 @@ public class PermissionController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createPermission(@Valid @RequestBody PermissionDto permissionDto,
-                                              BindingResult result){
-        try{
-            if(result.hasErrors()){
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createPermission(@PathVariable int impactorId,
+                                              @PathVariable String impactor,
+                                              @Valid @RequestBody PermissionDto permissionDto,
+                                              BindingResult result) {
+        try {
+            if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            var createdPermission = permissionService.create(permissionDto);
+            var createdPermission = permissionService.create(permissionDto, impactorId, impactor);
             return ResponseEntity.ok(createdPermission);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating permission: " + e.getMessage());
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updatePermission(@PathVariable int id,
+                                              @PathVariable int impactorId,
+                                              @PathVariable String impactor,
                                               @Valid @RequestBody PermissionDto permissionDto,
-                                              BindingResult result){
-        try{
-            if(result.hasErrors()){
+                                              BindingResult result) {
+        try {
+            if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            var updatedPermission = permissionService.update(id, permissionDto);
+            var updatedPermission = permissionService.update(id, permissionDto, impactorId, impactor);
             return ResponseEntity.ok(updatedPermission);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating permission: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePermission(@PathVariable int id){
-        try{
-            permissionService.delete(id);
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deletePermission(@PathVariable int id,
+                                              @PathVariable int impactorId,
+                                              @PathVariable String impactor) {
+        try {
+            permissionService.delete(id, impactorId, impactor);
             return ResponseEntity.ok("Permission deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting permission: " + e.getMessage());

@@ -38,36 +38,47 @@ public class RevenueReportDetailController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createRevenueReportDetail(@RequestBody @Valid RevenueReportDetailDto revenueReportDetailDto, BindingResult result) {
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createRevenueReportDetail(@PathVariable int impactorId,
+                                                       @PathVariable String impactor,
+                                                       @RequestBody @Valid RevenueReportDetailDto revenueReportDetailDto,
+                                                       BindingResult result) {
         try {
             if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            ResponseRevenueReportDetailDto createdRevenueReportDetail = revenueReportDetailService.createRevenueReportDetail(revenueReportDetailDto);
+            ResponseRevenueReportDetailDto createdRevenueReportDetail =
+                    revenueReportDetailService.createRevenueReportDetail(revenueReportDetailDto, impactorId, impactor);
             return ResponseEntity.ok(createdRevenueReportDetail);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating revenue report detail: " + e.getMessage());
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateRevenueReportDetail(@PathVariable int id, @RequestBody @Valid RevenueReportDetailDto revenueReportDetailDto, BindingResult result) {
+    @PutMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateRevenueReportDetail(@PathVariable int id,
+                                                       @PathVariable int impactorId,
+                                                       @PathVariable String impactor,
+                                                       @RequestBody @Valid RevenueReportDetailDto revenueReportDetailDto,
+                                                       BindingResult result) {
         try {
             if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            ResponseRevenueReportDetailDto updatedRevenueReportDetail = revenueReportDetailService.updateRevenueReportDetail(id, revenueReportDetailDto);
+            ResponseRevenueReportDetailDto updatedRevenueReportDetail =
+                    revenueReportDetailService.updateRevenueReportDetail(id, revenueReportDetailDto, impactorId, impactor);
             return ResponseEntity.ok(updatedRevenueReportDetail);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating revenue report detail: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteRevenueReportDetail(@PathVariable int id) {
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteRevenueReportDetail(@PathVariable int id,
+                                                       @PathVariable int impactorId,
+                                                       @PathVariable String impactor) {
         try {
-            revenueReportDetailService.deleteRevenueReportDetailById(id);
+            revenueReportDetailService.deleteRevenueReportDetailById(id, impactorId, impactor);
             return ResponseEntity.ok("Deleted revenue report detail with id: " + id);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting revenue report detail with id: " + e.getMessage());

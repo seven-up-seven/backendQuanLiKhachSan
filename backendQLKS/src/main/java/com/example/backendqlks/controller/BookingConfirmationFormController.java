@@ -51,39 +51,43 @@ public class BookingConfirmationFormController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createBookingConfirmationForm(@Valid @RequestBody BookingConfirmationFormDto bookingConfirmationFormDto,
-                                                           BindingResult result){
-        try{
-            if(result.hasErrors()){
-                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
-            }
-            var createdBookingConfirmationForm = bookingConfirmationFormService.create(bookingConfirmationFormDto);
-            return ResponseEntity.ok(createdBookingConfirmationForm);
-        }catch (Exception e){
-            return ResponseEntity.status(500).body("Error creating booking confirmation form: " + e.getMessage());
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateBookingConfirmationForm(@PathVariable int id,
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createBookingConfirmationForm(@PathVariable int impactorId,
+                                                           @PathVariable String impactor,
                                                            @Valid @RequestBody BookingConfirmationFormDto bookingConfirmationFormDto,
                                                            BindingResult result){
         try{
             if(result.hasErrors()){
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            var updatedBookingConfirmationForm = bookingConfirmationFormService.update(id, bookingConfirmationFormDto);
+            var createdBookingConfirmationForm = bookingConfirmationFormService.create(bookingConfirmationFormDto, impactorId, impactor);
+            return ResponseEntity.ok(createdBookingConfirmationForm);
+        }catch (Exception e){
+            return ResponseEntity.status(500).body("Error creating booking confirmation form: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateBookingConfirmationForm(@PathVariable int impactorId,
+                                                           @PathVariable String impactor,
+                                                           @PathVariable int id,
+                                                           @Valid @RequestBody BookingConfirmationFormDto bookingConfirmationFormDto,
+                                                           BindingResult result){
+        try{
+            if(result.hasErrors()){
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+            }
+            var updatedBookingConfirmationForm = bookingConfirmationFormService.update(id, bookingConfirmationFormDto, impactorId, impactor);
             return ResponseEntity.ok(updatedBookingConfirmationForm);
         }catch (Exception e){
             return ResponseEntity.status(500).body("Error updating booking confirmation form: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBookingConfirmationForm(@PathVariable int id){
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteBookingConfirmationForm(@PathVariable int id, @PathVariable int impactorId, @PathVariable String impactor){
         try{
-            bookingConfirmationFormService.delete(id);
+            bookingConfirmationFormService.delete(id, impactorId, impactor);
             return ResponseEntity.ok("Booking confirmation form deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting booking confirmation form: " + e.getMessage());

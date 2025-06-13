@@ -40,48 +40,57 @@ public class InvoiceController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createInvoice(@Valid @RequestBody InvoiceDto invoiceDto,
-                                           BindingResult result){
-        try{
-            if(result.hasErrors()){
-                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
-            }
-            var createdInvoice = invoiceService.create(invoiceDto);
-            return ResponseEntity.ok(createdInvoice);
-        }catch (Exception e){
-            return ResponseEntity.status(500).body("Error creating invoice: " + e.getMessage());
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateInvoice(@PathVariable int id,
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createInvoice(@PathVariable int impactorId,
+                                           @PathVariable String impactor,
                                            @Valid @RequestBody InvoiceDto invoiceDto,
                                            BindingResult result){
         try{
             if(result.hasErrors()){
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            var updatedInvoice = invoiceService.update(id, invoiceDto);
-            return ResponseEntity.ok(updatedInvoice);
+            var createdInvoice = invoiceService.create(invoiceDto, impactorId, impactor);
+            return ResponseEntity.ok(createdInvoice);
         }catch (Exception e){
+            return ResponseEntity.status(500).body("Error creating invoice: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateInvoice(@PathVariable int id,
+                                           @PathVariable int impactorId,
+                                           @PathVariable String impactor,
+                                           @Valid @RequestBody InvoiceDto invoiceDto,
+                                           BindingResult result) {
+        try {
+            if (result.hasErrors()) {
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+            }
+            var updatedInvoice = invoiceService.update(id, invoiceDto, impactorId, impactor);
+            return ResponseEntity.ok(updatedInvoice);
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating invoice: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteInvoice(@PathVariable int id){
-        try{
-            invoiceService.delete(id);
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteInvoice(@PathVariable int id,
+                                           @PathVariable int impactorId,
+                                           @PathVariable String impactor) {
+        try {
+            invoiceService.delete(id, impactorId, impactor);
             return ResponseEntity.ok("Invoice deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting invoice: " + e.getMessage());
         }
     }
-    @GetMapping("/re-calculate/{id}")
-    public ResponseEntity<?> reCalculateInvoice(@PathVariable int id) {
+
+    @GetMapping("/re-calculate/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> reCalculateInvoice(@PathVariable int id,
+                                                @PathVariable int impactorId,
+                                                @PathVariable String impactor) {
         try {
-            var recalculatedInvoice = invoiceService.reCalculateInvoice(id);
+            var recalculatedInvoice = invoiceService.reCalculateInvoice(id, impactorId, impactor);
             return ResponseEntity.ok(recalculatedInvoice);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error recalculating invoice: " + e.getMessage());

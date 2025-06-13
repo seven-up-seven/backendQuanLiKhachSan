@@ -8,6 +8,7 @@ import com.example.backendqlks.mapper.HistoryMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +54,11 @@ public class HistoryService {
     @Transactional(readOnly = true)
     public List<ResponseHistoryDto> getByAffectedObjectId(int affectedObjectId) {
         return historyMapper.toResponseDtoList(historyRepository.findByAffectedObjectId(affectedObjectId));
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseHistoryDto> getByExecuteAtBetween(LocalDateTime start, LocalDateTime end) {
+        return historyMapper.toResponseDtoList(historyRepository.findByExecuteAtBetween(start, end));
     }
 
     public ResponseHistoryDto create(HistoryDto historyDto) {

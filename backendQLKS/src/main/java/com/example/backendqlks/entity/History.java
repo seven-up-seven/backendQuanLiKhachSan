@@ -21,10 +21,10 @@ public class History {
     @Column(name = "AFFECTED_OBJECT")
     private String affectedObject;
 
-    @Column(name = "IMPACTOR_NAME")
+    @Column(name = "IMPACTOR_ID")
     private int impactorId;
 
-    @Column(name = "AFFECTED_OBJECT_NAME")
+    @Column(name = "AFFECTED_OBJECT_ID")
     private int affectedObjectId;
 
     @Column(name = "ACTION")

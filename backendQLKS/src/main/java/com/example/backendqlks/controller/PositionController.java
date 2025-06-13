@@ -38,39 +38,45 @@ public class PositionController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createPosition(@Valid @RequestBody PositionDto positionDto,
-                                            BindingResult result){
-        try{
-            if(result.hasErrors()){
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createPosition(@PathVariable int impactorId,
+                                            @PathVariable String impactor,
+                                            @Valid @RequestBody PositionDto positionDto,
+                                            BindingResult result) {
+        try {
+            if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            var createdPosition = positionService.create(positionDto);
+            var createdPosition = positionService.create(positionDto, impactorId, impactor);
             return ResponseEntity.ok(createdPosition);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating position: " + e.getMessage());
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updatePosition(@PathVariable int id,
+                                            @PathVariable int impactorId,
+                                            @PathVariable String impactor,
                                             @Valid @RequestBody PositionDto positionDto,
-                                            BindingResult result){
-        try{
-            if(result.hasErrors()){
+                                            BindingResult result) {
+        try {
+            if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            var updatedPosition = positionService.update(id, positionDto);
+            var updatedPosition = positionService.update(id, positionDto, impactorId, impactor);
             return ResponseEntity.ok(updatedPosition);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating position: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePosition(@PathVariable int id){
-        try{
-            positionService.delete(id);
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deletePosition(@PathVariable int id,
+                                            @PathVariable int impactorId,
+                                            @PathVariable String impactor) {
+        try {
+            positionService.delete(id, impactorId, impactor);
             return ResponseEntity.ok("Position deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting position: " + e.getMessage());

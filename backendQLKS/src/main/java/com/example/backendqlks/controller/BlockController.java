@@ -40,39 +40,45 @@ public class BlockController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @PostMapping
-    public ResponseEntity<?> createBlock(@Valid @RequestBody BlockDto blockDto,
-                                         BindingResult result){
-        try{
-            if(result.hasErrors()){
-                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
-            }
-            var createdBlock = blockService.create(blockDto);
-            return ResponseEntity.ok(createdBlock);
-        }catch (Exception e){
-            return ResponseEntity.status(500).body("Error creating block: " + e.getMessage());
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateBlock(@PathVariable int id,
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createBlock(@PathVariable int impactorId,
+                                         @PathVariable String impactor,
                                          @Valid @RequestBody BlockDto blockDto,
                                          BindingResult result){
         try{
             if(result.hasErrors()){
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            var updatedBlock = blockService.update(id, blockDto);
+            var createdBlock = blockService.create(blockDto, impactorId, impactor);
+            return ResponseEntity.ok(createdBlock);
+        }catch (Exception e){
+            return ResponseEntity.status(500).body("Error creating block: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateBlock(@PathVariable int impactorId,
+                                         @PathVariable String impactor,
+                                         @PathVariable int id,
+                                         @Valid @RequestBody BlockDto blockDto,
+                                         BindingResult result){
+        try{
+            if(result.hasErrors()){
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+            }
+            var updatedBlock = blockService.update(id, blockDto, impactorId, impactor);
             return ResponseEntity.ok(updatedBlock);
         }catch (Exception e){
             return ResponseEntity.status(500).body("Error updating block: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBlock(@PathVariable int id){
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteBlock(@PathVariable int impactorId,
+                                         @PathVariable String impactor,
+                                         @PathVariable int id){
         try{
-            blockService.delete(id);
+            blockService.delete(id, impactorId, impactor);
             return ResponseEntity.ok("Block deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting block: " + e.getMessage());

@@ -38,36 +38,45 @@ public class RoomTypeController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createRoomType(@RequestBody @Valid RoomTypeDto roomTypeDto, BindingResult result) {
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createRoomType(@PathVariable int impactorId,
+                                            @PathVariable String impactor,
+                                            @RequestBody @Valid RoomTypeDto roomTypeDto,
+                                            BindingResult result) {
         try {
             if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            ResponseRoomTypeDto createdRoomType = roomTypeService.createRoomType(roomTypeDto);
+            ResponseRoomTypeDto createdRoomType = roomTypeService.createRoomType(roomTypeDto, impactorId, impactor);
             return ResponseEntity.ok(createdRoomType);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating room type: " + e.getMessage());
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateRoomType(@PathVariable int id, @RequestBody @Valid RoomTypeDto roomTypeDto, BindingResult result) {
+    @PutMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateRoomType(@PathVariable int id,
+                                            @PathVariable int impactorId,
+                                            @PathVariable String impactor,
+                                            @RequestBody @Valid RoomTypeDto roomTypeDto,
+                                            BindingResult result) {
         try {
             if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            ResponseRoomTypeDto updatedRoomType = roomTypeService.updateRoomType(id, roomTypeDto);
+            ResponseRoomTypeDto updatedRoomType = roomTypeService.updateRoomType(id, roomTypeDto, impactorId, impactor);
             return ResponseEntity.ok(updatedRoomType);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating room type: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteRoomType(@PathVariable int id) {
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteRoomType(@PathVariable int id,
+                                            @PathVariable int impactorId,
+                                            @PathVariable String impactor) {
         try {
-            roomTypeService.deleteRoomTypeById(id);
+            roomTypeService.deleteRoomTypeById(id, impactorId, impactor);
             return ResponseEntity.ok("Deleted room type with id: " + id);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting room type with id: " + e.getMessage());

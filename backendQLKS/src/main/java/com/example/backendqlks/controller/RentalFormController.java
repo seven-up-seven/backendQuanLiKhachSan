@@ -46,39 +46,47 @@ public class RentalFormController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createRentalForm(@RequestBody @Valid RentalFormDto rentalFormDto, BindingResult result) {
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createRentalForm(@PathVariable int impactorId,
+                                              @PathVariable String impactor,
+                                              @RequestBody @Valid RentalFormDto rentalFormDto,
+                                              BindingResult result) {
         try {
-            if (result.hasErrors()) return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
-            ResponseRentalFormDto createdRentalForm = rentalFormService.createRentalForm(rentalFormDto);
+            if (result.hasErrors())
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+
+            ResponseRentalFormDto createdRentalForm = rentalFormService.createRentalForm(rentalFormDto, impactorId, impactor);
             return ResponseEntity.ok(createdRentalForm);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating rental form: " + e.getMessage());
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateRentalForm(@RequestBody @Valid RentalFormDto rentalFormDto,
-                                              @PathVariable int id,
+    @PutMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateRentalForm(@PathVariable int id,
+                                              @PathVariable int impactorId,
+                                              @PathVariable String impactor,
+                                              @RequestBody @Valid RentalFormDto rentalFormDto,
                                               BindingResult result) {
         try {
-            if (result.hasErrors()) return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
-            ResponseRentalFormDto updatedRentalForm=rentalFormService.updateRentalForm(id, rentalFormDto);
+            if (result.hasErrors())
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+
+            ResponseRentalFormDto updatedRentalForm = rentalFormService.updateRentalForm(id, rentalFormDto, impactorId, impactor);
             return ResponseEntity.ok(updatedRentalForm);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating rental form: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteRentalForm(@PathVariable int id) {
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteRentalForm(@PathVariable int id,
+                                              @PathVariable int impactorId,
+                                              @PathVariable String impactor) {
         try {
-            rentalFormService.deleteRentalFormById(id);
+            rentalFormService.deleteRentalFormById(id, impactorId, impactor);
             return ResponseEntity.ok("Deleted rental form with id: " + id);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting rental form with id: " + e.getMessage());
         }
     }

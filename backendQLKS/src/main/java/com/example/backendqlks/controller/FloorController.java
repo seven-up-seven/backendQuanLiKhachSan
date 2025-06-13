@@ -38,39 +38,45 @@ public class FloorController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createFloor(@Valid @RequestBody FloorDto floorDto,
-                                         BindingResult result){
-        try{
-            if(result.hasErrors()){
-                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
-            }
-            var createdFloor = floorService.create(floorDto);
-            return ResponseEntity.ok(createdFloor);
-        }catch (Exception e){
-            return ResponseEntity.status(500).body("Error creating floor: " + e.getMessage());
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateFloor(@PathVariable int id,
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createFloor(@PathVariable int impactorId,
+                                         @PathVariable String impactor,
                                          @Valid @RequestBody FloorDto floorDto,
                                          BindingResult result){
         try{
             if(result.hasErrors()){
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            var updatedFloor = floorService.update(id, floorDto);
+            var createdFloor = floorService.create(floorDto, impactorId, impactor);
+            return ResponseEntity.ok(createdFloor);
+        }catch (Exception e){
+            return ResponseEntity.status(500).body("Error creating floor: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateFloor(@PathVariable int impactorId,
+                                         @PathVariable String impactor,
+                                         @PathVariable int id,
+                                         @Valid @RequestBody FloorDto floorDto,
+                                         BindingResult result){
+        try{
+            if(result.hasErrors()){
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+            }
+            var updatedFloor = floorService.update(id, floorDto, impactorId, impactor);
             return ResponseEntity.ok(updatedFloor);
         }catch (Exception e){
             return ResponseEntity.status(500).body("Error updating floor: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteFloor(@PathVariable int id){
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteFloor(@PathVariable int impactorId,
+                                         @PathVariable String impactor,
+                                         @PathVariable int id){
         try{
-            floorService.delete(id);
+            floorService.delete(id, impactorId, impactor);
             return ResponseEntity.ok("Floor deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting floor: " + e.getMessage());

@@ -41,39 +41,45 @@ public class GuestController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createGuest(@Valid @RequestBody GuestDto guestDto,
-                                         BindingResult result){
-        try{
-            if(result.hasErrors()){
-                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
-            }
-            var createdGuest = guestService.create(guestDto);
-            return ResponseEntity.ok(createdGuest);
-        }catch (Exception e){
-            return ResponseEntity.status(500).body("Error creating guest: " + e.getMessage());
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateGuest(@PathVariable int id,
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createGuest(@PathVariable int impactorId,
+                                         @PathVariable String impactor,
                                          @Valid @RequestBody GuestDto guestDto,
                                          BindingResult result){
         try{
             if(result.hasErrors()){
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            var updatedGuest = guestService.update(id, guestDto);
+            var createdGuest = guestService.create(guestDto, impactorId, impactor);
+            return ResponseEntity.ok(createdGuest);
+        }catch (Exception e){
+            return ResponseEntity.status(500).body("Error creating guest: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateGuest(@PathVariable int impactorId,
+                                         @PathVariable String impactor,
+                                         @PathVariable int id,
+                                         @Valid @RequestBody GuestDto guestDto,
+                                         BindingResult result){
+        try{
+            if(result.hasErrors()){
+                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+            }
+            var updatedGuest = guestService.update(id, guestDto, impactorId, impactor);
             return ResponseEntity.ok(updatedGuest);
         }catch (Exception e){
             return ResponseEntity.status(500).body("Error updating guest: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteGuest(@PathVariable int id){
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteGuest(@PathVariable int impactorId,
+                                         @PathVariable String impactor,
+                                         @PathVariable int id){
         try{
-            guestService.delete(id);
+            guestService.delete(id, impactorId, impactor);
             return ResponseEntity.ok("Guest deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting guest: " + e.getMessage());

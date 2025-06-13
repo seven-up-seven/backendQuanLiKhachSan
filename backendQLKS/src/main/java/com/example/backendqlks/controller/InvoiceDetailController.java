@@ -51,54 +51,62 @@ public class InvoiceDetailController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createInvoiceDetail(@Valid @RequestBody InvoiceDetailDto invoiceDetailDto,
-                                                 BindingResult result){
-        try{
-            if(result.hasErrors()){
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createInvoiceDetail(@PathVariable int impactorId,
+                                                 @PathVariable String impactor,
+                                                 @Valid @RequestBody InvoiceDetailDto invoiceDetailDto,
+                                                 BindingResult result) {
+        try {
+            if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            var createdInvoiceDetail = invoiceDetailService.create(invoiceDetailDto);
+            var createdInvoiceDetail = invoiceDetailService.create(invoiceDetailDto, impactorId, impactor);
             return ResponseEntity.ok(createdInvoiceDetail);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating invoice detail: " + e.getMessage());
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateInvoiceDetail(@PathVariable int id,
+                                                 @PathVariable int impactorId,
+                                                 @PathVariable String impactor,
                                                  @Valid @RequestBody InvoiceDetailDto invoiceDetailDto,
-                                                 BindingResult result){
-        try{
-            if(result.hasErrors()){
+                                                 BindingResult result) {
+        try {
+            if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            var updatedInvoiceDetail = invoiceDetailService.update(id, invoiceDetailDto);
+            var updatedInvoiceDetail = invoiceDetailService.update(id, invoiceDetailDto, impactorId, impactor);
             return ResponseEntity.ok(updatedInvoiceDetail);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating invoice detail: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteInvoiceDetail(@PathVariable int id){
-        try{
-            invoiceDetailService.delete(id);
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteInvoiceDetail(@PathVariable int id,
+                                                 @PathVariable int impactorId,
+                                                 @PathVariable String impactor) {
+        try {
+            invoiceDetailService.delete(id, impactorId, impactor);
             return ResponseEntity.ok("Invoice detail deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting invoice detail: " + e.getMessage());
         }
     }
 
-    @PostMapping("/invoice/{invoiceId}")
+    @PostMapping("/invoice/{invoiceId}/{impactorId}/{impactor}")
     public ResponseEntity<?> createInvoiceDetailForInvoice(@PathVariable int invoiceId,
-                                                            @Valid @RequestBody List<Integer> rentalFormIds,
-                                                            BindingResult result) {
+                                                           @PathVariable int impactorId,
+                                                           @PathVariable String impactor,
+                                                           @Valid @RequestBody List<Integer> rentalFormIds,
+                                                           BindingResult result) {
         try {
             if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            var createdInvoiceDetails = invoiceDetailService.createInvoiceDetails(invoiceId, rentalFormIds);
+            var createdInvoiceDetails = invoiceDetailService.createInvoiceDetails(invoiceId, rentalFormIds, impactorId, impactor);
             return ResponseEntity.ok(createdInvoiceDetails);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating invoice details for invoice: " + e.getMessage());

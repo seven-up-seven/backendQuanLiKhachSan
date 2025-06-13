@@ -62,36 +62,45 @@ public class RoomController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createRoom(@RequestBody @Valid RoomDto roomDto, BindingResult result) {
+    @PostMapping("/{impactorId}/{impactor}")
+    public ResponseEntity<?> createRoom(@PathVariable int impactorId,
+                                        @PathVariable String impactor,
+                                        @RequestBody @Valid RoomDto roomDto,
+                                        BindingResult result) {
         try {
             if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            ResponseRoomDto createdRoom = roomService.createRoom(roomDto);
+            ResponseRoomDto createdRoom = roomService.createRoom(roomDto, impactorId, impactor);
             return ResponseEntity.ok(createdRoom);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating room: " + e.getMessage());
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateRoom(@PathVariable int id, @RequestBody @Valid RoomDto roomDto, BindingResult result) {
+    @PutMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateRoom(@PathVariable int id,
+                                        @PathVariable int impactorId,
+                                        @PathVariable String impactor,
+                                        @RequestBody @Valid RoomDto roomDto,
+                                        BindingResult result) {
         try {
             if (result.hasErrors()) {
                 return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
             }
-            ResponseRoomDto updatedRoom = roomService.updateRoom(id, roomDto);
+            ResponseRoomDto updatedRoom = roomService.updateRoom(id, roomDto, impactorId, impactor);
             return ResponseEntity.ok(updatedRoom);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating room: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteRoom(@PathVariable int id) {
+    @DeleteMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteRoom(@PathVariable int id,
+                                        @PathVariable int impactorId,
+                                        @PathVariable String impactor) {
         try {
-            roomService.deleteRoomById(id);
+            roomService.deleteRoomById(id, impactorId, impactor);
             return ResponseEntity.ok("Deleted room with id: " + id);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting room with id: " + e.getMessage());
