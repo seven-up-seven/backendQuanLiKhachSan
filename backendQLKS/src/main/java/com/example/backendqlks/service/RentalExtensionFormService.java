@@ -38,7 +38,7 @@ public class RentalExtensionFormService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseRentalExtensionFormDto> getAllRentalExtensionForms(Pageable pageable) {
+    public Page<ResponseRentalExtensionFormDto> getAllRentalExtensionFormPage(Pageable pageable) {
         Page<RentalExtensionForm> extensionForms = rentalExtensionFormRepository.findAll(pageable);
         var responseDtos = new ArrayList<ResponseRentalExtensionFormDto>();
         for (var extensionForm : extensionForms) {
@@ -51,6 +51,22 @@ public class RentalExtensionFormService {
             responseDtos.add(responseDto);
         }
         return new PageImpl<>(responseDtos, pageable, extensionForms.getTotalElements());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseRentalExtensionFormDto> getAllRentalExtensionForms() {
+        List<RentalExtensionForm> extensionForms = rentalExtensionFormRepository.findAll();
+        List<ResponseRentalExtensionFormDto> responseDtos = new ArrayList<>();
+        for (RentalExtensionForm extensionForm : extensionForms) {
+            RentalForm rentalForm = extensionForm.getRentalForm();
+            int totalDaysExtended = rentalForm.getRentalExtensionForms().stream()
+                    .mapToInt(RentalExtensionForm::getNumberOfRentalDays)
+                    .sum();
+            ResponseRentalExtensionFormDto responseDto = rentalExtensionFormMapper.toResponseDto(extensionForm);
+            responseDto.setDayRemains(totalDaysExtended);
+            responseDtos.add(responseDto);
+        }
+        return responseDtos;
     }
 
     @Transactional(readOnly = true)

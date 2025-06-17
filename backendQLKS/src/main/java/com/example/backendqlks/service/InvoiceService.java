@@ -55,10 +55,15 @@ public class InvoiceService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseInvoiceDto> getAll(Pageable pageable){
+    public Page<ResponseInvoiceDto> getAllPage(Pageable pageable){
         Page<Invoice> invoicePage = invoiceRepository.findAll(pageable);
         List<ResponseInvoiceDto> invoices=invoiceMapper.toResponseDtoList(invoicePage.getContent());
         return new PageImpl<>(invoices, pageable, invoicePage.getTotalElements());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseInvoiceDto> getAll(){
+        return invoiceMapper.toResponseDtoList(invoiceRepository.findAll());
     }
 
     //TODO: add try catch

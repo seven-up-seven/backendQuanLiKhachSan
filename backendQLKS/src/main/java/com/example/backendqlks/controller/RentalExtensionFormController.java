@@ -23,10 +23,20 @@ public class RentalExtensionFormController {
         this.rentalExtensionFormService = rentalExtensionFormService;
     }
 
-    @GetMapping
+    @GetMapping("/get-all-page")
     public ResponseEntity<?> getAllRentalExtensionForms(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try {
-            return ResponseEntity.ok(rentalExtensionFormService.getAllRentalExtensionForms(pageable));
+            return ResponseEntity.ok(rentalExtensionFormService.getAllRentalExtensionFormPage(pageable));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching rental extension forms: "+e.getMessage());
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllRentalExtensionForms() {
+        try {
+            return ResponseEntity.ok(rentalExtensionFormService.getAllRentalExtensionForms());
         }
         catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching rental extension forms: "+e.getMessage());

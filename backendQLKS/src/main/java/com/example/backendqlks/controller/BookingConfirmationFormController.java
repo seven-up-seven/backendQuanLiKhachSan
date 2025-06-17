@@ -32,11 +32,21 @@ public class BookingConfirmationFormController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/get-all-page")
     public ResponseEntity<?> getAllBookingConfirmationForms(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try{
-            return ResponseEntity.ok(bookingConfirmationFormService.getAll(pageable));
+            return ResponseEntity.ok(bookingConfirmationFormService.getAllPage(pageable));
         } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching booking confirmation forms: " + e.getMessage());
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllBookingConfirmationForms() {
+        try {
+            return ResponseEntity.ok(bookingConfirmationFormService.getAll());
+        }
+        catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching booking confirmation forms: " + e.getMessage());
         }
     }

@@ -32,11 +32,21 @@ public class GuestController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<?> getAllGuests(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+    @GetMapping("/get-all-page")
+    public ResponseEntity<?> getAllGuestsPage(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try{
-            return ResponseEntity.ok(guestService.getAll(pageable));
+            return ResponseEntity.ok(guestService.getAllPage(pageable));
         } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching guests: " + e.getMessage());
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllGuests(){
+        try {
+            return ResponseEntity.ok(guestService.getAll());
+        }
+        catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching guests: " + e.getMessage());
         }
     }

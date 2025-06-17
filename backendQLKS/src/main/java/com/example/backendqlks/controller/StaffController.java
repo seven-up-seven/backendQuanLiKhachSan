@@ -22,11 +22,21 @@ public class StaffController {
         this.staffService = staffService;
     }
 
-    @GetMapping
+    @GetMapping("/get-all-page")
     public ResponseEntity<?> getAllStaffs(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try {
-            return ResponseEntity.ok(staffService.getAllStaffs(pageable));
+            return ResponseEntity.ok(staffService.getAllStaffPage(pageable));
         } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching staff list: " + e.getMessage());
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllStaffs() {
+        try {
+            return ResponseEntity.ok(staffService.getAllStaff());
+        }
+        catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching staff list: " + e.getMessage());
         }
     }

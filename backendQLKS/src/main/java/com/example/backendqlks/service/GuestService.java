@@ -44,10 +44,17 @@ public class GuestService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseGuestDto> getAll(Pageable pageable){
+    public Page<ResponseGuestDto> getAllPage(Pageable pageable){
         Page<Guest> guestPage = guestRepository.findAll(pageable);
         List<ResponseGuestDto> guests=guestMapper.toResponseDtoList(guestPage.getContent());
         return new PageImpl<>(guests, pageable, guestPage.getTotalElements());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseGuestDto> getAll()
+    {
+        var result=guestRepository.findAll();
+        return guestMapper.toResponseDtoList(result);
     }
 
     //TODO: add try catch

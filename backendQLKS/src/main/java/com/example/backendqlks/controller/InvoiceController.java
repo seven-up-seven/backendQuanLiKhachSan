@@ -31,11 +31,21 @@ public class InvoiceController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/get-all-page")
     public ResponseEntity<?> getAllInvoices(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try{
-            return ResponseEntity.ok(invoiceService.getAll(pageable));
+            return ResponseEntity.ok(invoiceService.getAllPage(pageable));
         } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching invoices: " + e.getMessage());
+        }
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> getAllInvoices() {
+        try {
+            return ResponseEntity.ok(invoiceService.getAll());
+        }
+        catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching invoices: " + e.getMessage());
         }
     }

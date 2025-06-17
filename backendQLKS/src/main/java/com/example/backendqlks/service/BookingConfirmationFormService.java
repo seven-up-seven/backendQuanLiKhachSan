@@ -43,10 +43,16 @@ public class BookingConfirmationFormService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseBookingConfirmationFormDto> getAll(Pageable pageable){
+    public Page<ResponseBookingConfirmationFormDto> getAllPage(Pageable pageable){
         var bookingConfirmationFormPage = bookingConfirmationFormRepository.findAll(pageable);
         List<ResponseBookingConfirmationFormDto> bookingConfirmationForms=bookingConfirmationFormMapper.toResponseDtoList(bookingConfirmationFormPage.getContent());
         return new PageImpl<>(bookingConfirmationForms, pageable, bookingConfirmationFormPage.getTotalElements());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseBookingConfirmationFormDto> getAll()
+    {
+        return bookingConfirmationFormMapper.toResponseDtoList(bookingConfirmationFormRepository.findAll());
     }
 
     @Transactional(readOnly = true)

@@ -43,10 +43,15 @@ public class RentalFormService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseRentalFormDto> getAllRentalForms(Pageable pageable) {
+    public Page<ResponseRentalFormDto> getAllRentalFormPage(Pageable pageable) {
         Page<RentalForm> rentalFormPage = rentalFormRepository.findAll(pageable);
         List<ResponseRentalFormDto> rentalForms = rentalFormMapper.toResponseDtoList(rentalFormPage.getContent());
         return new PageImpl<>(rentalForms, pageable, rentalFormPage.getTotalElements());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseRentalFormDto> getAllRentalForms() {
+        return rentalFormMapper.toResponseDtoList(rentalFormRepository.findAll());
     }
 
     @Transactional(readOnly = true)

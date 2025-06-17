@@ -41,10 +41,15 @@ public class StaffService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseStaffDto> getAllStaffs(Pageable pageable) {
+    public Page<ResponseStaffDto> getAllStaffPage(Pageable pageable) {
         Page<Staff> staffPage = staffRepository.findAll(pageable);
         List<ResponseStaffDto> staffs=staffMapper.toResponseDtoList(staffPage.getContent());
         return new PageImpl<>(staffs, pageable, staffPage.getTotalElements());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseStaffDto> getAllStaff() {
+        return staffMapper.toResponseDtoList(staffRepository.findAll());
     }
 
     @Transactional(readOnly = true)
