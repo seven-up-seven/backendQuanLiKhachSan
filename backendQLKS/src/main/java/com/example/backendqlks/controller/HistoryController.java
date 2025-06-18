@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.LocalDateTime;
 
 @RestController
@@ -22,10 +24,16 @@ public class HistoryController {
     @GetMapping
     public ResponseEntity<?> getAllHistory() {
         try {
-            return ResponseEntity.status(200).body(historyService.getAll());
+            var histories = historyService.getAll();
+            return ResponseEntity.ok(histories);
         }
         catch (Exception e) {
-            return ResponseEntity.status(500).body("Error fetching histories: "+e.getMessage());
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            String stackTrace = sw.toString();
+            return ResponseEntity
+                    .status(500)
+                    .body("Error fetching histories:\n" + stackTrace);
         }
     }
 
