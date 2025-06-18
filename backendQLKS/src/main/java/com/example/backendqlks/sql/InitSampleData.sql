@@ -200,7 +200,7 @@ CREATE TABLE `HISTORY` (
                            `IMPACTOR_ID` INT NOT NULL,
                            `AFFECTED_OBJECT` VARCHAR(255) NOT NULL,
                            `AFFECTED_OBJECT_ID` INT NOT NULL,
-                           `ACTION` VARCHAR(20) NOT NULL,
+                           `ACTION` TINYINT NOT NULL,
                            `EXECUTE_AT` DATETIME DEFAULT CURRENT_TIMESTAMP,
                            `CONTENT` TEXT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

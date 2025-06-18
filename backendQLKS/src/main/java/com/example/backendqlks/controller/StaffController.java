@@ -62,6 +62,26 @@ public class StaffController {
         }
     }
 
+    @GetMapping("/without-account")
+    public ResponseEntity<?> getStaffWithoutAccount(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+        try {
+            return ResponseEntity.ok(staffService.getStaffWithNoAccount(pageable));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching staff list: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<?> getStaffWithName(@PathVariable String name) {
+        try {
+            return ResponseEntity.ok(staffService.getStaffWithName(name));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching staff list: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createStaff(@PathVariable int impactorId,
                                          @PathVariable String impactor,

@@ -61,6 +61,26 @@ public class GuestController {
         }
     }
 
+    @GetMapping("/without-account")
+    public ResponseEntity<?> getAllGuestsWithoutAccount(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+        try {
+            return ResponseEntity.ok(guestService.getGuestsWithoutAccount(pageable));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching guests: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<?> getGuestByName(@PathVariable String name) {
+        try {
+            return ResponseEntity.ok(guestService.getGuestWithName(name));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching guest: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createGuest(@PathVariable int impactorId,
                                          @PathVariable String impactor,

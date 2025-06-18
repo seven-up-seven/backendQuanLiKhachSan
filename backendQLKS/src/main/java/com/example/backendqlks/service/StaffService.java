@@ -66,6 +66,19 @@ public class StaffService {
         return staffMapper.toResponseDto(staff);
     }
 
+    @Transactional(readOnly = true)
+    public Page<ResponseStaffDto> getStaffWithNoAccount(Pageable pageable) {
+        Page<Staff> staffPage=staffRepository.findByAccountIdIsNull(pageable);
+        List<ResponseStaffDto> staffs=staffMapper.toResponseDtoList(staffPage.getContent());
+        return new PageImpl<>(staffs, pageable, staffPage.getTotalElements());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseStaffDto> getStaffWithName(String name) {
+        var result=staffRepository.findByFullNameContainingIgnoreCase(name);
+        return staffMapper.toResponseDtoList(result);
+    }
+
     public ResponseStaffDto createStaff(StaffDto staffDto, int impactorId, String impactor) {
         if (staffRepository.existsByIdentificationNumber(staffDto.getIdentificationNumber())) {
             throw new IllegalArgumentException("Staff with this email already exists");

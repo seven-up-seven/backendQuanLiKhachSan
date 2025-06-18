@@ -2,6 +2,7 @@ package com.example.backendqlks.service;
 
 import com.example.backendqlks.dao.AccountRepository;
 import com.example.backendqlks.dao.GuestRepository;
+import com.example.backendqlks.dto.account.ResponseAccountDto;
 import com.example.backendqlks.dto.guest.GuestDto;
 import com.example.backendqlks.dto.guest.ResponseGuestDto;
 import com.example.backendqlks.dto.history.HistoryDto;
@@ -62,6 +63,19 @@ public class GuestService {
     public ResponseGuestDto getGuestByAccountId(int accountId){
         var result=guestRepository.findByAccountId(accountId).orElseThrow(() -> new IllegalArgumentException("Incorrect account id"));
         return guestMapper.toResponseDto(result);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ResponseGuestDto> getGuestsWithoutAccount(Pageable pageable){
+        var result=guestRepository.findByAccountIdIsNull(pageable);
+        List<ResponseGuestDto> guests=guestMapper.toResponseDtoList(result.getContent());
+        return new PageImpl<>(guests, pageable, result.getTotalElements());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseGuestDto> getGuestWithName(String name) {
+        var result=guestRepository.findGuestsByNameContainingIgnoreCase(name);
+        return guestMapper.toResponseDtoList(result);
     }
 
     //TODO: add try catch
