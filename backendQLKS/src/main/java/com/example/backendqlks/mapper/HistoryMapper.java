@@ -4,6 +4,7 @@ import com.example.backendqlks.dto.history.HistoryDto;
 import com.example.backendqlks.dto.history.ResponseHistoryDto;
 import com.example.backendqlks.entity.History;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import java.util.List;
@@ -12,9 +13,10 @@ import java.util.List;
 public interface HistoryMapper {
     HistoryDto toDto(History history);
     History toEntity(HistoryDto historyDto);
-
+    @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(HistoryDto historyDto, @MappingTarget History history);
 
     ResponseHistoryDto toResponseDto(History history);
+
     List<ResponseHistoryDto> toResponseDtoList(List<History> histories);
 }

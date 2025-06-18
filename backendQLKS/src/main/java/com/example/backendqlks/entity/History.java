@@ -22,12 +22,13 @@ public class History {
     private String affectedObject;
 
     @Column(name = "IMPACTOR_ID")
-    private int impactorId;
+    private Integer impactorId;
 
     @Column(name = "AFFECTED_OBJECT_ID")
-    private int affectedObjectId;
+    private Integer affectedObjectId;
 
     @Column(name = "ACTION")
+    @Enumerated(EnumType.STRING)
     private Action action;
 
     @Column(name = "EXECUTE_AT")
