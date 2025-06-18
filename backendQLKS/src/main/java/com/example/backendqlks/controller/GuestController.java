@@ -41,6 +41,16 @@ public class GuestController {
         }
     }
 
+    @GetMapping("/account-id/{id}")
+    public ResponseEntity<?> getGuestByAccountId(@PathVariable int id) {
+        try {
+            return ResponseEntity.ok(guestService.getGuestByAccountId(id));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching guest: " + e.getMessage());
+        }
+    }
+
     @GetMapping
     public ResponseEntity<?> getAllGuests(){
         try {

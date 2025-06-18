@@ -10,10 +10,10 @@ import lombok.Data;
 @Builder
 public class AccountDto {
     @NotBlank(message = "User name must not be null or empty")
-    private String userName;
+    private String username;
 
     @NotBlank(message = "User name must not be null or empty")
-    private String passWord;
+    private String password;
 
     @NotNull(message = "User role id must not be null")
     @Positive(message = "User role id must be positive")

@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,12 @@ public class GuestService {
     {
         var result=guestRepository.findAll();
         return guestMapper.toResponseDtoList(result);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseGuestDto getGuestByAccountId(int accountId){
+        var result=guestRepository.findByAccountId(accountId).orElseThrow(() -> new IllegalArgumentException("Incorrect account id"));
+        return guestMapper.toResponseDto(result);
     }
 
     //TODO: add try catch

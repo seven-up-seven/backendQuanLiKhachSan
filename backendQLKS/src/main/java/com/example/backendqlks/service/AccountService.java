@@ -67,7 +67,7 @@ public class AccountService {
 
     //TODO: add password encoder BCryptPasswordEncoder, try catch
     public ResponseAccountDto create(AccountDto accountDto, int impactorId, String impactor){
-        if(accountRepository.existsByUsername(accountDto.getUserName())){
+        if(accountRepository.existsByUsername(accountDto.getUsername())){
             throw new IllegalArgumentException("User name already exists");
         }
         var newAccount = accountMapper.toEntity(accountDto);
@@ -78,7 +78,7 @@ public class AccountService {
                 .affectedObject("Tài khoản")
                 .affectedObjectId(newAccount.getId())
                 .action(Action.CREATE)
-                .content("username: "+accountDto.getUserName()+" password: " + accountDto.getPassWord())
+                .content("username: "+accountDto.getUsername()+" password: " + accountDto.getPassword())
                 .build();
         historyService.create(history);
         return accountMapper.toResponseDto(newAccount);
@@ -93,18 +93,18 @@ public class AccountService {
         accountMapper.updateEntityFromDto(accountDto, existingAccount);
         accountRepository.save(existingAccount);
         StringBuilder sb = new StringBuilder();
-        if (!Objects.equals(oldUsername, accountDto.getUserName())) {
+        if (!Objects.equals(oldUsername, accountDto.getUsername())) {
             sb.append("username: ")
                     .append(oldUsername)
                     .append(" -> ")
-                    .append(accountDto.getUserName())
+                    .append(accountDto.getUsername())
                     .append("; ");
         }
-        if (!Objects.equals(oldPassword, accountDto.getPassWord())) {
+        if (!Objects.equals(oldPassword, accountDto.getPassword())) {
             sb.append("password: ")
                     .append(oldPassword)
                     .append(" -> ")
-                    .append(accountDto.getPassWord())
+                    .append(accountDto.getPassword())
                     .append("; ");
         }
         String content = !sb.isEmpty()
