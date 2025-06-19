@@ -40,6 +40,36 @@ public class AccountController {
         }
     }
 
+    @GetMapping("username/{username}")
+    public ResponseEntity<?> getAllAccountsByUsername(@PathVariable String username) {
+        try {
+            return ResponseEntity.ok(accountService.getByUsername(username));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching accounts: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("user-role-id/{userRoleId}")
+    public ResponseEntity<?> getAllAccountsByUserRoleName(@PathVariable Integer userRoleId) {
+        try {
+            return ResponseEntity.ok(accountService.getByUserRoleId(userRoleId));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching accounts: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("id/{id}")
+    public ResponseEntity<?> getAccountById(@PathVariable int id) {
+        try {
+            return ResponseEntity.ok(accountService.get(id));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching account: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createAccount(@PathVariable int impactorId,
                                            @PathVariable String impactor,

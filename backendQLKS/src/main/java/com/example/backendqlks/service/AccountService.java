@@ -52,10 +52,15 @@ public class AccountService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseAccountDto getByUsername(String username){
-        var existingAccount = accountRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("Can not find account with username " + username));
-        return accountMapper.toResponseDto(existingAccount);
+    public List<ResponseAccountDto> getByUsername(String username){
+        var existingAccount = accountRepository.findByUsernameContainingIgnoreCase(username);
+        return accountMapper.toResponseDtoList(existingAccount);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseAccountDto> getByUserRoleId(int userRoleNameId){
+        var existingAccounts=accountRepository.findAccountByUserRoleId(userRoleNameId);
+        return accountMapper.toResponseDtoList(existingAccounts);
     }
 
     @Transactional(readOnly = true)
