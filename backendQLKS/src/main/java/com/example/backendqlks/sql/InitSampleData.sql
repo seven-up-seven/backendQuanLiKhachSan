@@ -121,6 +121,8 @@ CREATE TABLE `BOOKING_CONFIRMATION_FORM` (
                                              `BOOKING_GUEST_ID` INT,
                                              `BOOKING_STATE` VARCHAR(20),
                                              `ROOM_ID` INT,
+                                             `BOOKING_DATE` DATETIME,
+                                             `RENTAL_DAYS` INT,
                                              `CREATED_AT` DATETIME DEFAULT CURRENT_TIMESTAMP,
                                              FOREIGN KEY (`BOOKING_GUEST_ID`) REFERENCES `GUEST`(`ID`),
                                              FOREIGN KEY (`ROOM_ID`) REFERENCES `ROOM`(`ID`)
@@ -297,12 +299,13 @@ INSERT INTO `ROOM` (`NAME`, `NOTE`, `ROOM_STATE`, `ROOMTYPE_ID`, `FLOOR_ID`) VAL
                                                                                  ('202', 'Mountain view', 'UNDER_RENOVATION', 4, 2),
                                                                                  ('301', 'Lake view', 'BEING_RENTED', 5, 3);
 
-INSERT INTO `BOOKING_CONFIRMATION_FORM` (`BOOKING_GUEST_ID`, `BOOKING_STATE`, `ROOM_ID`) VALUES
-                                                                                             (1, 'PENDING', 1),
-                                                                                             (2, 'COMMITED', 2),
-                                                                                             (3, 'EXPIRED', 3),
-                                                                                             (4, 'CANCELLED', 4),
-                                                                                             (5, 'PENDING', 5);
+INSERT INTO `BOOKING_CONFIRMATION_FORM`
+(`BOOKING_GUEST_ID`, `BOOKING_STATE`, `ROOM_ID`, `BOOKING_DATE`, `RENTAL_DAYS`) VALUES
+                                                                                    (1, 'PENDING', 1, '2025-06-20 10:00:00', 2),
+                                                                                    (2, 'COMMITED', 2, '2025-06-21 14:30:00', 3),
+                                                                                    (3, 'EXPIRED', 3, '2025-06-18 09:00:00', 1),
+                                                                                    (4, 'CANCELLED', 4, '2025-06-15 12:15:00', 4),
+                                                                                    (5, 'PENDING', 5, '2025-06-22 08:45:00', 2);
 
 INSERT INTO `RENTAL_FORM` (`ROOM_ID`, `STAFF_ID`, `RENTAL_DATE`, `IS_PAID_AT`, `NUMBER_OF_RENTAL_DAY`, `NOTE`) VALUES
                                                                                                                    (1, 1, NOW(), NOW(), 3, 'No note'),
