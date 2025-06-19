@@ -40,6 +40,16 @@ public class AccountController {
         }
     }
 
+    @GetMapping("get-all-no-page")
+    public ResponseEntity<?> getAllAccounts() {
+        try {
+            return ResponseEntity.ok(accountService.getAllNoPage());
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching accounts: " + e.getMessage());
+        }
+    }
+
     @GetMapping("username/{username}")
     public ResponseEntity<?> getAllAccountsByUsername(@PathVariable String username) {
         try {
