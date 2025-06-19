@@ -258,18 +258,18 @@ INSERT INTO `POSITION` (`NAME`, `BASE_SALARY`) VALUES
                                                    ('Technician', 750.0);
 
 INSERT INTO `STAFF` (`FULL_NAME`, `AGE`, `IDENTIFICATION_NUMBER`, `ADDRESS`, `SEX`, `SALARY_MULTIPLIER`, `POSITION_ID`, `ACCOUNT_ID`) VALUES
-                                                                                                                                          ('John Doe', 30, 'ID123456', '123 Street', 'MALE', 1.2, 1, 1),
-                                                                                                                                          ('Jane Smith', 25, 'ID654321', '456 Avenue', 'FEMALE', 1.1, 2, 2),
-                                                                                                                                          ('Mike Johnson', 40, 'ID789456', '789 Boulevard', 'MALE', 1.0, 3, 3),
-                                                                                                                                          ('Emily Davis', 28, 'ID321987', '321 Road', 'FEMALE', 1.0, 4, 4),
-                                                                                                                                          ('Chris Brown', 35, 'ID654987', '654 Lane', 'MALE', 1.3, 5, NULL);
+                                                                                                                                          ('John Doe', 30, '111111111111', '123 Street', 'MALE', 1.2, 1, 1),
+                                                                                                                                          ('Jane Smith', 25, '222222222222', '456 Avenue', 'FEMALE', 1.1, 2, 2),
+                                                                                                                                          ('Mike Johnson', 40, '333333333333', '789 Boulevard', 'MALE', 1.0, 3, 3),
+                                                                                                                                          ('Emily Davis', 28, '444444444444', '321 Road', 'FEMALE', 1.0, 4, 4),
+                                                                                                                                          ('Chris Brown', 35, '555555555555', '654 Lane', 'MALE', 1.3, 5, NULL);
 
 INSERT INTO `GUEST` (`NAME`, `SEX`, `AGE`, `IDENTIFICATION_NUMBER`, `PHONE_NUMBER`, `EMAIL`, `ACCOUNT_ID`) VALUES
-                                                                                                               ('Alice', 'FEMALE', 27, 'GUEST123', '0123456789', 'alice@example.com', 5),
-                                                                                                               ('Bob', 'MALE', 32, 'GUEST456', '0987654321', 'bob@example.com', NULL),
-                                                                                                               ('Charlie', 'MALE', 45, 'GUEST789', '0112233445', 'charlie@example.com', NULL),
-                                                                                                               ('Diana', 'FEMALE', 29, 'GUEST012', '0223344556', 'diana@example.com', NULL),
-                                                                                                               ('Eve', 'FEMALE', 24, 'GUEST345', '0334455667', 'eve@example.com', NULL);
+                                                                                                               ('Alice', 'FEMALE', 27, '666666666666', '12345678923', 'alice@example.com', 5),
+                                                                                                               ('Bob', 'MALE', 32, '777777777777', '15467893412', 'bob@example.com', NULL),
+                                                                                                               ('Charlie', 'MALE', 45, '888888888888', '10394581234', 'charlie@example.com', NULL),
+                                                                                                               ('Diana', 'FEMALE', 29, '999999999999', '21345676545', 'diana@example.com', NULL),
+                                                                                                               ('Eve', 'FEMALE', 24, '123456789123', '45674567431', 'eve@example.com', NULL);
 
 INSERT INTO `BLOCK` (`NAME`) VALUES
                                  ('Block A'),
@@ -356,8 +356,8 @@ INSERT INTO `REVENUE_REPORT_DETAIL` (`TOTAL_ROOM_REVENUE`, `REVENUE_REPORT_ID`, 
                                                                                                    (5000.0, 4, 4),
                                                                                                    (4500.0, 5, 5);
 
-INSERT INTO 'VARIABLE' ('ID', 'NAME', 'VALUE', 'DESCRIPTION') VALUES
-                                                                  (1, 'MAX_EXTENSION_DAY', 10, 'Số ngày gia hạn tối đa');
+INSERT INTO `VARIABLE` (`NAME`, `VALUE`, `DESCRIPTION`) VALUES
+                                                            ('MAX_EXTENSION_DAY', 10, 'Số ngày gia hạn tối đa');
 
 
 -- QUARTZ TABLES IMPLEMENT

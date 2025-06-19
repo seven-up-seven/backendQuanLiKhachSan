@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,6 +70,7 @@ public class RoomController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createRoom(@PathVariable int impactorId,
                                         @PathVariable String impactor,
@@ -85,6 +87,7 @@ public class RoomController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateRoom(@PathVariable int id,
                                         @PathVariable int impactorId,
@@ -102,6 +105,7 @@ public class RoomController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteRoom(@PathVariable int id,
                                         @PathVariable int impactorId,

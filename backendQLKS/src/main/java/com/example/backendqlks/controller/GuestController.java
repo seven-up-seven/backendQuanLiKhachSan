@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class GuestController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'RECEPTIONIST', 'ACCOUNTANT', 'MANAGER', 'ADMIN')")
     @GetMapping("/get-all-page")
     public ResponseEntity<?> getAllGuestsPage(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try{
@@ -51,6 +53,7 @@ public class GuestController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'RECEPTIONIST', 'ACCOUNTANT', 'MANAGER', 'ADMIN')")
     @GetMapping
     public ResponseEntity<?> getAllGuests(){
         try {
@@ -61,6 +64,7 @@ public class GuestController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'RECEPTIONIST', 'ACCOUNTANT', 'MANAGER', 'ADMIN')")
     @GetMapping("/without-account")
     public ResponseEntity<?> getAllGuestsWithoutAccount(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try {
@@ -97,6 +101,7 @@ public class GuestController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'RECEPTIONIST', 'ACCOUNTANT', 'MANAGER', 'GUEST')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateGuest(@PathVariable int impactorId,
                                          @PathVariable String impactor,
@@ -114,6 +119,7 @@ public class GuestController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'RECEPTIONIST', 'ACCOUNTANT', 'MANAGER', 'GUEST')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteGuest(@PathVariable int impactorId,
                                          @PathVariable String impactor,

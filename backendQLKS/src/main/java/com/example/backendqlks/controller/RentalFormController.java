@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ public class RentalFormController {
         this.rentalFormService = rentalFormService;
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @GetMapping("/get-all-page")
     public ResponseEntity<?> getAllRentalForms(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try {
@@ -35,6 +37,7 @@ public class RentalFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @GetMapping
     public ResponseEntity<?> getAllRentalForms()
     {
@@ -46,6 +49,7 @@ public class RentalFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getRentalFormById(@PathVariable int id) {
         try {
@@ -57,6 +61,7 @@ public class RentalFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createRentalForm(@PathVariable int impactorId,
                                               @PathVariable String impactor,
@@ -73,6 +78,7 @@ public class RentalFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateRentalForm(@PathVariable int id,
                                               @PathVariable int impactorId,
@@ -90,6 +96,7 @@ public class RentalFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteRentalForm(@PathVariable int id,
                                               @PathVariable int impactorId,
@@ -102,6 +109,7 @@ public class RentalFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/{id}/guest-ids")
     public ResponseEntity<?> getGuestIdByRentalFormId(@PathVariable int id) {
         try {
@@ -110,6 +118,8 @@ public class RentalFormController {
             return ResponseEntity.status(500).body("Error fetching guest IDs for rental form with id: " + e.getMessage());
         }
     }
+
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @PostMapping("/search")
     public ResponseEntity<?> searchRentalForms(@RequestBody @Valid SearchRentalFormDto searchRentalFormDto) {
         try {
@@ -119,6 +129,8 @@ public class RentalFormController {
             return ResponseEntity.status(500).body("Error searching rental forms: " + e.getMessage());
         }
     }
+
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @PostMapping("/search-unpaid")
     public ResponseEntity<?> searchUnpaidRentalForms(@RequestBody @Valid SearchRentalFormDto searchRentalFormDto) {
         try {
@@ -127,6 +139,8 @@ public class RentalFormController {
             return ResponseEntity.status(500).body("Error searching unpaid rental forms: " + e.getMessage());
         }
     }
+
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/{id}/total-rental-days")
     public ResponseEntity<?> countTotalRentalDaysByRentalFormId(@PathVariable int id) {
         try {
@@ -137,6 +151,7 @@ public class RentalFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/{id}/total-cost")
     public ResponseEntity<?> countTotalAmountByRentalFormId(@PathVariable int id) {
         try {

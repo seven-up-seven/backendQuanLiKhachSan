@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class BookingConfirmationFormController {
         this.bookingConfirmationFormService = bookingConfirmationFormService;
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getBookingConfirmationForm(@PathVariable int id){
         try{
@@ -32,6 +34,7 @@ public class BookingConfirmationFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @GetMapping("/get-all-page")
     public ResponseEntity<?> getAllBookingConfirmationForms(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try{
@@ -41,6 +44,7 @@ public class BookingConfirmationFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @GetMapping
     public ResponseEntity<?> getAllBookingConfirmationForms() {
         try {
@@ -51,6 +55,7 @@ public class BookingConfirmationFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/list-id/{ids}")
     public ResponseEntity<?> getByListId(@PathVariable List<Integer> ids) {
         try {
@@ -61,6 +66,7 @@ public class BookingConfirmationFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createBookingConfirmationForm(@PathVariable int impactorId,
                                                            @PathVariable String impactor,
@@ -77,6 +83,7 @@ public class BookingConfirmationFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateBookingConfirmationForm(@PathVariable int impactorId,
                                                            @PathVariable String impactor,
@@ -94,6 +101,7 @@ public class BookingConfirmationFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteBookingConfirmationForm(@PathVariable int id, @PathVariable int impactorId, @PathVariable String impactor){
         try{

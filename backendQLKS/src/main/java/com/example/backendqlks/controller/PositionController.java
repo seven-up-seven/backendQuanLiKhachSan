@@ -4,6 +4,7 @@ import com.example.backendqlks.dto.position.PositionDto;
 import com.example.backendqlks.service.PositionService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class PositionController {
         this.positionService = positionService;
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getPosition(@PathVariable int id){
         try{
@@ -29,6 +31,7 @@ public class PositionController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT')")
     @GetMapping
     public ResponseEntity<?> getAllPositions(){
         try{
@@ -38,6 +41,7 @@ public class PositionController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createPosition(@PathVariable int impactorId,
                                             @PathVariable String impactor,
@@ -54,6 +58,7 @@ public class PositionController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updatePosition(@PathVariable int id,
                                             @PathVariable int impactorId,
@@ -71,6 +76,7 @@ public class PositionController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deletePosition(@PathVariable int id,
                                             @PathVariable int impactorId,

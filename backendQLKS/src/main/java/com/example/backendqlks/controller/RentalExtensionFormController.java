@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class RentalExtensionFormController {
         this.rentalExtensionFormService = rentalExtensionFormService;
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @GetMapping("/get-all-page")
     public ResponseEntity<?> getAllRentalExtensionForms(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try {
@@ -33,6 +35,7 @@ public class RentalExtensionFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @GetMapping
     public ResponseEntity<?> getAllRentalExtensionForms() {
         try {
@@ -43,6 +46,7 @@ public class RentalExtensionFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getRentalExtensionFormById(@PathVariable int id) {
         try {
@@ -54,6 +58,7 @@ public class RentalExtensionFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createRentalExtensionForm(@PathVariable int impactorId,
                                                        @PathVariable String impactor,
@@ -72,6 +77,7 @@ public class RentalExtensionFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateRentalExtensionForm(@PathVariable int id,
                                                        @PathVariable int impactorId,
@@ -91,6 +97,7 @@ public class RentalExtensionFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteRentalExtensionForm(@PathVariable int id,
                                                        @PathVariable int impactorId,
@@ -103,6 +110,7 @@ public class RentalExtensionFormController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/day-remains/{rentalFormId}")
     public ResponseEntity<?> getDayRemains(@PathVariable int rentalFormId) {
         try {
@@ -112,6 +120,8 @@ public class RentalExtensionFormController {
             return ResponseEntity.status(500).body("Error fetching day remains: " + e.getMessage());
         }
     }
+
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/rental-form/{rentalFormId}")
     public ResponseEntity<?> getRentalExtensionFormByRentalFormId(@PathVariable int rentalFormId) {
         try {

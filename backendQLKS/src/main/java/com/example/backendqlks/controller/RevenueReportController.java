@@ -5,6 +5,7 @@ import com.example.backendqlks.dto.revenuereport.RevenueReportDto;
 import com.example.backendqlks.service.RevenueReportService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class RevenueReportController {
         this.revenueReportService = revenueReportService;
     }
 
+    @PreAuthorize("hasAnyAuthority('ACCOUNTANT')")
     @GetMapping
     public ResponseEntity<?> getAllRevenueReports() {
         try {
@@ -28,6 +30,7 @@ public class RevenueReportController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ACCOUNTANT')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getRevenueReportById(@PathVariable int id) {
         try {
@@ -38,6 +41,7 @@ public class RevenueReportController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ACCOUNTANT')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createRevenueReport(@PathVariable int impactorId,
                                                  @PathVariable String impactor,
@@ -55,6 +59,7 @@ public class RevenueReportController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ACCOUNTANT')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateRevenueReport(@PathVariable int id,
                                                  @PathVariable int impactorId,
@@ -73,6 +78,7 @@ public class RevenueReportController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ACCOUNTANT')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteRevenueReport(@PathVariable int id,
                                                  @PathVariable int impactorId,

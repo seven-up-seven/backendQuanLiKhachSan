@@ -7,6 +7,7 @@ import com.example.backendqlks.service.UserRolePermissionService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class UserRolePermissionController {
         this.userRolePermissionService = userRolePermissionService;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createUserRolePermission(@RequestBody @Valid  UserRolePermissionDto userRolePermissionDto, BindingResult result,
                                                       @PathVariable int impactorId,

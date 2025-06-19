@@ -4,6 +4,7 @@ import com.example.backendqlks.dto.variable.VariableDto;
 import com.example.backendqlks.service.VariableService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,7 @@ public class VariableController {
             return ResponseEntity.status(500).body("Error fetching variable with id: " + e.getMessage());
         }
     }
+
     @GetMapping("/name/{name}")
     public ResponseEntity<?> getVariableByName(@PathVariable String name) {
         try {
@@ -42,6 +44,8 @@ public class VariableController {
             return ResponseEntity.status(500).body("Error fetching variable with name: " + e.getMessage());
         }
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createVariable(@RequestBody @Valid VariableDto variable) {
         try {
@@ -51,6 +55,7 @@ public class VariableController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateVariable(@PathVariable int id,
                                             @PathVariable int impactorId,
@@ -66,6 +71,7 @@ public class VariableController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteVariable(@PathVariable int id) {
         try {

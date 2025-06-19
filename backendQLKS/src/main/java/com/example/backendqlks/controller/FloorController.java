@@ -4,6 +4,7 @@ import com.example.backendqlks.dto.floor.FloorDto;
 import com.example.backendqlks.service.FloorService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class FloorController {
         this.floorService = floorService;
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getFloor(@PathVariable int id){
         try{
@@ -29,6 +31,7 @@ public class FloorController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping
     public ResponseEntity<?> getAllFloors(){
         try{
@@ -38,6 +41,7 @@ public class FloorController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createFloor(@PathVariable int impactorId,
                                          @PathVariable String impactor,
@@ -54,6 +58,7 @@ public class FloorController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateFloor(@PathVariable int impactorId,
                                          @PathVariable String impactor,
@@ -71,6 +76,7 @@ public class FloorController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteFloor(@PathVariable int impactorId,
                                          @PathVariable String impactor,

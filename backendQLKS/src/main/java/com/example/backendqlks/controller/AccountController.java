@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ public class AccountController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<?> getAllAccounts(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try{
@@ -40,6 +42,7 @@ public class AccountController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("get-all-no-page")
     public ResponseEntity<?> getAllAccounts() {
         try {
@@ -50,6 +53,7 @@ public class AccountController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("username/{username}")
     public ResponseEntity<?> getAllAccountsByUsername(@PathVariable String username) {
         try {
@@ -60,6 +64,7 @@ public class AccountController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("user-role-id/{userRoleId}")
     public ResponseEntity<?> getAllAccountsByUserRoleName(@PathVariable Integer userRoleId) {
         try {
@@ -70,6 +75,7 @@ public class AccountController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("id/{id}")
     public ResponseEntity<?> getAccountById(@PathVariable int id) {
         try {
@@ -96,6 +102,7 @@ public class AccountController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateAccount(@PathVariable int id,
                                            @PathVariable int impactorId,
@@ -113,6 +120,7 @@ public class AccountController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteAccount(@PathVariable int id,
                                            @PathVariable int impactorId,

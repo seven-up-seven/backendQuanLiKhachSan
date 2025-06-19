@@ -5,6 +5,7 @@ import com.example.backendqlks.dto.roomtype.RoomTypeDto;
 import com.example.backendqlks.service.RoomTypeService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,7 @@ public class RoomTypeController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createRoomType(@PathVariable int impactorId,
                                             @PathVariable String impactor,
@@ -54,6 +56,7 @@ public class RoomTypeController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateRoomType(@PathVariable int id,
                                             @PathVariable int impactorId,
@@ -71,6 +74,7 @@ public class RoomTypeController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteRoomType(@PathVariable int id,
                                             @PathVariable int impactorId,
