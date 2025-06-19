@@ -1,8 +1,11 @@
 package com.example.backendqlks.controller;
 
+import com.example.backendqlks.dao.RoomRepository;
 import com.example.backendqlks.dto.room.ResponseRoomDto;
 import com.example.backendqlks.dto.room.RoomDto;
+import com.example.backendqlks.entity.Room;
 import com.example.backendqlks.entity.enums.RoomState;
+import com.example.backendqlks.mapper.RoomMapper;
 import com.example.backendqlks.service.RoomService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +21,13 @@ import java.util.Objects;
 @RequestMapping("/api/room")
 public class RoomController {
     private final RoomService roomService;
+    private final RoomRepository roomRepository;
+    private final RoomMapper roomMapper;
 
-    public RoomController(RoomService roomService) {
+    public RoomController(RoomService roomService, RoomRepository roomRepository, RoomMapper roomMapper) {
         this.roomService = roomService;
+        this.roomRepository = roomRepository;
+        this.roomMapper = roomMapper;
     }
 
     @GetMapping
@@ -106,4 +113,12 @@ public class RoomController {
             return ResponseEntity.status(500).body("Error deleting room with id: " + e.getMessage());
         }
     }
+
+    @GetMapping("/room-type/{roomTypeId}")
+    public ResponseEntity<List<ResponseRoomDto>> getRoomsAvailableByRoomType(
+            @PathVariable int roomTypeId) {
+        List<ResponseRoomDto> rooms = roomService.findRoomsByRoomTypeId(roomTypeId);
+        return ResponseEntity.ok(rooms);
+    }
+
 }

@@ -160,4 +160,13 @@ public class RoomService {
         historyService.create(history);
         roomRepository.delete(room);
     }
+
+    @Transactional(readOnly = true)
+    public List<ResponseRoomDto> findRoomsByRoomTypeId(int roomTypeId) {
+        var rooms = roomRepository.findRoomsByRoomTypeId(roomTypeId);
+        var availableRooms = rooms.stream()
+                .filter(room -> room.getRoomState() == RoomState.READY_TO_SERVE)
+                .toList();
+        return roomMapper.toResponseDtoList(availableRooms);
+    }
 }

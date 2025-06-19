@@ -5,6 +5,7 @@ import com.example.backendqlks.dao.InvoiceRepository;
 import com.example.backendqlks.dao.RentalFormRepository;
 import com.example.backendqlks.dao.RoomRepository;
 import com.example.backendqlks.dto.history.HistoryDto;
+import com.example.backendqlks.dto.invoice.ResponseInvoiceDto;
 import com.example.backendqlks.dto.invoiceDetail.InvoiceDetailDto;
 import com.example.backendqlks.dto.invoiceDetail.ResponseInvoiceDetailDto;
 import com.example.backendqlks.entity.Invoice;
@@ -33,17 +34,19 @@ public class InvoiceDetailService {
     private final InvoiceRepository invoiceRepository;
     private final InvoiceDetailMapper invoiceDetailMapper;
     private final HistoryService historyService;
+    private final RoomRepository roomRepository;
 
     public InvoiceDetailService(InvoiceDetailRepository invoiceDetailRepository,
                                 InvoiceDetailMapper invoiceDetailMapper,
                                 RentalFormRepository rentalFormRepository,
                                 HistoryService historyService,
-                                InvoiceRepository invoiceRepository) {
+                                InvoiceRepository invoiceRepository, RoomRepository roomRepository) {
         this.invoiceDetailRepository = invoiceDetailRepository;
         this.invoiceDetailMapper = invoiceDetailMapper;
         this.rentalFormRepository = rentalFormRepository;
         this.invoiceRepository = invoiceRepository;
         this.historyService = historyService;
+        this.roomRepository = roomRepository;
     }
 
     @Transactional(readOnly = true)
@@ -246,7 +249,7 @@ public class InvoiceDetailService {
         return resultList;
     }
 
-    private InvoiceDetail constructInvoiceDetail(int invoiceId, Integer id, RentalForm rentalForm) {
+    private InvoiceDetail constructInvoiceDetail(int invoiceId, Integer rentalFormId, RentalForm rentalForm) {
         short numberOfRentalDays = rentalForm.getNumberOfRentalDays();
         var extensionForms = rentalForm.getRentalExtensionForms();
         for (var extensionForm : extensionForms) {
@@ -258,7 +261,51 @@ public class InvoiceDetailService {
         invoiceDetail.setNumberOfRentalDays(numberOfRentalDays);
         invoiceDetail.setInvoiceId(invoiceId);
         invoiceDetail.setReservationCost(price);
-        invoiceDetail.setRentalFormId(id);
+        invoiceDetail.setRentalFormId(rentalFormId);
         return invoiceDetail;
+    }
+
+    public ResponseInvoiceDetailDto checkOut(int invoiceId, int rentalFormId, int impactorId, String impactor) {
+        var rentalForm = rentalFormRepository.findById(rentalFormId)
+                .orElseThrow(() -> new IllegalArgumentException("Rental Form with this ID cannot be found"));
+        if (rentalForm.getIsPaidAt() != null && invoiceRepository.findAll().stream()
+                .anyMatch(invoice -> invoice.getInvoiceDetails().stream()
+                        .anyMatch(detail -> detail.getRentalForm().getId() == rentalFormId))) {
+            throw new IllegalArgumentException("Rental Form has already been paid");
+        }
+        InvoiceDetail newInvoiceDetail = new InvoiceDetail();
+        newInvoiceDetail.setRentalFormId(rentalFormId);
+        newInvoiceDetail.setInvoiceId(invoiceId);
+        var numberOfRentalDays = rentalForm.getNumberOfRentalDays();
+        for (var e : rentalForm.getRentalExtensionForms()){
+            numberOfRentalDays += e.getNumberOfRentalDays();
+        }
+        newInvoiceDetail.setReservationCost(numberOfRentalDays * rentalForm.getRoom().getRoomType().getPrice());
+        var room = roomRepository.findById(rentalForm.getRoom().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Room with this ID cannot be found"));
+        room.setRoomState(RoomState.BEING_CLEANED);
+        roomRepository.save(room);
+        newInvoiceDetail = invoiceDetailRepository.save(newInvoiceDetail);
+        rentalForm.setIsPaidAt(invoiceRepository.findById(invoiceId).get().getCreatedAt());
+        rentalFormRepository.save(rentalForm);
+        HistoryDto history = HistoryDto.builder()
+                .impactor(impactor)
+                .impactorId(impactorId)
+                .affectedObject("Chi tiết hóa đơn")
+                .affectedObjectId(newInvoiceDetail.getId())
+                .action(Action.CREATE)
+                .content(String.format(
+                        "Số ngày thuê: %d; Chi phí đặt phòng: %.2f; Mã phiếu thuê: %d; Mã hóa đơn: %d",
+                        newInvoiceDetail.getNumberOfRentalDays(),
+                        newInvoiceDetail.getReservationCost(),
+                        newInvoiceDetail.getRentalFormId(),
+                        newInvoiceDetail.getInvoiceId()))
+                .build();
+        historyService.create(history);
+        var invoice = invoiceRepository.findById(invoiceId)
+                .orElseThrow(() -> new IllegalArgumentException("Invoice with this ID cannot be found"));
+
+        invoice.setTotalReservationCost(invoice.getTotalReservationCost() + newInvoiceDetail.getReservationCost());
+        return invoiceDetailMapper.toResponseDto(newInvoiceDetail);
     }
 }

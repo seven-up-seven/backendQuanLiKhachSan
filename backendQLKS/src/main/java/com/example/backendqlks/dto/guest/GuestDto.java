@@ -18,7 +18,7 @@ public class GuestDto {
     @NotNull(message = "Age must not be null")
     private Short age;
 
-    @Pattern(regexp = "^[1-9]\\d{11}$", message = "Identification number must be a 12-digit number")
+    @Pattern(regexp = "^\\d{12}$", message = "Identification number must be a 12-digit number")
     private String identificationNumber;
 
     @Pattern(regexp = "^\\d{10,11}$", message = "Phone number must be 10 or 11 digits")

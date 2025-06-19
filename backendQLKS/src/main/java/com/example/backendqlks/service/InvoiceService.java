@@ -34,17 +34,19 @@ public class InvoiceService {
     private final InvoiceMapper invoiceMapper;
     private final InvoiceDetailRepository invoiceDetailRepository;
     private final HistoryService historyService;
+    private final RoomRepository roomRepository;
 
     public InvoiceService(InvoiceRepository invoiceRepository,
                           InvoiceMapper invoiceMapper,
                           RentalFormRepository rentalFormRepository,
                           InvoiceDetailRepository invoiceDetailRepository,
-                          HistoryService historyService) {
+                          HistoryService historyService, RoomRepository roomRepository) {
         this.invoiceMapper = invoiceMapper;
         this.invoiceRepository = invoiceRepository;
         this.rentalFormRepository = rentalFormRepository;
         this.invoiceDetailRepository = invoiceDetailRepository;
         this.historyService = historyService;
+        this.roomRepository = roomRepository;
     }
 
     @Transactional(readOnly = true)
@@ -69,6 +71,7 @@ public class InvoiceService {
     //TODO: add try catch
     public ResponseInvoiceDto create(InvoiceDto invoiceDto, int impactorId, String impactor) {
         var newInvoice = invoiceMapper.toEntity(invoiceDto);
+        newInvoice.setStaffId(impactorId);
         invoiceRepository.save(newInvoice);
         String content = String.format(
                 "Mã khách thanh toán: %d; Mã nhân viên tạo hóa đơn: %d; Tổng chi phí đặt phòng: %.2f",
@@ -195,4 +198,6 @@ public class InvoiceService {
         }
         return invoiceMapper.toResponseDto(existingInvoice);
     }
+
+
 }

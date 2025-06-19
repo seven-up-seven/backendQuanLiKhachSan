@@ -183,4 +183,5 @@ public class RentalFormService {
                 .orElseThrow(() -> new IllegalArgumentException("Rental Form With This Id Can Not Be Found"));
         return countTotalRentalDaysByRentalFormId(id) * rentalForm.getRoom().getRoomType().getPrice();
     }
+
 }

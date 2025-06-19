@@ -112,4 +112,17 @@ public class InvoiceDetailController {
             return ResponseEntity.status(500).body("Error creating invoice details for invoice: " + e.getMessage());
         }
     }
+
+    @GetMapping("/checkout/{invoiceId}/{rentalFormId}/{impactorId}/{impactor}")
+    public ResponseEntity<?> checkoutInvoiceDetail(@PathVariable int invoiceId,
+                                                   @PathVariable int rentalFormId,
+                                                   @PathVariable int impactorId,
+                                                   @PathVariable String impactor) {
+        try {
+            var checkoutResult = invoiceDetailService.checkOut(invoiceId, rentalFormId, impactorId, impactor);
+            return ResponseEntity.ok(checkoutResult);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error checking out invoice detail: " + e.getMessage());
+        }
+    }
 }

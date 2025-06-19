@@ -31,6 +31,12 @@ public class BookingConfirmationForm {
     @Column(name = "ROOM_ID")
     private int roomId;
 
+    @Column(name = "BOOKING_DATE")
+    private LocalDateTime bookingDate;
+
+    @Column(name = "RENTAL_DAYS")
+    private int rentalDays;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROOM_ID", referencedColumnName = "ID", insertable = false, updatable = false)
