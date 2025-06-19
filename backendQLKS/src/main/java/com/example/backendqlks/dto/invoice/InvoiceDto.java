@@ -18,7 +18,5 @@ public class InvoiceDto {
     @NotNull(message = "Paying guest id must not be null")
     private Integer payingGuestId;
 
-    @Positive(message = "Staff id must be positive")
-    @NotNull(message = "Staff id must not be null")
     private Integer staffId;
 }

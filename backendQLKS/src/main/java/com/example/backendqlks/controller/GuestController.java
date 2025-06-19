@@ -126,7 +126,7 @@ public class GuestController {
         }
     }
 
-    @PostMapping("/search")
+    @PostMapping("/search/{impactorId}/{impactor}")
     public ResponseEntity<?> findByMultipleCriteria(@RequestBody @Valid SearchGuestDto searchGuestDto) {
         try {
             var guest = guestService.findByMultipleCriteria(searchGuestDto.getId(), searchGuestDto.getName(), searchGuestDto.getIdentificationNumber(), searchGuestDto.getEmail(), searchGuestDto.getPhoneNumber(), searchGuestDto.getAccountId());

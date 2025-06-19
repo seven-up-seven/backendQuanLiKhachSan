@@ -113,7 +113,7 @@ public class InvoiceDetailController {
         }
     }
 
-    @GetMapping("/checkout/{invoiceId}/{rentalFormId}/{impactorId}/{impactor}")
+    @PostMapping("/checkout/{invoiceId}/{rentalFormId}/{impactorId}/{impactor}")
     public ResponseEntity<?> checkoutInvoiceDetail(@PathVariable int invoiceId,
                                                    @PathVariable int rentalFormId,
                                                    @PathVariable int impactorId,
