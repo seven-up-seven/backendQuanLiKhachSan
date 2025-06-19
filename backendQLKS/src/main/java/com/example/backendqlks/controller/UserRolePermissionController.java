@@ -1,6 +1,7 @@
 package com.example.backendqlks.controller;
 
 import com.example.backendqlks.dto.userrolepermission.UserRolePermissionDto;
+import com.example.backendqlks.entity.compositekeys.RolePermissionPrimaryKey;
 import com.example.backendqlks.mapper.UserRolePermissionMapper;
 import com.example.backendqlks.service.UserRolePermissionService;
 import jakarta.validation.Valid;
@@ -35,15 +36,4 @@ public class UserRolePermissionController {
             return ResponseEntity.status(500).body("Error creating user role permission: "+e.getMessage());
         }
     }
-
-//    @PutMapping("/{impactorId}/{impactor}")
-//    public ResponseEntity<?> updateUserRolePermission(@RequestBody @Valid UserRolePermissionDto userRolePermissionDto, BindingResult result,
-//                                                      @PathVariable int impactorId, @PathVariable String impactor) {
-//        try {
-//            if (result.hasErrors()) {
-//                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
-//            }
-//            var updateObject=userRolePermissionService.updateUserRolePermission(userRolePermissionDto);
-//        }
-//    }
 }

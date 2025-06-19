@@ -4,6 +4,7 @@ import com.example.backendqlks.dao.UserRoleRepository;
 import com.example.backendqlks.dto.history.HistoryDto;
 import com.example.backendqlks.dto.userrole.ResponseUserRoleDto;
 import com.example.backendqlks.dto.userrole.UserRoleDto;
+import com.example.backendqlks.dto.userrolepermission.UserRolePermissionDto;
 import com.example.backendqlks.entity.UserRole;
 import com.example.backendqlks.entity.enums.Action;
 import com.example.backendqlks.mapper.UserRoleMapper;
@@ -19,11 +20,16 @@ public class UserRoleService {
     private final UserRoleRepository userRoleRepository;
     private final UserRoleMapper userRoleMapper;
     private final HistoryService historyService;
+    private final UserRolePermissionService userRolePermissionService;
 
-    public UserRoleService(UserRoleMapper userRoleMapper, UserRoleRepository userRoleRepository, HistoryService historyService) {
+    public UserRoleService(UserRoleMapper userRoleMapper,
+                           UserRoleRepository userRoleRepository,
+                           HistoryService historyService,
+                           UserRolePermissionService userRolePermissionService) {
         this.userRoleMapper = userRoleMapper;
         this.userRoleRepository = userRoleRepository;
         this.historyService = historyService;
+        this.userRolePermissionService = userRolePermissionService;
     }
 
     @Transactional(readOnly = true)
@@ -62,6 +68,16 @@ public class UserRoleService {
     public ResponseUserRoleDto updateUserRole(int id, UserRoleDto userRoleDto, int impactorId, String impactor) {
         UserRole userRole = userRoleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User Role with this ID cannot be found"));
+
+        int userRoleId = userRole.getId();
+
+        // Xoá toàn bộ quyền cũ
+        var existingPermissions = userRolePermissionService.getUserRolePermissionsByRoleId(userRoleId);
+        for (var item : existingPermissions) {
+            userRolePermissionService.deleteUserRolePermissionById(item.getRolePermissionPrimaryKey(), impactorId, impactor);
+        }
+
+        // Cập nhật tên nếu thay đổi
         String oldName = userRole.getName();
         userRoleMapper.updateEntityFromDto(userRoleDto, userRole);
         if (!Objects.equals(oldName, userRole.getName())) {
@@ -70,13 +86,22 @@ public class UserRoleService {
                     .impactor(impactor)
                     .impactorId(impactorId)
                     .affectedObject("Vai trò người dùng")
-                    .affectedObjectId(userRole.getId())
+                    .affectedObjectId(userRoleId)
                     .action(Action.UPDATE)
                     .content(content)
                     .build();
             historyService.create(history);
         }
+
         userRoleRepository.save(userRole);
+
+        if (userRoleDto.getListPermissions() != null) {
+            for (UserRolePermissionDto permDto : userRoleDto.getListPermissions()) {
+                permDto.setUserRoleId(userRoleId);
+                userRolePermissionService.createUserRolePermission(permDto, impactorId, impactor);
+            }
+        }
+
         return userRoleMapper.toResponseDto(userRole);
     }
 
