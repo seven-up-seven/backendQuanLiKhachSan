@@ -15,5 +15,6 @@ public class ResponseRevenueReportDetailDto {
     private int revenueReportId;
 
     private int roomTypeId;
+
     private String roomTypeName;
 }

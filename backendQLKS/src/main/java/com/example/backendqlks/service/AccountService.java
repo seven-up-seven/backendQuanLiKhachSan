@@ -12,6 +12,7 @@ import com.example.backendqlks.entity.enums.Action;
 import com.example.backendqlks.mapper.AccountMapper;
 
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -49,6 +50,11 @@ public class AccountService {
         var existingAccount = accountRepository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Can't find account with id: " + accountId));
         return accountMapper.toResponseDto(existingAccount);
+    }
+
+    @Transactional
+    public List<ResponseAccountDto> getAllNoPage() {
+        return accountMapper.toResponseDtoList(accountRepository.findAll());
     }
 
     @Transactional(readOnly = true)
