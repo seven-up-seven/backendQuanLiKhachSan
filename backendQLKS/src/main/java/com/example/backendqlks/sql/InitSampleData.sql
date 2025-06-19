@@ -356,6 +356,8 @@ INSERT INTO `REVENUE_REPORT_DETAIL` (`TOTAL_ROOM_REVENUE`, `REVENUE_REPORT_ID`, 
                                                                                                    (5000.0, 4, 4),
                                                                                                    (4500.0, 5, 5);
 
+INSERT INTO 'VARIABLE' ('ID', 'NAME', 'VALUE', 'DESCRIPTION') VALUES
+                                                                  (1, 'MAX_EXTENSION_DAY', 10, 'Số ngày gia hạn tối đa');
 
 
 -- QUARTZ TABLES IMPLEMENT
