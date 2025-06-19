@@ -40,4 +40,6 @@ public interface GuestRepository extends JpaRepository<Guest, Integer> {
             @Param("email")String email,
             @Param("accountId") Integer accountId
     );
+
+    Page<Guest> findByAccountIdIsNull(Pageable pageable);
 }

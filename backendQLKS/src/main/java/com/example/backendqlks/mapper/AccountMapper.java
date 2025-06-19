@@ -18,27 +18,28 @@ public interface AccountMapper {
     AccountDto toDto(Account account);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "userRole", source = "userRoleId", qualifiedByName = "toUserRole")
     void updateEntityFromDto(AccountDto accountDto, @MappingTarget Account account);
 
-    @Mapping(target = "userRoleId", source = "userRole", qualifiedByName = "toId")
     @Mapping(target = "userRoleName", source = "userRole", qualifiedByName = "toName")
     @Mapping(target = "userRolePermissionIds", source = "userRole", qualifiedByName = "toUserRolePermissionIds")
     @Mapping(target = "userRolePermissionNames", source = "userRole", qualifiedByName = "toUserRolePermissionNames")
     ResponseAccountDto toResponseDto(Account account);
-    @Mapping(target = "userRoleId", source = "userRole", qualifiedByName = "toId")
     @Mapping(target = "userRoleName", source = "userRole", qualifiedByName = "toName")
     @Mapping(target = "userRolePermissionIds", source = "userRole", qualifiedByName = "toUserRolePermissionIds")
     @Mapping(target = "userRolePermissionNames", source = "userRole", qualifiedByName = "toUserRolePermissionNames")
     List<ResponseAccountDto> toResponseDtoList(List<Account> accounts);
 
-    @Named(value = "toId")
-    default Integer toId(UserRole userRole) {
-        return userRole != null ? userRole.getId() : null;
-    }
-
     @Named(value = "toName")
     default String toName(UserRole userRole) {
         return userRole != null ? userRole.getName() : null;
+    }
+
+    @Named(value = "toUserRole")
+    default UserRole toUserRole(int userRoleId) {
+        UserRole role = new UserRole();
+        role.setId(userRoleId);
+        return role;
     }
 
     @Named(value = "toUserRolePermissionIds")

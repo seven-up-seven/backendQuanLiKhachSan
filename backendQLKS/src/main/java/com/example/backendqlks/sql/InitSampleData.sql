@@ -216,7 +216,7 @@ CREATE TABLE `VARIABLE` (
 
 -- Insert sample data into database
 INSERT INTO `USER_ROLE` (`NAME`) VALUES
-                                     ('Admin'),
+                                     ('SuperAdmin'),
                                      ('Receptionist'),
                                      ('Manager'),
                                      ('Cleaner'),
@@ -226,6 +226,7 @@ INSERT INTO `PERMISSION` (`NAME`) VALUES
                                       ('ADMIN'),
                                       ('RECEPTIONIST'),
                                       ('MANAGER'),
+                                      ('GUEST'),
                                       ('ACCOUNTANT');
 
 INSERT INTO `USER_ROLE_PERMISSION` (`USER_ROLE_ID`, `PERMISSION_ID`) VALUES
@@ -237,6 +238,7 @@ INSERT INTO `USER_ROLE_PERMISSION` (`USER_ROLE_ID`, `PERMISSION_ID`) VALUES
                                                                          (2, 2),
                                                                          (2, 4),
                                                                          (3, 3),
+                                                                         (5, 5),
                                                                          (4, 1);
 
 INSERT INTO `ACCOUNT` (`USERNAME`, `PASSWORD`, `USER_ROLE_ID`) VALUES

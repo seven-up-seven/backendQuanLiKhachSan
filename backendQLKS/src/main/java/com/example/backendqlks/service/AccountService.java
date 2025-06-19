@@ -125,28 +125,23 @@ public class AccountService {
     public void delete(int accountId, int impactorId, String impactor){
         var existingAccount = accountRepository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect account id"));
-        Optional<Staff> staffUser;
-        Optional<Guest> guestUser;
-        staffUser = staffRepository.findByAccountId(accountId);
-        guestUser = guestRepository.findByAccountId(accountId);
-        if(staffUser.isEmpty() && guestUser.isEmpty()){
-            throw new IllegalArgumentException("Incorrect account id");
-        }
-        staffUser.ifPresent(staff -> {
+        staffRepository.findByAccountId(accountId).ifPresent(staff -> {
             staff.setAccountId(null);
+            staff.setAccount(null);
             staffRepository.save(staff);
         });
-        guestUser.ifPresent(guest -> {
+        guestRepository.findByAccountId(accountId).ifPresent(guest -> {
             guest.setAccountId(null);
+            guest.setAccount(null);
             guestRepository.save(guest);
         });
-        HistoryDto history=HistoryDto.builder()
+        HistoryDto history = HistoryDto.builder()
                 .impactor(impactor)
                 .impactorId(impactorId)
                 .affectedObject("Tài khoản")
                 .affectedObjectId(existingAccount.getId())
-                .action(Action.CREATE)
-                .content("username: "+existingAccount.getUsername()+" password: " + existingAccount.getPassword())
+                .action(Action.DELETE)
+                .content("username: " + existingAccount.getUsername() + " password: " + existingAccount.getPassword())
                 .build();
         historyService.create(history);
         accountRepository.delete(existingAccount);
