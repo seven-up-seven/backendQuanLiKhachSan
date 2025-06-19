@@ -127,10 +127,12 @@ public class AccountService {
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect account id"));
         staffRepository.findByAccountId(accountId).ifPresent(staff -> {
             staff.setAccountId(null);
+            staff.setAccount(null);
             staffRepository.save(staff);
         });
         guestRepository.findByAccountId(accountId).ifPresent(guest -> {
             guest.setAccountId(null);
+            guest.setAccount(null);
             guestRepository.save(guest);
         });
         HistoryDto history = HistoryDto.builder()
