@@ -157,6 +157,7 @@ public class GuestService {
         var existingGuest = guestRepository.findById(guestId)
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect floor id"));
         var accountId = existingGuest.getAccountId();
+        guestRepository.deleteById(guestId);
         if(accountId != null){
             accountRepository.deleteById(accountId);
         }
@@ -178,7 +179,6 @@ public class GuestService {
                 .content(content)
                 .build();
         historyService.create(history);
-        guestRepository.deleteById(guestId);
     }
 
     public List<ResponseGuestDto> findByMultipleCriteria(Integer id, String name ,String identificationNumber, String email, String phoneNumber, Integer accountId) {
