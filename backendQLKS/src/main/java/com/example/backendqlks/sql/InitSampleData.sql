@@ -69,6 +69,7 @@ CREATE TABLE `STAFF` (
                          `ADDRESS` VARCHAR(255) NOT NULL,
                          `SEX` VARCHAR(10),
                          `SALARY_MULTIPLIER` FLOAT,
+                         `EMAIL` VARCHAR(100),
                          `POSITION_ID` INT,
                          `ACCOUNT_ID` INT,
                          FOREIGN KEY (`POSITION_ID`) REFERENCES `POSITION`(`ID`),
@@ -262,22 +263,25 @@ INSERT INTO `POSITION` (`NAME`, `BASE_SALARY`) VALUES
                                                    ('IT Support', 900.0),
                                                    ('Maintenance Lead', 950.0);
 
-INSERT INTO `STAFF` (`FULL_NAME`, `AGE`, `IDENTIFICATION_NUMBER`, `ADDRESS`, `SEX`, `SALARY_MULTIPLIER`, `POSITION_ID`, `ACCOUNT_ID`) VALUES
-                                                                                                                                          ('John Doe', 30, '111111111111', '123 Street', 'MALE', 1.2, 1, 1),
-                                                                                                                                          ('Jane Smith', 25, '222222222222', '456 Avenue', 'FEMALE', 1.1, 2, 2),
-                                                                                                                                          ('Mike Johnson', 40, '333333333333', '789 Boulevard', 'MALE', 1.0, 3, 3),
-                                                                                                                                          ('Emily Davis', 28, '444444444444', '321 Road', 'FEMALE', 1.0, 4, 4),
-                                                                                                                                          ('Chris Brown', 35, '555555555555', '654 Lane', 'MALE', 1.3, 5, NULL),
-                                                                                                                                          ('Sarah Lee', 31, '666666666777', '12 Hill Street', 'FEMALE', 1.2, 6, NULL),
-                                                                                                                                          ('Tom Hardy', 38, '777777777888', '17 River Ave', 'MALE', 1.0, 7, NULL),
-                                                                                                                                          ('Lara Croft', 27, '999999999000', '89 Tomb Rd', 'FEMALE', 1.1, 8, NULL),
-                                                                                                                                          ('Bruce Wayne', 40, '101010101010', '100 Gotham City', 'MALE', 1.3, 9, NULL),
-                                                                                                                                          ('Peter Parker', 26, '111222333444', '20 Spider Lane', 'MALE', 1.0, 10, NULL),
-                                                                                                                                          ('Tony Stark', 45, '222333444555', '10880 Malibu Point', 'MALE', 1.5, 5, NULL),
-                                                                                                                                          ('Diana Prince', 34, '333444555666', 'Themyscira Island', 'FEMALE', 1.3, 1, NULL),
-                                                                                                                                          ('Natasha Romanoff', 33, '444555666777', 'Red Room', 'FEMALE', 1.2, 3, NULL),
-                                                                                                                                          ('Clark Kent', 37, '555666777888', 'Metropolis', 'MALE', 1.4, 2, NULL),
-                                                                                                                                          ('Steve Rogers', 39, '666777888999', 'Brooklyn', 'MALE', 1.2, 4, NULL);
+INSERT INTO `STAFF` (
+    `FULL_NAME`, `AGE`, `IDENTIFICATION_NUMBER`, `ADDRESS`, `SEX`, `SALARY_MULTIPLIER`, `EMAIL`, `POSITION_ID`, `ACCOUNT_ID`
+) VALUES
+      ('John Doe', 30, '111111111111', '123 Street', 'MALE', 1.2, 'john.doe@example.com', 1, 1),
+      ('Jane Smith', 25, '222222222222', '456 Avenue', 'FEMALE', 1.1, 'jane.smith@example.com', 2, 2),
+      ('Mike Johnson', 40, '333333333333', '789 Boulevard', 'MALE', 1.0, 'mike.johnson@example.com', 3, 3),
+      ('Emily Davis', 28, '444444444444', '321 Road', 'FEMALE', 1.0, 'emily.davis@example.com', 4, 4),
+      ('Chris Brown', 35, '555555555555', '654 Lane', 'MALE', 1.3, 'chris.brown@example.com', 5, NULL),
+      ('Sarah Lee', 31, '666666666777', '12 Hill Street', 'FEMALE', 1.2, 'sarah.lee@example.com', 6, NULL),
+      ('Tom Hardy', 38, '777777777888', '17 River Ave', 'MALE', 1.0, 'tom.hardy@example.com', 7, NULL),
+      ('Lara Croft', 27, '999999999000', '89 Tomb Rd', 'FEMALE', 1.1, 'lara.croft@example.com', 8, NULL),
+      ('Bruce Wayne', 40, '101010101010', '100 Gotham City', 'MALE', 1.3, 'bruce.wayne@example.com', 9, NULL),
+      ('Peter Parker', 26, '111222333444', '20 Spider Lane', 'MALE', 1.0, 'peter.parker@example.com', 10, NULL),
+      ('Tony Stark', 45, '222333444555', '10880 Malibu Point', 'MALE', 1.5, 'tony.stark@example.com', 5, NULL),
+      ('Diana Prince', 34, '333444555666', 'Themyscira Island', 'FEMALE', 1.3, 'diana.prince@example.com', 1, NULL),
+      ('Natasha Romanoff', 33, '444555666777', 'Red Room', 'FEMALE', 1.2, 'natasha.romanoff@example.com', 3, NULL),
+      ('Clark Kent', 37, '555666777888', 'Metropolis', 'MALE', 1.4, 'clark.kent@example.com', 2, NULL),
+      ('Steve Rogers', 39, '666777888999', 'Brooklyn', 'MALE', 1.2, 'steve.rogers@example.com', 4, NULL);
+
 
 INSERT INTO `GUEST` (`NAME`, `SEX`, `AGE`, `IDENTIFICATION_NUMBER`, `PHONE_NUMBER`, `EMAIL`, `ACCOUNT_ID`) VALUES
                                                                                                                ('Alice', 'FEMALE', 27, '666666666666', '12345678923', 'alice@example.com', 5),
