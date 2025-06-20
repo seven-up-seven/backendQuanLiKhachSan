@@ -21,7 +21,6 @@ public class FloorController {
         this.floorService = floorService;
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getFloor(@PathVariable int id){
         try{
@@ -31,7 +30,6 @@ public class FloorController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping
     public ResponseEntity<?> getAllFloors(){
         try{
