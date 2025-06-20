@@ -4,6 +4,7 @@ import com.example.backendqlks.entity.enums.Sex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -35,6 +36,9 @@ public class Staff {
     @Column(name="SALARY_MULTIPLIER")
     private float salaryMultiplier;
 
+    @Column(name = "EMAIL")
+    private String email;
+
     //khoa ngoai toi chuc vu (Position)
     @Column(name = "POSITION_ID")
     private int positionId;
@@ -55,15 +59,18 @@ public class Staff {
 
     //khoa ngoai toi hoa don thanh toan (Invoice)
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Invoice> invoices;
 
     //khoa ngoai toi rental form
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RentalForm> rentalForms;
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RentalExtensionForm> rentalExtensionForms;
 }

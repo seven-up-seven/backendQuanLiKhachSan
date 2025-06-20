@@ -38,4 +38,6 @@ public class ResponseStaffDto {
     private List<Integer> rentalExtensionFormIds;
 
     private List<Integer> rentalFormIds;
+
+    private String email;
 }

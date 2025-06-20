@@ -3,6 +3,7 @@ package com.example.backendqlks.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Table(name="ACCOUNT")
@@ -30,11 +31,13 @@ public class Account {
 
     //khoa ngoai toi Guest
     @JsonIgnore
+    @ToString.Exclude
     @OneToOne(mappedBy = "account", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Guest guest;
 
     //khoa ngoai toi Staff
     @JsonIgnore
+    @ToString.Exclude
     @OneToOne(mappedBy = "account", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Staff staff;
 }

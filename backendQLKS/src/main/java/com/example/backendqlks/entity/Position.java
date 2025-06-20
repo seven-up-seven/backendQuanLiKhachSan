@@ -3,6 +3,7 @@ package com.example.backendqlks.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class Position {
     private double baseSalary;
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "position", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Staff> staffs;
 }
