@@ -35,7 +35,7 @@ public class BookingConfirmationForm {
     private LocalDateTime bookingDate;
 
     @Column(name = "RENTAL_DAYS")
-    private int rentalDays;
+    private Integer rentalDays; // dùng wrapper class để chấp nhận null
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
