@@ -12,6 +12,7 @@ import com.example.backendqlks.entity.enums.Action;
 import com.example.backendqlks.mapper.AccountMapper;
 
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -51,11 +52,21 @@ public class AccountService {
         return accountMapper.toResponseDto(existingAccount);
     }
 
+    @Transactional
+    public List<ResponseAccountDto> getAllNoPage() {
+        return accountMapper.toResponseDtoList(accountRepository.findAll());
+    }
+
     @Transactional(readOnly = true)
-    public ResponseAccountDto getByUsername(String username){
-        var existingAccount = accountRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("Can not find account with username " + username));
-        return accountMapper.toResponseDto(existingAccount);
+    public List<ResponseAccountDto> getByUsername(String username){
+        var existingAccount = accountRepository.findByUsernameContainingIgnoreCase(username);
+        return accountMapper.toResponseDtoList(existingAccount);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponseAccountDto> getByUserRoleId(int userRoleNameId){
+        var existingAccounts=accountRepository.findAccountByUserRoleId(userRoleNameId);
+        return accountMapper.toResponseDtoList(existingAccounts);
     }
 
     @Transactional(readOnly = true)

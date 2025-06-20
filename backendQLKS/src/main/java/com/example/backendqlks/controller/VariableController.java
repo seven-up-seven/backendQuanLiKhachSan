@@ -4,6 +4,8 @@ import com.example.backendqlks.dto.variable.VariableDto;
 import com.example.backendqlks.service.VariableService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 @Validated
@@ -33,6 +35,7 @@ public class VariableController {
             return ResponseEntity.status(500).body("Error fetching variable with id: " + e.getMessage());
         }
     }
+
     @GetMapping("/name/{name}")
     public ResponseEntity<?> getVariableByName(@PathVariable String name) {
         try {
@@ -41,6 +44,8 @@ public class VariableController {
             return ResponseEntity.status(500).body("Error fetching variable with name: " + e.getMessage());
         }
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createVariable(@RequestBody @Valid VariableDto variable) {
         try {
@@ -50,15 +55,23 @@ public class VariableController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateVariable(@PathVariable int id, @RequestBody @Valid VariableDto variable) {
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PutMapping("/{id}/{impactorId}/{impactor}")
+    public ResponseEntity<?> updateVariable(@PathVariable int id,
+                                            @PathVariable int impactorId,
+                                            @PathVariable String impactor,
+                                            @RequestBody @Valid VariableDto variable, BindingResult result) {
         try {
-            return ResponseEntity.ok(variableService.update(id, variable));
+            if (result.hasErrors()) {
+                return ResponseEntity.status(500).body(result.getAllErrors());
+            }
+            return ResponseEntity.ok(variableService.update(id, variable, impactorId, impactor));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating variable: " + e.getMessage());
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteVariable(@PathVariable int id) {
         try {

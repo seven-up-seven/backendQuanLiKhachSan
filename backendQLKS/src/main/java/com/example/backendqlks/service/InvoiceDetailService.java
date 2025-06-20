@@ -280,6 +280,7 @@ public class InvoiceDetailService {
         for (var e : rentalForm.getRentalExtensionForms()){
             numberOfRentalDays += e.getNumberOfRentalDays();
         }
+        newInvoiceDetail.setNumberOfRentalDays(numberOfRentalDays);
         newInvoiceDetail.setReservationCost(numberOfRentalDays * rentalForm.getRoom().getRoomType().getPrice());
         var room = roomRepository.findById(rentalForm.getRoom().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Room with this ID cannot be found"));

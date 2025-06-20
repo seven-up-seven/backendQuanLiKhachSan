@@ -21,6 +21,7 @@ public class BlockController {
         this.blockService = blockService;
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getBlock(@PathVariable int id){
         try{
@@ -30,6 +31,7 @@ public class BlockController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping
     public ResponseEntity<?> getAllBlocks(){
         try{
@@ -39,7 +41,7 @@ public class BlockController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createBlock(@PathVariable int impactorId,
                                          @PathVariable String impactor,
@@ -56,6 +58,7 @@ public class BlockController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateBlock(@PathVariable int impactorId,
                                          @PathVariable String impactor,
@@ -73,6 +76,7 @@ public class BlockController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteBlock(@PathVariable int impactorId,
                                          @PathVariable String impactor,

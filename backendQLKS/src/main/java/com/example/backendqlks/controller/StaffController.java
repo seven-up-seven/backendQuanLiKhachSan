@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class StaffController {
         this.staffService = staffService;
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST', 'ACCOUNTANT')")
     @GetMapping("/get-all-page")
     public ResponseEntity<?> getAllStaffs(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try {
@@ -31,6 +33,7 @@ public class StaffController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST', 'ACCOUNTANT')")
     @GetMapping
     public ResponseEntity<?> getAllStaffs() {
         try {
@@ -41,6 +44,7 @@ public class StaffController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST', 'ACCOUNTANT', 'ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getStaffById(@PathVariable int id) {
         try {
@@ -51,6 +55,7 @@ public class StaffController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST', 'ACCOUNTANT', 'ADMIN')")
     @GetMapping("/account-id/{accountId}")
     public ResponseEntity<?> getStaffByAccountId(@PathVariable int accountId) {
         try {
@@ -62,6 +67,7 @@ public class StaffController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST', 'ACCOUNTANT', 'ADMIN')")
     @GetMapping("/without-account")
     public ResponseEntity<?> getStaffWithoutAccount(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try {
@@ -72,6 +78,7 @@ public class StaffController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST', 'ACCOUNTANT', 'ADMIN')")
     @GetMapping("/name/{name}")
     public ResponseEntity<?> getStaffWithName(@PathVariable String name) {
         try {
@@ -82,6 +89,7 @@ public class StaffController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createStaff(@PathVariable int impactorId,
                                          @PathVariable String impactor,
@@ -98,6 +106,7 @@ public class StaffController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ADMIN')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateStaff(@PathVariable int id,
                                          @PathVariable int impactorId,
@@ -115,6 +124,7 @@ public class StaffController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteStaff(@PathVariable int id,
                                          @PathVariable int impactorId,
@@ -127,6 +137,7 @@ public class StaffController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST', 'ACCOUNTANT')")
     @GetMapping("/{id}/salary")
     public ResponseEntity<?> getStaffSalary(@PathVariable int id) {
         try {
@@ -137,6 +148,7 @@ public class StaffController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST', 'ACCOUNTANT')")
     @PatchMapping("/{id}/salary-multiplier/{impactorId}/{impactor}")
     public ResponseEntity<?> updateStaffSalaryMultiplier(@PathVariable int id,
                                                          @PathVariable int impactorId,

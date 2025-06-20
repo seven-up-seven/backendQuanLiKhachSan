@@ -5,6 +5,8 @@ import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 @Builder
 public class BookingConfirmationFormDto {
@@ -20,7 +22,7 @@ public class BookingConfirmationFormDto {
 
     @NotNull(message = "Booking date must not be null or empty")
 //    @FutureOrPresent(message = "Booking date must be in the future or present")
-    private String bookingDate;
+    private LocalDate bookingDate;
 
     @NotNull(message = "Rental days must not be null or empty")
     @Positive(message = "Rental days must be positive")

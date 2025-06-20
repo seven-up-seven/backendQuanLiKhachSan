@@ -3,6 +3,7 @@ package com.example.backendqlks.controller;
 import com.example.backendqlks.service.HistoryService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ public class HistoryController {
         this.historyService = historyService;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<?> getAllHistory() {
         try {
@@ -37,6 +39,7 @@ public class HistoryController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/impactor/{impactor}")
     public ResponseEntity<?> getByImpactor(String impactor) {
         try {
@@ -47,6 +50,7 @@ public class HistoryController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/affected-object/{affectedObject}")
     public ResponseEntity<?> getByAffectedObject(String affectedObject) {
         try {
@@ -57,6 +61,7 @@ public class HistoryController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("impactor-id/{impactorId}")
     public ResponseEntity<?> getByImpactorId(int impactorId) {
         try {
@@ -67,6 +72,7 @@ public class HistoryController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("affected-object-id/{afftecObjectId}")
     public ResponseEntity<?> getByAffectedObjectId(int affectedObjectId) {
         try {
@@ -77,6 +83,7 @@ public class HistoryController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/executed-at/")
     public ResponseEntity<?> getByExecutedAt(@RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
                                              @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {

@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +24,7 @@ public class InvoiceController {
         this.invoiceService = invoiceService;
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getInvoice(@PathVariable int id){
         try{
@@ -32,6 +34,7 @@ public class InvoiceController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST')")
     @GetMapping("/get-all-page")
     public ResponseEntity<?> getAllInvoices(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try{
@@ -41,6 +44,7 @@ public class InvoiceController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST')")
     @GetMapping()
     public ResponseEntity<?> getAllInvoices() {
         try {
@@ -51,6 +55,7 @@ public class InvoiceController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createInvoice(@PathVariable int impactorId,
                                            @PathVariable String impactor,
@@ -67,6 +72,7 @@ public class InvoiceController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateInvoice(@PathVariable int id,
                                            @PathVariable int impactorId,
@@ -84,6 +90,7 @@ public class InvoiceController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteInvoice(@PathVariable int id,
                                            @PathVariable int impactorId,
@@ -96,6 +103,7 @@ public class InvoiceController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST')")
     @GetMapping("/re-calculate/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> reCalculateInvoice(@PathVariable int id,
                                                 @PathVariable int impactorId,

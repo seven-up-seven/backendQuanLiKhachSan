@@ -25,6 +25,8 @@ public interface BookingConfirmationFormMapper {
     @Mapping(target = "guestIdentificationNumber", source = "bookingGuest", qualifiedByName = "toGuestIdentificationNumber")
     @Mapping(target = "roomName", source = "room", qualifiedByName = "toRoomName")
     @Mapping(target = "roomTypeName", source = "room", qualifiedByName = "toRoomTypeName")
+    @Mapping(target = "bookingDate", source = "bookingDate")
+    @Mapping(target = "rentalDays", source = "rentalDays")
     ResponseBookingConfirmationFormDto toResponseDto(BookingConfirmationForm bookingConfirmationForm);
 
     @Mapping(target = "guestName", source = "bookingGuest", qualifiedByName = "toGuestName")

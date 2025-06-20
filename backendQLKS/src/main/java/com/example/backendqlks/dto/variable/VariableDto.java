@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class VariableDto {
     @NotBlank(message = "Name cannot be blank")
     private String name;
-    @NotBlank(message = "Value cannot be null or empty")
+
     private double value;
     private String description;
 }

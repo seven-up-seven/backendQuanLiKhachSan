@@ -4,6 +4,7 @@ import com.example.backendqlks.dto.permission.PermissionDto;
 import com.example.backendqlks.service.PermissionService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class PermissionController {
         this.permissionService = permissionService;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getPermission(@PathVariable int id){
         try{
@@ -29,6 +31,7 @@ public class PermissionController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<?> getAllPermissions(){
         try{
@@ -38,6 +41,7 @@ public class PermissionController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createPermission(@PathVariable int impactorId,
                                               @PathVariable String impactor,
@@ -54,6 +58,7 @@ public class PermissionController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updatePermission(@PathVariable int id,
                                               @PathVariable int impactorId,
@@ -71,6 +76,7 @@ public class PermissionController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deletePermission(@PathVariable int id,
                                               @PathVariable int impactorId,

@@ -70,8 +70,8 @@ public class InvoiceService {
 
     //TODO: add try catch
     public ResponseInvoiceDto create(InvoiceDto invoiceDto, int impactorId, String impactor) {
+        invoiceDto.setStaffId(impactorId);
         var newInvoice = invoiceMapper.toEntity(invoiceDto);
-        newInvoice.setStaffId(impactorId);
         invoiceRepository.save(newInvoice);
         String content = String.format(
                 "Mã khách thanh toán: %d; Mã nhân viên tạo hóa đơn: %d; Tổng chi phí đặt phòng: %.2f",

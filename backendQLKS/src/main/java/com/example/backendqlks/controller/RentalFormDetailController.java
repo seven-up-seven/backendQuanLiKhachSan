@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class RentalFormDetailController {
         this.rentalFormDetailService = rentalFormDetailService;
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @GetMapping
     public ResponseEntity<?> getAllRentalFormDetails(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try {
@@ -31,6 +33,7 @@ public class RentalFormDetailController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getRentalFormDetailById(@PathVariable int id) {
         try {
@@ -41,6 +44,7 @@ public class RentalFormDetailController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createRentalFormDetail(@PathVariable int impactorId,
                                                     @PathVariable String impactor,
@@ -58,6 +62,7 @@ public class RentalFormDetailController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @PostMapping("/rental-form/{rentalFormId}/{impactorId}/{impactor}")
     public ResponseEntity<?> createRentalFormDetails(@PathVariable int rentalFormId,
                                                      @PathVariable int impactorId,
@@ -76,6 +81,7 @@ public class RentalFormDetailController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateRentalFormDetail(@PathVariable int id,
                                                     @PathVariable int impactorId,
@@ -94,6 +100,7 @@ public class RentalFormDetailController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteRentalFormDetail(@PathVariable int id,
                                                     @PathVariable int impactorId,

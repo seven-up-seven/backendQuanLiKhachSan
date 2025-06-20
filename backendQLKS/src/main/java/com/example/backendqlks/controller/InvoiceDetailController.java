@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class InvoiceDetailController {
         this.invoiceDetailService = invoiceDetailService;
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getInvoiceDetail(@PathVariable int id){
         try{
@@ -32,6 +34,7 @@ public class InvoiceDetailController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST')")
     @GetMapping
     public ResponseEntity<?> getAllInvoiceDetails() {
         try{
@@ -42,6 +45,7 @@ public class InvoiceDetailController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST')")
     @GetMapping("/page")
     public ResponseEntity<?> getAllInvoiceDetails(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try{
@@ -51,6 +55,7 @@ public class InvoiceDetailController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createInvoiceDetail(@PathVariable int impactorId,
                                                  @PathVariable String impactor,
@@ -67,6 +72,7 @@ public class InvoiceDetailController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateInvoiceDetail(@PathVariable int id,
                                                  @PathVariable int impactorId,
@@ -84,6 +90,7 @@ public class InvoiceDetailController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteInvoiceDetail(@PathVariable int id,
                                                  @PathVariable int impactorId,
@@ -96,6 +103,7 @@ public class InvoiceDetailController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
     @PostMapping("/invoice/{invoiceId}/{impactorId}/{impactor}")
     public ResponseEntity<?> createInvoiceDetailForInvoice(@PathVariable int invoiceId,
                                                            @PathVariable int impactorId,
@@ -113,7 +121,8 @@ public class InvoiceDetailController {
         }
     }
 
-    @GetMapping("/checkout/{invoiceId}/{rentalFormId}/{impactorId}/{impactor}")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
+    @PostMapping("/checkout/{invoiceId}/{rentalFormId}/{impactorId}/{impactor}")
     public ResponseEntity<?> checkoutInvoiceDetail(@PathVariable int invoiceId,
                                                    @PathVariable int rentalFormId,
                                                    @PathVariable int impactorId,

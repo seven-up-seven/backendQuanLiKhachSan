@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +32,57 @@ public class AccountController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<?> getAllAccounts(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try{
             return ResponseEntity.ok(accountService.getAll(pageable));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching accounts: " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("get-all-no-page")
+    public ResponseEntity<?> getAllAccounts() {
+        try {
+            return ResponseEntity.ok(accountService.getAllNoPage());
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching accounts: " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("username/{username}")
+    public ResponseEntity<?> getAllAccountsByUsername(@PathVariable String username) {
+        try {
+            return ResponseEntity.ok(accountService.getByUsername(username));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching accounts: " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("user-role-id/{userRoleId}")
+    public ResponseEntity<?> getAllAccountsByUserRoleName(@PathVariable Integer userRoleId) {
+        try {
+            return ResponseEntity.ok(accountService.getByUserRoleId(userRoleId));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching accounts: " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("id/{id}")
+    public ResponseEntity<?> getAccountById(@PathVariable int id) {
+        try {
+            return ResponseEntity.ok(accountService.get(id));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching account: " + e.getMessage());
         }
     }
 
@@ -56,6 +102,7 @@ public class AccountController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateAccount(@PathVariable int id,
                                            @PathVariable int impactorId,
@@ -73,6 +120,7 @@ public class AccountController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteAccount(@PathVariable int id,
                                            @PathVariable int impactorId,
