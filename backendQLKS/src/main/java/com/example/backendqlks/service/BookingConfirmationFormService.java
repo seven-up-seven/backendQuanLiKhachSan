@@ -8,13 +8,20 @@ import com.example.backendqlks.dto.history.HistoryDto;
 import com.example.backendqlks.entity.enums.Action;
 import com.example.backendqlks.entity.enums.BookingState;
 import com.example.backendqlks.entity.enums.RoomState;
+import com.example.backendqlks.entity.enums.Variable;
 import com.example.backendqlks.mapper.BookingConfirmationFormMapper;
+import com.example.backendqlks.scheduledjobs.BookingConfirmationFormExpirationChecker;
+import org.quartz.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Transactional
@@ -24,15 +31,21 @@ public class BookingConfirmationFormService {
     private final BookingConfirmationFormMapper bookingConfirmationFormMapper;
     private final RoomRepository roomRepository;
     private final HistoryService historyService;
+    private final VariableService variableService;
+
+    @Autowired
+    private Scheduler scheduler;
 
     public BookingConfirmationFormService(BookingConfirmationFormRepository bookingConfirmationFormRepository,
                                           BookingConfirmationFormMapper bookingConfirmationFormMapper,
                                           RoomRepository roomRepository,
-                                          HistoryService historyService) {
+                                          HistoryService historyService,
+                                          VariableService variableService) {
         this.bookingConfirmationFormMapper = bookingConfirmationFormMapper;
         this.bookingConfirmationFormRepository = bookingConfirmationFormRepository;
         this.roomRepository = roomRepository;
         this.historyService = historyService;
+        this.variableService = variableService;
     }
 
     @Transactional(readOnly = true)
@@ -88,6 +101,32 @@ public class BookingConfirmationFormService {
                 .content(content)
                 .build();
         historyService.create(history);
+
+        //Create the job to automatically update the booking form state
+        var maxTTL=variableService.getByName(String.valueOf(Variable.MAX_BOOKING_CONFIRMATION_TTL));
+        double ttlValue = maxTTL.getValue();
+        long days = (long) ttlValue;
+        long hours = (long) ((ttlValue - days) * 24);
+
+        LocalDateTime triggerTime = newBookingConfirmationForm.getBookingDate()
+                .plusDays(days)
+                .plusHours(hours);
+        JobDetail jobDetail = JobBuilder.newJob(BookingConfirmationFormExpirationChecker.class)
+                .withIdentity("expireBooking_" + newBookingConfirmationForm.getId(), "booking")
+                .usingJobData("bookingConfirmationFormId", newBookingConfirmationForm.getId())
+                .build();
+
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity("trigger_expireBooking_" + newBookingConfirmationForm.getId(), "booking")
+                .startAt(Timestamp.valueOf(triggerTime))
+                .build();
+
+        try {
+            scheduler.scheduleJob(jobDetail, trigger);
+        } catch (SchedulerException e) {
+            throw new RuntimeException("Không thể lên lịch job hết hạn booking", e);
+        }
+
         return bookingConfirmationFormMapper.toResponseDto(newBookingConfirmationForm);
     }
 
@@ -156,5 +195,16 @@ public class BookingConfirmationFormService {
                 .build();
         historyService.create(history);
         bookingConfirmationFormRepository.delete(existingBookingConfirmationForm);
+    }
+
+    public void updateBookingStateToExpiredIfStillPending(int id) {
+        var item=bookingConfirmationFormRepository.findById(id);
+        if (item.isPresent()) {
+            var bookingConfirmationForm=item.get();
+            if (bookingConfirmationForm.getBookingState() == BookingState.PENDING) {
+                bookingConfirmationForm.setBookingState(BookingState.EXPIRED);
+                bookingConfirmationFormRepository.save(bookingConfirmationForm);
+            }
+        }
     }
 }
