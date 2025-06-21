@@ -24,9 +24,13 @@ public interface BlockMapper {
 
     @Mapping(target = "floorIds", source = "floors", qualifiedByName = "floorsToFloorIds")
     @Mapping(target = "floorNames", source = "floors", qualifiedByName = "floorsToFloorNames")
+    @Mapping(target = "posX", source = "posX")
+    @Mapping(target = "posY", source = "posY")
     ResponseBlockDto toResponseDto(Block block);
     @Mapping(target = "floorIds", source = "floors", qualifiedByName = "floorsToFloorIds")
     @Mapping(target = "floorNames", source = "floors", qualifiedByName = "floorsToFloorNames")
+    @Mapping(target = "posX", source = "posX")
+    @Mapping(target = "posY", source = "posY")
     List<ResponseBlockDto> toResponseDtoList(List<Block> blocks);
 
     @Named(value = "floorsToFloorIds")

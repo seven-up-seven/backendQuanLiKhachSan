@@ -19,6 +19,12 @@ public class Block {
     @Column(name =  "NAME")
     private String name;
 
+    @Column(name = "POS_X")
+    private Double posX;
+
+    @Column(name = "POS_Y")
+    private Double posY;
+
     @JsonIgnore
     @OneToMany(mappedBy = "block", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Floor> floors = new ArrayList<>();
