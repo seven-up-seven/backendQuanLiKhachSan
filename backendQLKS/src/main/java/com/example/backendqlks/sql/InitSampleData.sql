@@ -90,7 +90,9 @@ CREATE TABLE `GUEST` (
 
 CREATE TABLE `BLOCK` (
                          `ID` INT AUTO_INCREMENT PRIMARY KEY,
-                         `NAME` VARCHAR(255) NOT NULL
+                         `NAME` VARCHAR(255) NOT NULL,
+                         `POS_X` DOUBLE DEFAULT NULL,
+                         `POS_Y` DOUBLE DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `FLOOR` (
@@ -300,12 +302,12 @@ INSERT INTO `GUEST` (`NAME`, `SEX`, `AGE`, `IDENTIFICATION_NUMBER`, `PHONE_NUMBE
                                                                                                                ('Stephen Strange', 'MALE', 42, '100000000009', '9019019012', 'strange@example.com', NULL),
                                                                                                                ('Pepper Potts', 'FEMALE', 37, '100000000010', '0120120123', 'pepper@example.com', NULL);
 
-INSERT INTO `BLOCK` (`NAME`) VALUES
-                                 ('Block A'),
-                                 ('Block B'),
-                                 ('Block C'),
-                                 ('Block D'),
-                                 ('Block E');
+INSERT INTO `BLOCK` (`NAME`, `POS_X`, `POS_Y`) VALUES
+                                 ('Block A', 100.0, 200.0),
+                                 ('Block B', 300.0, 250.0),
+                                 ('Block C', 500.0, 210.0),
+                                 ('Block D', 700.0, 230.0),
+                                 ('Block E', NULL, NULL);
 
 INSERT INTO `FLOOR` (`NAME`, `BLOCK_ID`) VALUES
                                              ('Floor 1', 1),
