@@ -54,4 +54,9 @@ public class Room {
     @JsonIgnore
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RentalForm> rentalForms = new ArrayList<>();
+
+    //khoa ngoai toi image entity
+    @JsonIgnore
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ImageEntity> images = new ArrayList<>();
 }

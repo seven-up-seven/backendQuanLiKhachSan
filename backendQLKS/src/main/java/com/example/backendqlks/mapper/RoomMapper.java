@@ -3,8 +3,10 @@ package com.example.backendqlks.mapper;
 import com.example.backendqlks.dto.room.ResponseRoomDto;
 import com.example.backendqlks.dto.room.RoomDto;
 import com.example.backendqlks.entity.BookingConfirmationForm;
+import com.example.backendqlks.entity.ImageEntity;
 import com.example.backendqlks.entity.RentalForm;
 import com.example.backendqlks.entity.Room;
+import jdk.jfr.Name;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -28,6 +30,7 @@ public interface RoomMapper {
     @Mapping(target = "floorName", source = "floor.name")
     @Mapping(target = "bookingConfirmationFormIds", source = "bookingConfirmationForms", qualifiedByName = "bookingConfirmationFormsToIds")
     @Mapping(target = "rentalFormIds", source = "rentalForms", qualifiedByName = "rentalFormsToIds")
+    @Mapping(target = "imageIds", source = "images", qualifiedByName = "imagesToIds")
     ResponseRoomDto toResponseDto(Room room);
 
     @Mapping(target = "roomTypeId", source = "roomType.id")
@@ -36,6 +39,7 @@ public interface RoomMapper {
     @Mapping(target = "floorName", source = "floor.name")
     @Mapping(target = "bookingConfirmationFormIds", source = "bookingConfirmationForms", qualifiedByName = "bookingConfirmationFormsToIds")
     @Mapping(target = "rentalFormIds", source = "rentalForms", qualifiedByName = "rentalFormsToIds")
+    @Mapping(target = "imageIds", source = "images", qualifiedByName = "imagesToIds")
     List<ResponseRoomDto> toResponseDtoList(List<Room> rooms);
 
     @Named(value = "bookingConfirmationFormsToIds")
@@ -53,6 +57,15 @@ public interface RoomMapper {
         return rentalForms.stream()
                 .filter(Objects::nonNull)
                 .map(RentalForm::getId)
+                .toList();
+    }
+
+    @Name(value="imagesToIds")
+    default List<Integer> imagesToIds(List<ImageEntity> imageEntities) {
+        if (imageEntities == null) return new ArrayList<>();
+        return imageEntities.stream()
+                .filter(Objects::nonNull)
+                .map(ImageEntity::getId)
                 .toList();
     }
 }
