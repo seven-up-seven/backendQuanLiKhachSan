@@ -6,7 +6,6 @@ import com.example.backendqlks.entity.BookingConfirmationForm;
 import com.example.backendqlks.entity.ImageEntity;
 import com.example.backendqlks.entity.RentalForm;
 import com.example.backendqlks.entity.Room;
-import jdk.jfr.Name;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -60,7 +59,7 @@ public interface RoomMapper {
                 .toList();
     }
 
-    @Name(value="imagesToIds")
+    @Named(value="imagesToIds")
     default List<Integer> imagesToIds(List<ImageEntity> imageEntities) {
         if (imageEntities == null) return new ArrayList<>();
         return imageEntities.stream()
