@@ -119,6 +119,16 @@ CREATE TABLE `ROOM` (
                         FOREIGN KEY (`FLOOR_ID`) REFERENCES `FLOOR`(`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE `IMAGE_ENTITY` (
+                                `ID` INT AUTO_INCREMENT PRIMARY KEY,
+                                `FILE_NAME` VARCHAR(255),
+                                `CONTENT_TYPE` VARCHAR(100),
+                                `DATA` LONGBLOB,
+                                `UPLOADED_AT` DATETIME DEFAULT CURRENT_TIMESTAMP,
+                                `ROOM_ID` INT,
+                                FOREIGN KEY (`ROOM_ID`) REFERENCES `ROOM`(`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE `BOOKING_CONFIRMATION_FORM` (
                                              `ID` INT AUTO_INCREMENT PRIMARY KEY,
                                              `BOOKING_GUEST_ID` INT,
