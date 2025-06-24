@@ -128,6 +128,18 @@ CREATE TABLE `IMAGE_ENTITY` (
                                 FOREIGN KEY (`ROOM_ID`) REFERENCES `ROOM`(`ID`) ON DELETE CASCADE
 ); ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE `REVIEW` (
+                          `ID` INT AUTO_INCREMENT PRIMARY KEY,
+                          `ROOM_ID` INT NOT NULL,
+                          `GUEST_ID` INT NOT NULL, -- hoặc GUEST_ID nếu có bảng khách
+                          `RATING` INT CHECK (RATING >= 1 AND RATING <= 5),
+                          `COMMENT` TEXT,
+                          `REVIEWED_AT` DATETIME DEFAULT CURRENT_TIMESTAMP,
+                          FOREIGN KEY (`ROOM_ID`) REFERENCES `ROOM`(`ID`) ON DELETE CASCADE,
+                          FOREIGN KEY (`GUEST_ID`) REFERENCES `GUEST`(`ID`) ON DELETE CASCADE
+); ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
 CREATE TABLE `BOOKING_CONFIRMATION_FORM` (
                                              `ID` INT AUTO_INCREMENT PRIMARY KEY,
                                              `BOOKING_GUEST_ID` INT,
