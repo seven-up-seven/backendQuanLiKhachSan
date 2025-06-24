@@ -27,7 +27,8 @@ DROP TABLE IF EXISTS `REVENUE_REPORT_DETAIL`;
 DROP TABLE IF EXISTS `REVENUE_REPORT`;
 DROP TABLE IF EXISTS `HISTORY`;
 DROP TABLE IF EXISTS `VARIABLE`;
-
+DROP TABLE IF EXISTS `IMAGE_ENTITY`;
+DROP TABLE IF EXISTS `REVIEW`;
 -- Create tables
 CREATE TABLE `USER_ROLE` (
                              `ID` INT AUTO_INCREMENT PRIMARY KEY,
@@ -126,7 +127,7 @@ CREATE TABLE `IMAGE_ENTITY` (
                                 `ROOM_ID` INT,
                                 `UPLOADED_AT` DATETIME DEFAULT CURRENT_TIMESTAMP,
                                 FOREIGN KEY (`ROOM_ID`) REFERENCES `ROOM`(`ID`) ON DELETE CASCADE
-); ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `REVIEW` (
                           `ID` INT AUTO_INCREMENT PRIMARY KEY,
@@ -137,7 +138,7 @@ CREATE TABLE `REVIEW` (
                           `REVIEWED_AT` DATETIME DEFAULT CURRENT_TIMESTAMP,
                           FOREIGN KEY (`ROOM_ID`) REFERENCES `ROOM`(`ID`) ON DELETE CASCADE,
                           FOREIGN KEY (`GUEST_ID`) REFERENCES `GUEST`(`ID`) ON DELETE CASCADE
-); ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 CREATE TABLE `BOOKING_CONFIRMATION_FORM` (
@@ -467,7 +468,109 @@ INSERT INTO `VARIABLE` (`NAME`, `VALUE`, `DESCRIPTION`) VALUES
                                                             ('MAX_EXTENSION_DAY', 10, 'Số ngày gia hạn tối đa'),
                                                             ('MAX_BOOKING_CONFIRMATION_TTL', 0.001388 , 'Thời gian tồn tại tối đa của một phiếu đặt phòng chưa thanh toán');
 
+INSERT INTO IMAGE_ENTITY (URL, FILE_NAME, ROOM_ID) VALUES
+-- Room 1
+('https://xuonggooccho.com/ckfinder/userfiles/files/anh-phong-ngu.jpg', 'anh-phong-ngu.jpg', 1),
+('https://noithattrevietnam.com/uploaded/2019/12/1-thiet-ke-phong-ngu-khach-san%20%281%29.jpg', '1-thiet-ke-phong-ngu-khach-san%20%281%29.jpg', 1),
+('https://acihome.vn/uploads/17/phong-ngu-khach-san-5-sao.jpg', 'phong-ngu-khach-san-5-sao.jpg', 1),
+('https://www.vietnambooking.com/wp-content/uploads/2021/02/khach-san-ho-chi-minh-35.jpg', 'khach-san-ho-chi-minh-35.jpg', 1),
+('https://ik.imagekit.io/tvlk/blog/2023/09/khach-san-view-bien-da-nang-1.jpg', 'khach-san-view-bien-da-nang-1.jpg', 1),
+-- Room 2
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266362/qsj8vz0bptxfirwamtx5.png', 'qsj8vz0bptxfirwamtx5.png', 2),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266321/w05jzxrqfwb35qjg5p13.png', 'w05jzxrqfwb35qजरियाद्वार.png', 2),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266245/erovkf0owfbai9h8jkzq.png', 'erovkf0owfbai9h8jkzq.png', 2),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266199/s6xhgewuv9sf3c1jnlik.png', 's6xhgewuv9sf3c1jnlik.png', 2),
+('https://watermark.lovepik.com/photo/20211130/large/lovepik-grand-bed-room-of-superior-hotel-picture_501221020.jpg', '501221020.jpg', 2),
+-- Room 3
+('https://saigontourist.com.vn/files/images/luu-tru/luu-tru-mien-nam/hotel-grand-saigon-2.jpg', 'hotel-grand-saigon-2.jpg', 3),
+('https://acihome.vn/uploads/15/mau-thiet-ke-noi-that-phong-2-giuong-don-ben-trong-khach-san-3-4-5-sao-4.jpg', 'mau-thiet-ke-noi-that-phong-2-giuong-don-ben-trong-khach-san-3-4-5-sao-4.jpg', 3),
+('https://duopig.com/wp-content/uploads/2021/03/Ch%E1%BB%A5p-%E1%BA%A3nh-resort-ch%E1%BB%A5p-%E1%BA%A3nh-nh%C3%A0-h%C3%A0ng-ch%E1%BB%A5p-%E1%BA%A3nh-kh%C3%A1ch-s%E1%BA%A1n-108-copy.jpg', 'Ch%E1%BB%A5p-%E1%BA%A3nh-resort-ch%E1%BB%A5p-%E1%BA%A3nh-nh%C3%A0-h%C3%A0ng-ch%E1%BB%A5p-%E1%BA%A3nh-kh%C3%A1ch-s%E1%BA%A1n-108-copy.jpg', 3),
+('https://images2.thanhnien.vn/528068263637045248/2023/9/11/biden-12-1694407393696398570440.jpg', 'biden-12-1694407393696398570440.jpg', 3),
+('https://khachsandep.vn/storage/files/0%200%20%20bi%20quyet%20thiet%20ke%20homestay%20dep/0%20tieu%20chuan%20thiet%20ke%20phong%20tong%20thong/anh-bia-tieu-chuan-thiet-ke-phong-tong-thong.jpg', 'anh-bia-tieu-chuan-thiet-ke-phong-tong-thong.jpg', 3),
+-- Room 4
+('https://images2.thanhnien.vn/528068263637045248/2023/9/12/the-reverie-2-1694491501124271243870.jpg', 'the-reverie-2-1694491501124271243870.jpg', 4),
+('https://xuonggooccho.com/ckfinder/userfiles/files/anh-phong-ngu.jpg', 'anh-phong-ngu.jpg', 4),
+('https://noithattrevietnam.com/uploaded/2019/12/1-thiet-ke-phong-ngu-khach-san%20%281%29.jpg', '1-thiet-ke-phong-ngu-khach-san%20%281%29.jpg', 4),
+('https://acihome.vn/uploads/17/phong-ngu-khach-san-5-sao.jpg', 'phong-ngu-khach-san-5-sao.jpg', 4),
+('https://www.vietnambooking.com/wp-content/uploads/2021/02/khach-san-ho-chi-minh-35.jpg', 'khach-san-ho-chi-minh-35.jpg', 4),
+-- Room 5
+('https://ik.imagekit.io/tvlk/blog/2023/09/khach-san-view-bien-da-nang-1.jpg', 'khach-san-view-bien-da-nang-1.jpg', 5),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266362/qsj8vz0bptxfirwamtx5.png', 'qsj8vz0bptxfirwamtx5.png', 5),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266321/w05jzxrqfwb35qjg5p13.png', 'w05jzxrqfwb35qjg5p13.png', 5),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266245/erovkf0owfbai9h8jkzq.png', 'erovkf0owfbai9h8jkzq.png', 5),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266199/s6xhgewuv9sf3c1jnlik.png', 's6xhgewuv9sf3c1jnlik.png', 5),
+-- Room 6
+('https://watermark.lovepik.com/photo/20211130/large/lovepik-grand-bed-room-of-superior-hotel-picture_501221020.jpg', '501221020.jpg', 6),
+('https://saigontourist.com.vn/files/images/luu-tru/luu-tru-mien-nam/hotel-grand-saigon-2.jpg', 'hotel-grand-saigon-2.jpg', 6),
+('https://acihome.vn/uploads/15/mau-thiet-ke-noi-that-phong-2-giuong-don-ben-trong-khach-san-3-4-5-sao-4.jpg', 'mau-thiet-ke-noi-that-phong-2-giuong-don-ben-trong-khach-san-3-4-5-sao-4.jpg', 6),
+('https://duopig.com/wp-content/uploads/2021/03/Ch%E1%BB%A5p-%E1%BA%A3nh-resort-ch%E1%BB%A5p-%E1%BA%A3nh-nh%C3%A0-h%C3%A0ng-ch%E1%BB%A5p-%E1%BA%A3nh-kh%C3%A1ch-s%E1%BA%A1n-108-copy.jpg', 'Ch%E1%BB%A5p-%E1%BA%A3nh-resort-ch%E1%BB%A5p-%E1%BA%A3nh-nh%C3%A0-h%C3%A0ng-ch%E1%BB%A5p-%E1%BA%A3nh-kh%C3%A1ch-s%E1%BA%A1n-108-copy.jpg', 6),
+('https://images2.thanhnien.vn/528068263637045248/2023/9/11/biden-12-1694407393696398570440.jpg', 'biden-12-1694407393696398570440.jpg', 6),
+-- Room 7
+('https://khachsandep.vn/storage/files/0%200%20%20bi%20quyet%20thiet%20ke%20homestay%20dep/0%20tieu%20chuan%20thiet%20ke%20phong%20tong%20thong/anh-bia-tieu-chuan-thiet-ke-phong-tong-thong.jpg', 'anh-bia-tieu-chuan-thiet-ke-phong-tong-thong.jpg', 7),
+('https://images2.thanhnien.vn/528068263637045248/2023/9/12/the-reverie-2-1694491501124271243870.jpg', 'the-reverie-2-1694491501124271243870.jpg', 7),
+('https://xuonggooccho.com/ckfinder/userfiles/files/anh-phong-ngu.jpg', 'anh-phong-ngu.jpg', 7),
+('https://noithattrevietnam.com/uploaded/2019/12/1-thiet-ke-phong-ngu-khach-san%20%281%29.jpg', '1-thiet-ke-phong-ngu-khach-san%20%281%29.jpg', 7),
+('https://acihome.vn/uploads/17/phong-ngu-khach-san-5-sao.jpg', 'phong-ngu-khach-san-5-sao.jpg', 7),
+-- Room 8
+('https://www.vietnambooking.com/wp-content/uploads/2021/02/khach-san-ho-chi-minh-35.jpg', 'khach-san-ho-chi-minh-35.jpg', 8),
+('https://ik.imagekit.io/tvlk/blog/2023/09/khach-san-view-bien-da-nang-1.jpg', 'khach-san-view-bien-da-nang-1.jpg', 8),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266362/qsj8vz0bptxfirwamtx5.png', 'qsj8vz0bptxfirwamtx5.png', 8),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266321/w05jzxrqfwb35qjg5p13.png', 'w05jzxrqfwb35qjg5p13.png', 8),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266245/erovkf0owfbai9h8jkzq.png', 'erovkf0owfbai9h8jkzq.png', 8),
+-- Room 9
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266199/s6xhgewuv9sf3c1jnlik.png', 's6xhgewuv9sf3c1jnlik.png', 9),
+('https://watermark.lovepik.com/photo/20211130/large/lovepik-grand-bed-room-of-superior-hotel-picture_501221020.jpg', '501221020.jpg', 9),
+('https://saigontourist.com.vn/files/images/luu-tru/luu-tru-mien-nam/hotel-grand-saigon-2.jpg', 'hotel-grand-saigon-2.jpg', 9),
+('https://acihome.vn/uploads/15/mau-thiet-ke-noi-that-phong-2-giuong-don-ben-trong-khach-san-3-4-5-sao-4.jpg', 'mau-thiet-ke-noi-that-phong-2-giuong-don-ben-trong-khach-san-3-4-5-sao-4.jpg', 9),
+('https://duopig.com/wp-content/uploads/2021/03/Ch%E1%BB%A5p-%E1%BA%A3nh-resort-ch%E1%BB%A5p-%E1%BA%A3nh-nh%C3%A0-h%C3%A0ng-ch%E1%BB%A5p-%E1%BA%A3nh-kh%C3%A1ch-s%E1%BA%A1n-108-copy.jpg', 'Ch%E1%BB%A5p-%E1%BA%A3nh-resort-ch%E1%BB%A5p-%E1%BA%A3nh-nh%C3%A0-h%C3%A0ng-ch%E1%BB%A5p-%E1%BA%A3nh-kh%C3%A1ch-s%E1%BA%A1n-108-copy.jpg', 9),
+-- Room 10
+('https://images2.thanhnien.vn/528068263637045248/2023/9/11/biden-12-1694407393696398570440.jpg', 'biden-12-1694407393696398570440.jpg', 10),
+('https://khachsandep.vn/storage/files/0%200%20%20bi%20quyet%20thiet%20ke%20homestay%20dep/0%20tieu%20chuan%20thiet%20ke%20phong%20tong%20thong/anh-bia-tieu-chuan-thiet-ke-phong-tong-thong.jpg', 'anh-bia-tieu-chuan-thiet-ke-phong-tong-thong.jpg', 10),
+('https://images2.thanhnien.vn/528068263637045248/2023/9/12/the-reverie-2-1694491501124271243870.jpg', 'the-reverie-2-1694491501124271243870.jpg', 10),
+('https://xuonggooccho.com/ckfinder/userfiles/files/anh-phong-ngu.jpg', 'anh-phong-ngu.jpg', 10),
+('https://noithattrevietnam.com/uploaded/2019/12/1-thiet-ke-phong-ngu-khach-san%20%281%29.jpg', '1-thiet-ke-phong-ngu-khach-san%20%281%29.jpg', 10),
+-- Room 11
+('https://acihome.vn/uploads/17/phong-ngu-khach-san-5-sao.jpg', 'phong-ngu-khach-san-5-sao.jpg', 11),
+('https://www.vietnambooking.com/wp-content/uploads/2021/02/khach-san-ho-chi-minh-35.jpg', 'khach-san-ho-chi-minh-35.jpg', 11),
+('https://ik.imagekit.io/tvlk/blog/2023/09/khach-san-view-bien-da-nang-1.jpg', 'khach-san-view-bien-da-nang-1.jpg', 11),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266362/qsj8vz0bptxfirwamtx5.png', 'qsj8vz0bptxfirwamtx5.png', 11),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266321/w05jzxrqfwb35qjg5p13.png', 'w05jzxrqfwb35qjg5p13.png', 11),
+-- Room 12
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266245/erovkf0owfbai9h8jkzq.png', 'erovkf0owfbai9h8jkzq.png', 12),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266199/s6xhgewuv9sf3c1jnlik.png', 's6xhgewuv9sf3c1jnlik.png', 12),
+('https://watermark.lovepik.com/photo/20211130/large/lovepik-grand-bed-room-of-superior-hotel-picture_501221020.jpg', '501221020.jpg', 12),
+('https://saigontourist.com.vn/files/images/luu-tru/luu-tru-mien-nam/hotel-grand-saigon-2.jpg', 'hotel-grand-saigon-2.jpg', 12),
+('https://acihome.vn/uploads/15/mau-thiet-ke-noi-that-phong-2-giuong-don-ben-trong-khach-san-3-4-5-sao-4.jpg', 'mau-thiet-ke-noi-that-phong-2-giuong-don-ben-trong-khach-san-3-4-5-sao-4.jpg', 12),
+-- Room 13
+('https://duopig.com/wp-content/uploads/2021/03/Ch%E1%BB%A5p-%E1%BA%A3nh-resort-ch%E1%BB%A5p-%E1%BA%A3nh-nh%C3%A0-h%C3%A0ng-ch%E1%BB%A5p-%E1%BA%A3nh-kh%C3%A1ch-s%E1%BA%A1n-108-copy.jpg', 'Ch%E1%BB%A5p-%E1%BA%A3nh-resort-ch%E1%BB%A5p-%E1%BA%A3nh-nh%C3%A0-h%C3%A0ng-ch%E1%BB%A5p-%E1%BA%A3nh-kh%C3%A1ch-s%E1%BA%A1n-108-copy.jpg', 13),
+('https://images2.thanhnien.vn/528068263637045248/2023/9/11/biden-12-1694407393696398570440.jpg', 'biden-12-1694407393696398570440.jpg', 13),
+('https://khachsandep.vn/storage/files/0%200%20%20bi%20quyet%20thiet%20ke%20homestay%20dep/0%20tieu%20chuan%20thiet%20ke%20phong%20tong%20thong/anh-bia-tieu-chuan-thiet-ke-phong-tong-thong.jpg', 'anh-bia-tieu-chuan-thiet-ke-phong-tong-thong.jpg', 13),
+('https://images2.thanhnien.vn/528068263637045248/2023/9/12/the-reverie-2-1694491501124271243870.jpg', 'the-reverie-2-1694491501124271243870.jpg', 13),
+('https://xuonggooccho.com/ckfinder/userfiles/files/anh-phong-ngu.jpg', 'anh-phong-ngu.jpg', 13),
+-- Room 14
+('https://noithattrevietnam.com/uploaded/2019/12/1-thiet-ke-phong-ngu-khach-san%20%281%29.jpg', '1-thiet-ke-phong-ngu-khach-san%20%281%29.jpg', 14),
+('https://acihome.vn/uploads/17/phong-ngu-khach-san-5-sao.jpg', 'phong-ngu-khach-san-5-sao.jpg', 14),
+('https://www.vietnambooking.com/wp-content/uploads/2021/02/khach-san-ho-chi-minh-35.jpg', 'khach-san-ho-chi-minh-35.jpg', 14),
+('https://ik.imagekit.io/tvlk/blog/2023/09/khach-san-view-bien-da-nang-1.jpg', 'khach-san-view-bien-da-nang-1.jpg', 14),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266362/qsj8vz0bptxfirwamtx5.png', 'qsj8vz0bptxfirwamtx5.png', 14),
+-- Room 15
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266321/w05jzxrqfwb35qjg5p13.png', 'w05jzxrqfwb35qjg5p13.png', 15),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266245/erovkf0owfbai9h8jkzq.png', 'erovkf0owfbai9h8jkzq.png', 15),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266199/s6xhgewuv9sf3c1jnlik.png', 's6xhgewuv9sf3c1jnlik.png', 15),
+('https://watermark.lovepik.com/photo/20211130/large/lovepik-grand-bed-room-of-superior-hotel-picture_501221020.jpg', '501221020.jpg', 15),
+('https://saigontourist.com.vn/files/images/luu-tru/luu-tru-mien-nam/hotel-grand-saigon-2.jpg', 'hotel-grand-saigon-2.jpg', 15);
 
+INSERT INTO REVIEW (ROOM_ID, GUEST_ID, RATING, COMMENT) VALUES
+(1, 1, 5, 'Phòng 101 có view biển tuyệt đẹp, không gian sạch sẽ và thoáng mát. Tiện nghi đầy đủ, giường ngủ êm ái, nhân viên phục vụ rất nhiệt tình. Tôi đặc biệt thích ban công nhỏ để ngắm bình minh. Trạng thái phòng READY_TO_SERVE đúng như kỳ vọng, mọi thứ đều sẵn sàng khi tôi check-in. Chắc chắn sẽ quay lại lần sau!'),
+(2, 3, 4, 'Phòng 102 có view thành phố khá đẹp, đặc biệt vào ban đêm. Phòng được chuẩn bị kỹ lưỡng dù trạng thái là BOOKED. Nội thất hiện đại, wifi mạnh, nhưng điều hòa hơi ồn một chút. Nhân viên hỗ trợ nhanh chóng khi tôi yêu cầu thêm gối. Tổng thể là một trải nghiệm tốt, đáng giá tiền.'),
+(3, 5, 3, 'Phòng 201 có view vườn dễ chịu, nhưng đang trong trạng thái BEING_CLEANED khi tôi đến nên phải chờ một chút. Nội thất hơi cũ, cần cải thiện. Điểm cộng là nhân viên rất thân thiện và xin lỗi vì sự bất tiện. Bình luận này dành cho những ai thích không gian yên tĩnh gần thiên nhiên.'),
+(4, 7, 2, 'Phòng 202 đang UNDER_RENOVATION nên không phù hợp để ở thời điểm này. Mặc dù view núi rất đẹp, nhưng mùi sơn và tiếng ồn từ việc sửa chữa làm tôi khó chịu. Nhân viên đã cố gắng hỗ trợ, nhưng tôi nghĩ khách sạn nên thông báo rõ ràng hơn trước khi cho đặt phòng này.'),
+(5, 9, 5, 'Phòng 301 có view hồ tuyệt vời, không gian sang trọng đúng chuẩn BEING_RENTED. Tiện nghi cao cấp, từ bồn tắm đến đồ dùng trong phòng đều hoàn hảo. Nhân viên phục vụ chu đáo, luôn hỏi thăm nhu cầu của tôi. Tôi rất hài lòng và sẽ giới thiệu cho bạn bè.'),
+(6, 11, 4, 'Phòng 302 gần thang máy nên rất tiện, trạng thái READY_TO_SERVE đúng như mô tả. Phòng sạch sẽ, gọn gàng, nhưng cách âm hơi kém, nghe tiếng bước chân ngoài hành lang. View không đặc biệt, nhưng giá cả hợp lý. Nhân viên hỗ trợ nhanh khi tôi cần thêm nước uống.'),
+(7, 13, 3, 'Phòng 303 ở góc yên tĩnh, đúng như mô tả "Quiet corner", nhưng trạng thái BOOKED nên tôi phải check-in muộn. Nội thất ổn, nhưng đèn ngủ bị hỏng, phải báo nhân viên sửa. Bình luận này dành cho ai thích không gian riêng tư, nhưng cần kiểm tra kỹ trước khi nhận phòng.'),
+(8, 2, 5, 'Phòng 304 là lựa chọn hoàn hảo cho gia đình, đúng với tên "Family pack". Không gian rộng rãi, có nhiều tiện ích cho trẻ em. Trạng thái READY_TO_SERVE, mọi thứ đều sạch sẽ và sẵn sàng. Nhân viên rất thân thiện, còn tặng quà nhỏ cho con tôi. Rất đáng tiền!'),
+(9, 4, 4, 'Phòng 401 có view núi đẹp, trạng thái READY_TO_SERVE đúng chuẩn. Nội thất hiện đại, giường lớn thoải mái, nhưng phòng tắm hơi nhỏ so với kỳ vọng. Nhân viên phục vụ tốt, hỗ trợ nhanh khi tôi cần thêm khăn. Tôi sẽ quay lại nếu có dịp.'),
+(10, 6, 3, 'Phòng 402 không có cửa sổ nên hơi bí, đúng như mô tả "No window". Trạng thái BEING_CLEANED khi tôi đến, nhưng nhân viên dọn nhanh. Nội thất cơ bản, phù hợp với giá rẻ. Bình luận này dành cho ai tìm phòng giá thấp nhưng vẫn muốn sạch sẽ.');
 -- QUARTZ TABLES IMPLEMENT
 -- THE WAY IT IS IMPLEMENTED BELOW IS DEFAULT, WHICH WAS TAKEN FROM GITHUB
 -- LINK TO THE IMPLEMENTATION: https://github.com/quartz-scheduler/quartz/blob/main/quartz/src/main/resources/org/quartz/impl/jdbcjobstore/tables_mysql_innodb.sql
