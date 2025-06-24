@@ -5,12 +5,11 @@ import com.example.backendqlks.dto.image.ResponseImageDto;
 import com.example.backendqlks.service.ImageService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/image")
@@ -27,11 +26,27 @@ public class ImageController {
         try {
             List<ResponseImageDto> images = imageService.getImagesByRoomId(roomId);
             return ResponseEntity.ok(images);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body("Không tìm thấy ảnh cho phòng: " + e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error fetching images: " + e.getMessage());
+            return ResponseEntity.status(500).body("Lỗi khi lấy danh sách ảnh: " + e.getMessage());
         }
     }
 
+    @PostMapping(value = "/upload", consumes = "multipart/form-data")
+    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file,
+                                         @RequestParam("roomId") int roomId,
+                                         @RequestParam("impactorId") int impactorId,
+                                         @RequestParam("impactor") String impactor) {
+        try {
+            ResponseImageDto image = imageService.uploadImage(file, roomId, impactorId, impactor);
+            return ResponseEntity.ok(image);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body("Lỗi khi upload ảnh: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Lỗi server khi upload ảnh: " + e.getMessage());
+        }
+    }
 
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createImage(@PathVariable int impactorId,
@@ -40,15 +55,16 @@ public class ImageController {
                                          BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
             }
             ResponseImageDto createdImage = imageService.createImage(imageDto, impactorId, impactor);
             return ResponseEntity.ok(createdImage);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body("Lỗi khi tạo ảnh: " + e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error creating image: " + e.getMessage());
+            return ResponseEntity.status(500).body("Lỗi server khi tạo ảnh: " + e.getMessage());
         }
     }
-
 
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateImage(@PathVariable int id,
@@ -58,15 +74,16 @@ public class ImageController {
                                          BindingResult result) {
         try {
             if (result.hasErrors()) {
-                return ResponseEntity.badRequest().body(Objects.requireNonNull(result.getFieldError()).getDefaultMessage());
+                return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
             }
             ResponseImageDto updatedImage = imageService.updateImage(id, imageDto, impactorId, impactor);
             return ResponseEntity.ok(updatedImage);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body("Lỗi khi cập nhật ảnh: " + e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error updating image: " + e.getMessage());
+            return ResponseEntity.status(500).body("Lỗi server khi cập nhật ảnh: " + e.getMessage());
         }
     }
-
 
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteImage(@PathVariable int id,
@@ -74,9 +91,11 @@ public class ImageController {
                                          @PathVariable String impactor) {
         try {
             imageService.deleteImageById(id, impactorId, impactor);
-            return ResponseEntity.ok("Deleted image with id: " + id);
+            return ResponseEntity.ok("Xóa ảnh thành công với ID: " + id);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body("Lỗi khi xóa ảnh: " + e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error deleting image: " + e.getMessage());
+            return ResponseEntity.status(500).body("Lỗi server khi xóa ảnh: " + e.getMessage());
         }
     }
 }

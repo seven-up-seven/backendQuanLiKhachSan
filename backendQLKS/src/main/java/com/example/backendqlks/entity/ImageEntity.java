@@ -12,26 +12,21 @@ import java.time.LocalDateTime;
 @Table(name = "IMAGE_ENTITY")
 public class ImageEntity {
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
 
-    @Column(name = "FILE_NAME")
+    @Column(name = "URL", length = 1000)
+    private String url;
+
+    @Column(name = "FILE_NAME", length = 255)
     private String fileName;
 
-    @Column(name = "CONTENT_TYPE")
-    private String contentType;
-
-    @Lob
-    @Column(length = Integer.MAX_VALUE, name = "DATA")
-    private byte[] data;
+    @Column(name = "ROOM_ID")
+    private int roomId;
 
     @Column(name = "UPLOADED_AT")
     private LocalDateTime uploadedAt;
-
-    //khoa ngoai toi Room
-    @Column(name = "ROOM_ID")
-    private int roomId;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

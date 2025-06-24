@@ -10,6 +10,8 @@ import org.mapstruct.*;
 public interface ImageMapper {
 
     @Mapping(target = "room", source = "roomId", qualifiedByName = "mapRoomIdToRoom")
+    @Mapping(target = "id", ignore = true) // Bỏ qua id khi tạo mới entity
+    @Mapping(target = "uploadedAt", ignore = true) // Bỏ qua uploadedAt vì được set trong @PrePersist
     ImageEntity toEntity(ImageDto dto);
 
     @Mapping(target = "roomId", source = "room.id")

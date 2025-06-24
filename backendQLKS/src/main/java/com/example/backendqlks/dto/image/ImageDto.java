@@ -12,11 +12,8 @@ public class ImageDto {
     @NotBlank(message = "File name is required")
     private String fileName;
 
-    @NotBlank(message = "Content type is required")
-    private String contentType;
-
-    @NotNull(message = "Image data is required")
-    private byte[] data;
+    @NotBlank(message = "URL is required")
+    private String url;
 
     @NotNull(message = "Room ID is required")
     private Integer roomId;

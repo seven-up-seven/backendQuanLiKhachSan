@@ -5,10 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-
 public class ResponseImageDto {
     private Integer id;
     private String fileName;
-    private String contentType;
+    private String url;
     private Integer roomId;
 }
