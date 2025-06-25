@@ -9,32 +9,40 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "IMAGE_ENTITY")
-public class ImageEntity {
+@Table(name = "REVIEW")
+public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
 
-    @Column(name = "URL", length = 1000)
-    private String url;
-
-    @Column(name = "FILE_NAME", length = 255)
-    private String fileName;
-
     @Column(name = "ROOM_ID")
     private int roomId;
 
-    @Column(name = "UPLOADED_AT")
-    private LocalDateTime uploadedAt;
+    @Column(name = "GUEST_ID")
+    private int guestId;
+
+    @Column(name = "RATING")
+    private int rating;
+
+    @Column(name = "COMMENT", columnDefinition = "TEXT")
+    private String comment;
+
+    @Column(name = "REVIEWED_AT")
+    private LocalDateTime reviewedAt;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROOM_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private Room room;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "GUEST_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    private Guest guest;
+
     @PrePersist
     protected void onCreate() {
-        this.uploadedAt = LocalDateTime.now();
+        this.reviewedAt = LocalDateTime.now();
     }
 }
