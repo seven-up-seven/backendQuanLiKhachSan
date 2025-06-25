@@ -6,7 +6,9 @@ import com.example.backendqlks.entity.Staff;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+@RepositoryRestResource(exported = false)
 public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     Page<Invoice> findAllByStaff(Staff staff, Pageable pageable);
 
