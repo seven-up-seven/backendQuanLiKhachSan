@@ -207,4 +207,9 @@ public class BookingConfirmationFormService {
             }
         }
     }
+
+    @Transactional(readOnly = true)
+    public List<ResponseBookingConfirmationFormDto> getBookingConfirmationFormsByUserId(int userId) {
+        return bookingConfirmationFormMapper.toResponseDtoList(bookingConfirmationFormRepository.findBookingConfirmationFormsByBookingGuestId(userId));
+    }
 }
