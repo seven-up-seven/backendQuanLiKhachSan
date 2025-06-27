@@ -71,9 +71,7 @@ public class InvoiceDetailService {
     public ResponseInvoiceDetailDto create(InvoiceDetailDto invoiceDetailDto, int impactorId, String impactor) {
         var rentalForm = rentalFormRepository.findById(invoiceDetailDto.getRentalFormId())
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect rental form id"));
-        if(rentalForm.getIsPaidAt() == null){
-            throw new IllegalArgumentException("Rental form has been paid ");
-        }
+
         var invoiceDetail = invoiceDetailMapper.toEntity(invoiceDetailDto);
         String content = String.format(
                 "Số ngày thuê: %d; Chi phí đặt phòng: %.2f; Mã phiếu thuê: %d; Mã hóa đơn: %d",
