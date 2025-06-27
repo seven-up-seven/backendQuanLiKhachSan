@@ -98,7 +98,7 @@ public class BookingConfirmationFormController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteBookingConfirmationForm(@PathVariable int id, @PathVariable int impactorId, @PathVariable String impactor){
         try{
