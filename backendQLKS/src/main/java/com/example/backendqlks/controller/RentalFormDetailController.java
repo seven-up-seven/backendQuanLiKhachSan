@@ -112,4 +112,15 @@ public class RentalFormDetailController {
             return ResponseEntity.status(500).body("Error deleting rental form detail with id: " + e.getMessage());
         }
     }
+
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
+    @GetMapping("/user-id/{userId}")
+    public ResponseEntity<?> getRentalFormDetailsByUserId(@PathVariable int userId) {
+        try {
+            return ResponseEntity.ok(rentalFormDetailService.getRentalFormDetailsByUserId(userId));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error getting rental form details: " + e.getMessage());
+        }
+    }
 }

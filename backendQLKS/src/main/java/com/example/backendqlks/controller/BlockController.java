@@ -31,7 +31,6 @@ public class BlockController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping
     public ResponseEntity<?> getAllBlocks(){
         try{

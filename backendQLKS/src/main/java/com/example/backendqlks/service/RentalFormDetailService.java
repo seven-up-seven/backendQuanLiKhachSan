@@ -161,4 +161,9 @@ public class RentalFormDetailService {
         }
         return listResult;
     }
+
+    @Transactional(readOnly = true)
+    public List<ResponseRentalFormDetailDto> getRentalFormDetailsByUserId(int userId) {
+        return rentalFormDetailMapper.toResponseDtoList(rentalFormDetailRepository.findRentalFormDetailsByGuestId(userId));
+    }
 }
