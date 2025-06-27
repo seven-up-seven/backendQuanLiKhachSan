@@ -4,10 +4,10 @@ import com.example.backendqlks.dao.HistoryRepository;
 import com.example.backendqlks.dto.history.HistoryDto;
 import com.example.backendqlks.dto.history.ResponseHistoryDto;
 import com.example.backendqlks.entity.History;
+import com.example.backendqlks.entity.enums.Action;
 import com.example.backendqlks.mapper.HistoryMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
