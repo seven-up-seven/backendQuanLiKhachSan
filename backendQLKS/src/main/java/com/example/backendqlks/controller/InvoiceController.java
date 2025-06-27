@@ -116,4 +116,14 @@ public class InvoiceController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
+    @GetMapping("/user-id/{userId}")
+    public ResponseEntity<?> getInvoicesByUserId(@PathVariable int userId) {
+        try {
+            return ResponseEntity.ok(invoiceService.getAllInvoicesByUserId(userId));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching invoices: " + e.getMessage());
+        }
+    }
 }

@@ -199,5 +199,8 @@ public class InvoiceService {
         return invoiceMapper.toResponseDto(existingInvoice);
     }
 
-
+    @Transactional(readOnly = true)
+    public List<ResponseInvoiceDto> getAllInvoicesByUserId(int userId) {
+        return invoiceMapper.toResponseDtoList(invoiceRepository.findInvoicesByPayingGuestId(userId));
+    }
 }

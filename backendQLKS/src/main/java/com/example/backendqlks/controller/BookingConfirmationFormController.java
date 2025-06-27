@@ -108,4 +108,15 @@ public class BookingConfirmationFormController {
             return ResponseEntity.status(500).body("Error deleting booking confirmation form: " + e.getMessage());
         }
     }
+
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
+    @GetMapping("/user-id/{userId}")
+    public ResponseEntity<?> getByUserId(@PathVariable int userId) {
+        try {
+            return ResponseEntity.ok(bookingConfirmationFormService.getBookingConfirmationFormsByUserId(userId));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching booking confirmation forms: " + e.getMessage());
+        }
+    }
 }
