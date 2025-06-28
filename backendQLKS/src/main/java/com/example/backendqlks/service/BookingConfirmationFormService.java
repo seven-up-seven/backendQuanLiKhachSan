@@ -22,6 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Transactional
@@ -35,6 +38,8 @@ public class BookingConfirmationFormService {
 
     @Autowired
     private Scheduler scheduler;
+    @Autowired
+    private RoomService roomService;
 
     public BookingConfirmationFormService(BookingConfirmationFormRepository bookingConfirmationFormRepository,
                                           BookingConfirmationFormMapper bookingConfirmationFormMapper,
@@ -105,22 +110,17 @@ public class BookingConfirmationFormService {
         //Create the job to automatically update the booking form state
         var maxTTL=variableService.getByName(String.valueOf(Variable.MAX_BOOKING_CONFIRMATION_TTL));
         double ttlValue = maxTTL.getValue();
-        long days = (long) ttlValue;
-        long hours = (long) ((ttlValue - days) * 24);
-
-        LocalDateTime triggerTime = newBookingConfirmationForm.getBookingDate()
-                .plusDays(days)
-                .plusHours(hours);
+        long totalSeconds = (long) (ttlValue * 24 * 60 * 60);
+        LocalDateTime triggerTime = newBookingConfirmationForm.getBookingDate().plusSeconds(totalSeconds);
         JobDetail jobDetail = JobBuilder.newJob(BookingConfirmationFormExpirationChecker.class)
                 .withIdentity("expireBooking_" + newBookingConfirmationForm.getId(), "booking")
                 .usingJobData("bookingConfirmationFormId", newBookingConfirmationForm.getId())
                 .build();
-
+        Date triggerDate = Date.from(triggerTime.atZone(ZoneId.systemDefault()).toInstant());
         Trigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity("trigger_expireBooking_" + newBookingConfirmationForm.getId(), "booking")
-                .startAt(Timestamp.valueOf(triggerTime))
+                .startAt(triggerDate)
                 .build();
-
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
@@ -204,6 +204,14 @@ public class BookingConfirmationFormService {
             if (bookingConfirmationForm.getBookingState() == BookingState.PENDING) {
                 bookingConfirmationForm.setBookingState(BookingState.EXPIRED);
                 bookingConfirmationFormRepository.save(bookingConfirmationForm);
+                var room=roomRepository.findById(bookingConfirmationForm.getRoomId());
+                if (room.isPresent()) {
+                    var entityRoom=room.get();
+                    if (entityRoom.getRoomState()==RoomState.BOOKED) {
+                        entityRoom.setRoomState(RoomState.READY_TO_SERVE);
+                        roomRepository.save(entityRoom);
+                    }
+                }
             }
         }
     }
