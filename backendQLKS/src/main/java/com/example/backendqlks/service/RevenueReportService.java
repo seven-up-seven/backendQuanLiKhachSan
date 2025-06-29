@@ -3,6 +3,7 @@ package com.example.backendqlks.service;
 import com.example.backendqlks.dao.InvoiceRepository;
 import com.example.backendqlks.dao.RevenueReportDetailRepository;
 import com.example.backendqlks.dao.RevenueReportRepository;
+import com.example.backendqlks.dao.RoomTypeRepository;
 import com.example.backendqlks.dto.history.HistoryDto;
 import com.example.backendqlks.dto.revenuereport.ResponseRevenueReportDto;
 import com.example.backendqlks.dto.revenuereport.RevenueReportDto;
@@ -14,10 +15,7 @@ import com.example.backendqlks.mapper.RevenueReportMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 @Transactional
 @Service
@@ -28,19 +26,21 @@ public class RevenueReportService {
     private final InvoiceRepository invoiceRepository;
     private final RevenueReportDetailRepository revenueReportDetailRepository;
     private final HistoryService historyService;
+    private final RoomTypeRepository roomTypeRepository;
 
     public RevenueReportService(RevenueReportMapper revenueReportMapper,
                                 RevenueReportRepository revenueReportRepository,
                                 InvoiceService invoiceService,
                                 InvoiceRepository invoiceRepository,
                                 RevenueReportDetailRepository revenueReportDetailRepository,
-                                HistoryService historyService) {
+                                HistoryService historyService, RoomTypeRepository roomTypeRepository) {
         this.revenueReportMapper = revenueReportMapper;
         this.revenueReportRepository = revenueReportRepository;
         this.invoiceService = invoiceService;
         this.invoiceRepository = invoiceRepository;
         this.historyService = historyService;
         this.revenueReportDetailRepository = revenueReportDetailRepository;
+        this.roomTypeRepository = roomTypeRepository;
     }
 
     @Transactional(readOnly = true)
@@ -57,6 +57,9 @@ public class RevenueReportService {
     }
 
     public ResponseRevenueReportDto createRevenueReport(RevenueReportDto revenueReportDto, int impactorId, String impactor) {
+        if(checkRevenueReportExistsByMonthAndYear(revenueReportDto.getMonth(), revenueReportDto.getYear())) {
+            deleteRevenueReportByMonthAndYear(revenueReportDto.getMonth(), revenueReportDto.getYear(), impactorId, impactor);
+        }
         RevenueReport revenueReport = revenueReportMapper.toEntity(revenueReportDto);
         var invoices = invoiceRepository.findAll();
         Hashtable<Integer, Double> totalRoomRevenueByRoomTypeId = new Hashtable<>();
@@ -73,32 +76,58 @@ public class RevenueReportService {
             }
         }
         var listDetail = new ArrayList<RevenueReportDetail>();
+        double totalRevenue = totalRoomRevenueByRoomTypeId.values().stream().mapToDouble(Double::doubleValue).sum();
+        revenueReport.setTotalMonthRevenue(totalRevenue);
+        revenueReportRepository.save(revenueReport);
+
+        String reportContent = String.format("Năm: %d, Tháng: %d, Tổng doanh thu: %.2f",
+                revenueReport.getYear(),
+                revenueReport.getMonth(),
+                totalRevenue);
+
+        HistoryDto reportHistory = HistoryDto.builder()
+                .impactor(impactor)
+                .impactorId(impactorId)
+                .affectedObject("Báo cáo doanh thu")
+                .affectedObjectId(revenueReport.getId())
+                .action(Action.CREATE)
+                .content(reportContent)
+                .build();
+        historyService.create(reportHistory);
+
         for (var entry : totalRoomRevenueByRoomTypeId.entrySet()) {
             int roomTypeId = entry.getKey();
             double totalRoomRevenue = entry.getValue();
             var revenueReportDetail = new RevenueReportDetail();
             revenueReportDetail.setRoomTypeId(roomTypeId);
             revenueReportDetail.setTotalRoomRevenue(totalRoomRevenue);
-            listDetail.add(revenueReportDetail);
-        }
-        revenueReport.setTotalMonthRevenue(totalRoomRevenueByRoomTypeId.values().stream().mapToDouble(Double::doubleValue).sum());
-        revenueReportRepository.save(revenueReport);
-        for (RevenueReportDetail revenueReportDetail : listDetail) {
             revenueReportDetail.setRevenueReportId(revenueReport.getId());
             revenueReportDetailRepository.save(revenueReportDetail);
-            String content = String.format("Năm: %d; Tháng: %d; Tổng doanh thu tháng: %.2f",
+
+            // Calculate percentage of this room type's revenue compared to total
+            double percentage = (totalRevenue > 0) ? (totalRoomRevenue / totalRevenue * 100) : 0;
+            // Get room type name (you'll need to add RoomTypeRepository if it doesn't exist)
+            RoomType roomType = roomTypeRepository.findById(roomTypeId)
+                    .orElse(new RoomType()); // Fallback if not found
+
+            String content = String.format("Loại phòng: %s, Năm: %d, Tháng: %d, Doanh thu: %.2f, Tỉ lệ: %.2f%%",
+                    roomType.getName(),
                     revenueReport.getYear(),
                     revenueReport.getMonth(),
-                    revenueReport.getTotalMonthRevenue());
+                    totalRoomRevenue,
+                    percentage);
+
             HistoryDto history = HistoryDto.builder()
                     .impactor(impactor)
                     .impactorId(impactorId)
-                    .affectedObject("Báo cáo doanh thu")
+                    .affectedObject("Chi tiết báo cáo doanh thu")
                     .affectedObjectId(revenueReport.getId())
                     .action(Action.CREATE)
                     .content(content)
                     .build();
             historyService.create(history);
+
+            listDetail.add(revenueReportDetail);
         }
         return revenueReportMapper.toResponseDto(revenueReport);
     }
@@ -153,5 +182,35 @@ public class RevenueReportService {
                 .build();
         historyService.create(history);
         revenueReportRepository.delete(revenueReport);
+    }
+
+    public void deleteRevenueReportByMonthAndYear(byte month, short year, int impactorId, String impactor) {
+        Optional<RevenueReport> revenueReport = revenueReportRepository.findByMonthAndYear(month, year);
+        if (revenueReport.isEmpty()) {
+            throw new IllegalArgumentException("No Revenue Report found for the specified month and year");
+        }
+        deleteRevenueReportById(revenueReport.get().getId(), impactorId, impactor);
+    }
+
+    public ResponseRevenueReportDto getRevenueReportByMonthAndYear(byte month, short year) {
+        Optional<RevenueReport> revenueReport = revenueReportRepository.findByMonthAndYear(month, year);
+        if (revenueReport.isEmpty()) {
+            throw new IllegalArgumentException("No Revenue Report found for the specified month and year");
+        }
+        return revenueReportMapper.toResponseDto(revenueReport.get());
+    }
+
+    public boolean checkRevenueReportExistsByMonthAndYear(byte month, short year) {
+        return revenueReportRepository.existsByMonthAndYear(month, year);
+    }
+
+    public List<ResponseRevenueReportDto> getRevenueReportByYear(short year) {
+        List<RevenueReport> revenueReports = revenueReportRepository.findByYear(year);
+        if (revenueReports.isEmpty()) {
+            throw new IllegalArgumentException("No Revenue Report found for the specified year");
+        }
+        List<ResponseRevenueReportDto> responseDtos = revenueReportMapper.toResponseDtoList(revenueReports);
+        responseDtos.sort(Comparator.comparing(ResponseRevenueReportDto::getMonth));
+        return responseDtos;
     }
 }

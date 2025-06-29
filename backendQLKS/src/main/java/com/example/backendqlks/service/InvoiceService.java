@@ -159,7 +159,7 @@ public class InvoiceService {
         double previousTotalAmount = existingInvoice.getTotalReservationCost();
         for (var detail : details) {
             double oldCost = detail.getReservationCost();
-            var rentalForm = rentalFormRepository.findById(detail.getRentalForm().getId())
+            var rentalForm = rentalFormRepository.findById(detail.getRentalFormId())
                     .orElseThrow(() -> new IllegalArgumentException("Rental Form with this ID cannot be found"));
             var rentalDays = rentalForm.getNumberOfRentalDays();
             var pricePerDay = rentalForm.getRoom().getRoomType().getPrice();

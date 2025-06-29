@@ -131,7 +131,7 @@ public class RentalFormController {
     }
 
     @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
-    @PostMapping("/search-unpaid")
+    @PostMapping("/search-unpaid/{impactorId}/{impactor}")
     public ResponseEntity<?> searchUnpaidRentalForms(@RequestBody @Valid SearchRentalFormDto searchRentalFormDto) {
         try {
             return ResponseEntity.ok(rentalFormService.searchUnpaid(searchRentalFormDto));

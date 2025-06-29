@@ -16,5 +16,9 @@ public interface RevenueReportRepository extends JpaRepository<RevenueReport, In
     List<RevenueReport> findRevenueReportsByTotalMonthRevenueEquals(double totalMonthRevenueIsEquals);
 
     List<RevenueReport> findRevenueReportsByTotalMonthRevenueLessThan(double totalMonthRevenueIsLessThan);
+
+    List<RevenueReport> findByYear(short year);
+
+    boolean existsByMonthAndYear(byte month, short year);
 }
 

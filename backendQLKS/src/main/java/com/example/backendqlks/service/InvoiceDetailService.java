@@ -35,18 +35,20 @@ public class InvoiceDetailService {
     private final InvoiceDetailMapper invoiceDetailMapper;
     private final HistoryService historyService;
     private final RoomRepository roomRepository;
+    private final InvoiceService invoiceService;
 
     public InvoiceDetailService(InvoiceDetailRepository invoiceDetailRepository,
                                 InvoiceDetailMapper invoiceDetailMapper,
                                 RentalFormRepository rentalFormRepository,
                                 HistoryService historyService,
-                                InvoiceRepository invoiceRepository, RoomRepository roomRepository) {
+                                InvoiceRepository invoiceRepository, RoomRepository roomRepository, InvoiceService invoiceService) {
         this.invoiceDetailRepository = invoiceDetailRepository;
         this.invoiceDetailMapper = invoiceDetailMapper;
         this.rentalFormRepository = rentalFormRepository;
         this.invoiceRepository = invoiceRepository;
         this.historyService = historyService;
         this.roomRepository = roomRepository;
+        this.invoiceService = invoiceService;
     }
 
     @Transactional(readOnly = true)
@@ -71,7 +73,7 @@ public class InvoiceDetailService {
     public ResponseInvoiceDetailDto create(InvoiceDetailDto invoiceDetailDto, int impactorId, String impactor) {
         var rentalForm = rentalFormRepository.findById(invoiceDetailDto.getRentalFormId())
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect rental form id"));
-        if(rentalForm.getIsPaidAt() == null){
+        if(rentalForm.getIsPaidAt() != null){
             throw new IllegalArgumentException("Rental form has been paid ");
         }
         var invoiceDetail = invoiceDetailMapper.toEntity(invoiceDetailDto);
@@ -95,6 +97,7 @@ public class InvoiceDetailService {
         rentalForm.setIsPaidAt(LocalDateTime.now());
         rentalForm.getRoom().setRoomState(RoomState.BEING_CLEANED);
         rentalFormRepository.save(rentalForm);
+        var haha = invoiceService.reCalculateInvoice(invoiceDetailDto.getInvoiceId(), impactorId, impactor);
         return invoiceDetailMapper.toResponseDto(invoiceDetail);
     }
 

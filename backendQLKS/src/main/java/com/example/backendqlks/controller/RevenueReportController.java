@@ -41,7 +41,7 @@ public class RevenueReportController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('ACCOUNTANT')")
+//    @PreAuthorize("hasAnyAuthority('ACCOUNTANT')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createRevenueReport(@PathVariable int impactorId,
                                                  @PathVariable String impactor,
@@ -88,6 +88,42 @@ public class RevenueReportController {
             return ResponseEntity.ok("Deleted revenue report with id: " + id);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting revenue report with id: " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('ACCOUNTANT')")
+    @DeleteMapping("{month}/{year}/{impactorId}/{impactor}")
+    public ResponseEntity<?> deleteRevenueReportByMonthAndYear(@PathVariable byte month,
+                                                                @PathVariable short year,
+                                                                @PathVariable int impactorId,
+                                                                @PathVariable String impactor) {
+        try {
+            revenueReportService.deleteRevenueReportByMonthAndYear(month, year, impactorId, impactor);
+            return ResponseEntity.ok("Deleted revenue report for month: " + month + ", year: " + year);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error deleting revenue report for month: " + month + ", year: " + year + ": " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('ACCOUNTANT')")
+    @GetMapping("/revenue-report-by-month-and-year/{month}/{year}")
+    public ResponseEntity<?> getRevenueReportByMonthAndYear(@PathVariable byte month,
+                                                             @PathVariable short year) {
+        try {
+            ResponseRevenueReportDto revenueReport = revenueReportService.getRevenueReportByMonthAndYear(month, year);
+            return ResponseEntity.ok(revenueReport);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching revenue report for month: " + month + ", year: " + year + ": " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('ACCOUNTANT')")
+    @GetMapping("/revenue-report-by-year/{year}")
+    public ResponseEntity<?> getRevenueReportByYear(@PathVariable short year) {
+        try {
+            return ResponseEntity.ok(revenueReportService.getRevenueReportByYear(year));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching revenue report for year: " + year + ": " + e.getMessage());
         }
     }
 }

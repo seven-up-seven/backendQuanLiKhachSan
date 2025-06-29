@@ -111,4 +111,6 @@ public class RevenueReportDetailService {
         historyService.create(history);
         revenueReportDetailRepository.delete(reportDetail);
     }
+
+
 }
