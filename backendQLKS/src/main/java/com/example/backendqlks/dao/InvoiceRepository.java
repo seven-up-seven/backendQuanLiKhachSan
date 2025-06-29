@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
 
     List<Invoice> findInvoicesByPayingGuestId(int payingGuestId);
 
-    List<Invoice> findInvoiceByCreatedAtBetween(Date startDate, Date endDate);
+    List<Invoice> findInvoiceByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

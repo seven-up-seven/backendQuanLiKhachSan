@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -214,19 +217,21 @@ public class InvoiceService {
     }
 
     public Double getTodayMoneyAmount() {
-        List<Invoice> todayInvoices = invoiceRepository.findInvoiceByCreatedAtBetween(
-                java.sql.Date.valueOf(java.time.LocalDate.now()),
-                java.sql.Date.valueOf(java.time.LocalDate.now().plusDays(1))
-        );
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = today.atTime(LocalTime.MAX);
+
+        List<Invoice> todayInvoices = invoiceRepository.findInvoiceByCreatedAtBetween(startOfDay, endOfDay);
+
         if (todayInvoices.isEmpty()) {
             return 0.0;
         }
-        double totalAmount = 0.0;
-        for (Invoice invoice : todayInvoices) {
-            totalAmount += invoice.getTotalReservationCost();
-        }
-        return totalAmount;
+
+        return todayInvoices.stream()
+                .mapToDouble(Invoice::getTotalReservationCost)
+                .sum();
     }
+
     public void sendEmailAfterInvoicePayment(int invoiceId) {
         var invoice= invoiceRepository.findById(invoiceId).orElseThrow(() -> new IllegalArgumentException("Invoice with this ID cannot be found"));
 
