@@ -1,6 +1,7 @@
 package com.example.backendqlks.controller;
 
 import com.example.backendqlks.dto.block.BlockDto;
+import com.example.backendqlks.service.BlockService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,7 +30,7 @@ public class BlockController {
             return ResponseEntity.status(500).body("Error fetching block: " + e.getMessage());
         }
     }
-
+    // GetMapping
     @GetMapping
     public ResponseEntity<?> getAllBlocks(){
         try{
