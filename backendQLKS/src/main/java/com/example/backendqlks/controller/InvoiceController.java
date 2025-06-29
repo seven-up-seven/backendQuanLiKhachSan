@@ -56,7 +56,7 @@ public class InvoiceController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST', 'GUEST')")
+    //@PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST', 'GUEST')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createInvoice(@PathVariable int impactorId,
                                            @PathVariable String impactor,
@@ -136,8 +136,8 @@ public class InvoiceController {
             return ResponseEntity.status(500).body("Error fetching today's money amount: " + e.getMessage());
         }
     }
-
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
+    
+    //@PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
     @PostMapping("/send-email/{invoiceId}/{impactorId}/{impactor}")
     public ResponseEntity<?> sendEmailToGuests(@PathVariable int invoiceId,
                                                @PathVariable int impactorId,
