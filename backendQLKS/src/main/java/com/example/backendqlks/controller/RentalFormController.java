@@ -161,4 +161,13 @@ public class RentalFormController {
             return ResponseEntity.status(500).body("Error counting total amount for rental form with id: " + e.getMessage());
         }
     }
+
+    @GetMapping("/today-rental-forms")
+    public ResponseEntity<?> getTodayRentalForms() {
+        try {
+            return ResponseEntity.ok(rentalFormService.getTodayRentalForms());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching today's rental forms: " + e.getMessage());
+        }
+    }
 }

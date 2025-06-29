@@ -183,4 +183,9 @@ public class RentalFormService {
         return countTotalRentalDaysByRentalFormId(id) * rentalForm.getRoom().getRoomType().getPrice();
     }
 
+    public int getTodayRentalForms() {
+        LocalDateTime todayStart = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime todayEnd = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59);
+        return rentalFormRepository.countByRentalDateBetween(todayStart, todayEnd);
+    }
 }

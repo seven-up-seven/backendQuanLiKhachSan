@@ -126,4 +126,13 @@ public class InvoiceController {
             return ResponseEntity.status(500).body("Error fetching invoices: " + e.getMessage());
         }
     }
+
+    @GetMapping("/today-money-amount")
+    public ResponseEntity<?> getTodayMoneyAmount() {
+        try {
+            return ResponseEntity.ok(invoiceService.getTodayMoneyAmount());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching today's money amount: " + e.getMessage());
+        }
+    }
 }

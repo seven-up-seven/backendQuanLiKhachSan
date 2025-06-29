@@ -35,4 +35,6 @@ public interface RentalFormRepository extends JpaRepository<RentalForm, Integer>
 
     @Query(value = "select rf from RentalForm rf join fetch rf.room where rf.id = :id")
     Optional<RentalForm> findByIdWithRoom(@Param("id") Integer id);
+
+    int countByRentalDateBetween(LocalDateTime todayStart, LocalDateTime todayEnd);
 }

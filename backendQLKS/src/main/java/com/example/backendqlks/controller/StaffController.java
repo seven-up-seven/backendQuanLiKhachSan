@@ -164,4 +164,14 @@ public class StaffController {
             return ResponseEntity.status(500).body("Error updating salary multiplier: " + e.getMessage());
         }
     }
+
+    @GetMapping("/staff-amount")
+    public ResponseEntity<?> getStaffAmount() {
+        try {
+            int amount = staffService.getStaffAmount();
+            return ResponseEntity.ok(amount);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching staff amount: " + e.getMessage());
+        }
+    }
 }

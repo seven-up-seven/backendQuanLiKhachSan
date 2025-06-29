@@ -169,4 +169,9 @@ public class RoomService {
                 .toList();
         return roomMapper.toResponseDtoList(availableRooms);
     }
+
+    public List<ResponseRoomDto> getReadyRooms() {
+        List<Room> rooms = roomRepository.findByRoomState(RoomState.READY_TO_SERVE);
+        return roomMapper.toResponseDtoList(rooms);
+    }
 }

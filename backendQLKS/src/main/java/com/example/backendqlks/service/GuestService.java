@@ -2,11 +2,14 @@ package com.example.backendqlks.service;
 
 import com.example.backendqlks.dao.AccountRepository;
 import com.example.backendqlks.dao.GuestRepository;
+import com.example.backendqlks.dao.RentalFormDetailRepository;
+import com.example.backendqlks.dao.RentalFormRepository;
 import com.example.backendqlks.dto.account.ResponseAccountDto;
 import com.example.backendqlks.dto.guest.GuestDto;
 import com.example.backendqlks.dto.guest.ResponseGuestDto;
 import com.example.backendqlks.dto.history.HistoryDto;
 import com.example.backendqlks.entity.Guest;
+import com.example.backendqlks.entity.RentalFormDetail;
 import com.example.backendqlks.entity.enums.Action;
 import com.example.backendqlks.mapper.GuestMapper;
 import org.springframework.data.domain.Page;
@@ -27,15 +30,19 @@ public class GuestService {
     private final AccountRepository accountRepository;
     private final GuestMapper guestMapper;
     private final HistoryService historyService;
+    private final RentalFormRepository rentalFormRepository;
+    private final RentalFormDetailRepository rentalFormDetailRepository;
 
     public GuestService(GuestRepository guestRepository,
                         GuestMapper guestMapper,
                         AccountRepository accountRepository,
-                        HistoryService historyService) {
+                        HistoryService historyService, RentalFormRepository rentalFormRepository, RentalFormDetailRepository rentalFormDetailRepository) {
         this.guestMapper = guestMapper;
         this.guestRepository = guestRepository;
         this.accountRepository = accountRepository;
         this.historyService = historyService;
+        this.rentalFormDetailRepository = rentalFormDetailRepository;
+        this.rentalFormRepository = rentalFormRepository;
     }
 
     @Transactional(readOnly = true)
@@ -184,5 +191,27 @@ public class GuestService {
     public List<ResponseGuestDto> findByMultipleCriteria(Integer id, String name ,String identificationNumber, String email, String phoneNumber, Integer accountId) {
         var guest = guestRepository.findByMultipleCriteria(id, name, phoneNumber, identificationNumber, email, accountId);
         return guestMapper.toResponseDtoList(guest);
+    }
+
+    public int getGuestStay() {
+        var rentalForms = rentalFormRepository.findAll();
+        var unpaidRentalForms = rentalForms.stream()
+                .filter(rentalForm -> rentalForm.getIsPaidAt() == null)
+                .toList();
+        var rentalFormIds = unpaidRentalForms.stream()
+                .map(rentalForm -> rentalForm.getId())
+                .toList();
+        List<RentalFormDetail> details = new ArrayList<>();
+        for (Integer rentalFormId : rentalFormIds) {
+            var rentalForm = rentalFormRepository.findById(rentalFormId)
+                    .orElseThrow(() -> new IllegalArgumentException("Rental form not found with id: " + rentalFormId));
+            List<RentalFormDetail> rentalFormDetails = rentalForm.getRentalFormDetails();
+            details.addAll(rentalFormDetails);
+        }
+        List<Integer> guestIds = details.stream()
+                .map(detail -> detail.getGuestId())
+                .distinct()
+                .toList();
+        return guestIds.size() + 1;
     }
 }

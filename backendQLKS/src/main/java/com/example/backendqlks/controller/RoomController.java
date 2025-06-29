@@ -125,4 +125,9 @@ public class RoomController {
         return ResponseEntity.ok(rooms);
     }
 
+    @GetMapping("/ready")
+    public ResponseEntity<List<ResponseRoomDto>> getReadyRooms() {
+        List<ResponseRoomDto> readyRooms = roomService.getReadyRooms();
+        return ResponseEntity.ok(readyRooms);
+    }
 }

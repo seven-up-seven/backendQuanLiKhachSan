@@ -141,4 +141,13 @@ public class GuestController {
             return ResponseEntity.status(500).body("Error finding guest: " + e.getMessage());
         }
     }
+
+    @GetMapping("/guest-stay")
+    public ResponseEntity<?> getGuestStay() {
+        try {
+            return ResponseEntity.ok(guestService.getGuestStay());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching guest stay: " + e.getMessage());
+        }
+    }
 }

@@ -196,4 +196,8 @@ public class StaffService {
                 .orElseThrow(() -> new IllegalArgumentException("Staff with this ID cannot be found"));
         return staff.getSalaryMultiplier() * staff.getPosition().getBaseSalary();
     }
+
+    public int getStaffAmount() {
+        return (int) staffRepository.count();
+    }
 }

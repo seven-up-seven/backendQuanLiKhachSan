@@ -203,4 +203,19 @@ public class InvoiceService {
     public List<ResponseInvoiceDto> getAllInvoicesByUserId(int userId) {
         return invoiceMapper.toResponseDtoList(invoiceRepository.findInvoicesByPayingGuestId(userId));
     }
+
+    public Double getTodayMoneyAmount() {
+        List<Invoice> todayInvoices = invoiceRepository.findInvoiceByCreatedAtBetween(
+                java.sql.Date.valueOf(java.time.LocalDate.now()),
+                java.sql.Date.valueOf(java.time.LocalDate.now().plusDays(1))
+        );
+        if (todayInvoices.isEmpty()) {
+            return 0.0;
+        }
+        double totalAmount = 0.0;
+        for (Invoice invoice : todayInvoices) {
+            totalAmount += invoice.getTotalReservationCost();
+        }
+        return totalAmount;
+    }
 }

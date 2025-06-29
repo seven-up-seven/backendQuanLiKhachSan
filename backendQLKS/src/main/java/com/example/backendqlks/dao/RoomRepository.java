@@ -20,4 +20,6 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
     Page<Room> findByRoomStateIn(List<RoomState> roomStateList, Pageable pageable);
 
     List<Room> findRoomsByRoomTypeId(int roomTypeId);
+
+    List<Room> findByRoomState(RoomState roomState);
 }
