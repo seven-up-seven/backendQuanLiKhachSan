@@ -102,7 +102,7 @@ public class AccountController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'RECEPTIONIST', 'MANAGER', 'GUEST', 'ACCOUNTANT')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateAccount(@PathVariable int id,
                                            @PathVariable int impactorId,
@@ -115,7 +115,7 @@ public class AccountController {
             }
             var updatedAccount = accountService.update(id, accountDto, impactorId, impactor);
             return ResponseEntity.ok(updatedAccount);
-        }catch (Exception e){
+        } catch (Exception e){
             return ResponseEntity.status(500).body("Error updating account: " + e.getMessage());
         }
     }

@@ -54,6 +54,11 @@ public class RentalFormDetailService {
         return rentalFormDetailMapper.toResponseDto(rentalFormDetail);
     }
 
+    @Transactional(readOnly = true)
+    public List<ResponseRentalFormDetailDto> getAllRentalFormDetailsByRentalFormId(int rentalFormId) {
+        return rentalFormDetailMapper.toResponseDtoList(rentalFormDetailRepository.findRentalFormDetailsByRentalFormId(rentalFormId));
+    }
+
     public ResponseRentalFormDetailDto createRentalFormDetail(RentalFormDetailDto rentalFormDetailDto, int impactorId, String impactor) {
         RentalFormDetail rentalFormDetail = rentalFormDetailMapper.toEntity(rentalFormDetailDto);
         rentalFormDetailRepository.save(rentalFormDetail);

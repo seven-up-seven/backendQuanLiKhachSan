@@ -26,7 +26,7 @@ public interface RentalFormRepository extends JpaRepository<RentalForm, Integer>
                 select rf from RentalForm rf
                 join fetch rf.room where (rf.room.id = :roomId or :roomId is null) and (rf.room.name like concat('%', :roomName, '%') or :roomName is null)
                 and (rf.id = :rfId or :rfId is null)
-""", nativeQuery = false)
+    """, nativeQuery = false)
     List<RentalForm> findByRoomIdAndRoomNameAndRentalFormId(
             @Param("roomId") Integer roomId,
             @Param("roomName") String roomName,

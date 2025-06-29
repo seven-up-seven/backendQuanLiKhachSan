@@ -11,6 +11,9 @@ import com.example.backendqlks.entity.*;
 import com.example.backendqlks.entity.enums.Action;
 import com.example.backendqlks.entity.enums.RoomState;
 import com.example.backendqlks.mapper.RentalFormMapper;
+import com.example.backendqlks.scheduledjobs.RentalFormExpirationChecker;
+import org.quartz.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,6 +35,9 @@ public class RentalFormService {
     private final RentalFormMapper rentalFormMapper;
     private final RentalExtensionFormRepository rentalExtensionFormRepository;
     private final HistoryService historyService;
+
+    @Autowired
+    private Scheduler scheduler;
 
     public RentalFormService(RentalFormMapper rentalFormMapper,
                              RentalFormRepository rentalFormRepository,
@@ -66,7 +75,6 @@ public class RentalFormService {
         if(room.isEmpty())
             throw new IllegalArgumentException("Incorrect room id");
 
-
         var rentalForm = rentalFormMapper.toEntity(rentalFormDto);
         rentalFormRepository.save(rentalForm);
         room.get().setRoomState(RoomState.BEING_RENTED);
@@ -88,6 +96,54 @@ public class RentalFormService {
                 .content(content)
                 .build();
         historyService.create(history);
+
+        // Implement auto-complete jobs
+        LocalDateTime rentalEndTime = rentalForm.getRentalDate().plusDays(rentalForm.getNumberOfRentalDays());
+        ZonedDateTime expirationTime = rentalEndTime.atZone(ZoneId.systemDefault());
+        ZonedDateTime beforeExpirationTime = expirationTime.minusHours(1);
+
+        //phan nay de test voi thoi gian khoang 2 - 3 phut
+        // Chế độ TEST: Gửi sau 2 phút và 3 phút kể từ thời điểm tạo
+//        ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
+//        ZonedDateTime beforeExpirationTime = now.plusMinutes(2);  // cảnh báo
+//        ZonedDateTime expirationTime = now.plusMinutes(3);        // hết hạn
+
+        //Job canh bao truoc 1 tieng
+        JobDetail warningJob = JobBuilder.newJob(RentalFormExpirationChecker.class)
+                .withIdentity("warnRental_" + rentalForm.getId(), "rental")
+                .usingJobData("rentalFormId", rentalForm.getId())
+                .usingJobData("jobType", "WARNING")
+                .build();
+
+        Date warnTriggerTime = Date.from(beforeExpirationTime.toInstant());
+
+        Trigger warningTrigger = TriggerBuilder.newTrigger()
+                .withIdentity("trigger_warnRental_" + rentalForm.getId(), "rental")
+                .startAt(warnTriggerTime)
+                .build();
+
+        // Job: gửi email đã hết hạn
+        JobDetail expiredJob = JobBuilder.newJob(RentalFormExpirationChecker.class)
+                .withIdentity("expireRental_" + rentalForm.getId(), "rental")
+                .usingJobData("rentalFormId", rentalForm.getId())
+                .usingJobData("jobType", "EXPIRED")
+                .build();
+
+        Date expiredTriggerTime = Date.from(expirationTime.toInstant());
+
+        Trigger expiredTrigger = TriggerBuilder.newTrigger()
+                .withIdentity("trigger_expireRental_" + rentalForm.getId(), "rental")
+                .startAt(expiredTriggerTime)
+                .build();
+
+        // Lên lịch 2 job
+        try {
+            scheduler.scheduleJob(warningJob, warningTrigger);
+            scheduler.scheduleJob(expiredJob, expiredTrigger);
+        } catch (SchedulerException e) {
+            throw new RuntimeException("Không thể lên lịch job hết hạn phiếu thuê phòng", e);
+        }
+
         return rentalFormMapper.toResponseDto(rentalForm);
     }
 

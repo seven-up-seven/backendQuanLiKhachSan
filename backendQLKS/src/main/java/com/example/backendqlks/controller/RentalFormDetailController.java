@@ -113,7 +113,7 @@ public class RentalFormDetailController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/user-id/{userId}")
     public ResponseEntity<?> getRentalFormDetailsByUserId(@PathVariable int userId) {
         try {

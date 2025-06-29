@@ -365,7 +365,13 @@ INSERT INTO `ROOM` (`NAME`, `NOTE`, `ROOM_STATE`, `ROOMTYPE_ID`, `FLOOR_ID`) VAL
                                                                                  ('404', 'Presidential', 'BOOKED', 5, 10),
                                                                                  ('405', 'Accessible', 'READY_TO_SERVE', 3, 3),
                                                                                  ('406', 'VIP area', 'READY_TO_SERVE', 4, 2),
-                                                                                 ('407', 'Balcony room', 'READY_TO_SERVE', 3, 1);
+                                                                                 ('407', 'Balcony room', 'READY_TO_SERVE', 3, 1),
+                                                                                ('408', 'Oceanfront', 'READY_TO_SERVE', 2, 1),
+                                                                                ('409', 'Pool view', 'READY_TO_SERVE', 3, 2),
+                                                                                ('501', 'Skyline view', 'READY_TO_SERVE', 1, 3),
+                                                                                ('502', 'Corner suite', 'READY_TO_SERVE', 4, 4),
+                                                                                ('503', 'Deluxe room', 'READY_TO_SERVE', 5, 5);
+
 
 INSERT INTO `BOOKING_CONFIRMATION_FORM`
 (`BOOKING_GUEST_ID`, `BOOKING_STATE`, `ROOM_ID`, `BOOKING_DATE`, `RENTAL_DAYS`) VALUES
@@ -558,7 +564,37 @@ INSERT INTO IMAGE_ENTITY (URL, FILE_NAME, ROOM_ID) VALUES
 ('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266245/erovkf0owfbai9h8jkzq.png', 'erovkf0owfbai9h8jkzq.png', 15),
 ('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266199/s6xhgewuv9sf3c1jnlik.png', 's6xhgewuv9sf3c1jnlik.png', 15),
 ('https://watermark.lovepik.com/photo/20211130/large/lovepik-grand-bed-room-of-superior-hotel-picture_501221020.jpg', '501221020.jpg', 15),
-('https://saigontourist.com.vn/files/images/luu-tru/luu-tru-mien-nam/hotel-grand-saigon-2.jpg', 'hotel-grand-saigon-2.jpg', 15);
+('https://saigontourist.com.vn/files/images/luu-tru/luu-tru-mien-nam/hotel-grand-saigon-2.jpg', 'hotel-grand-saigon-2.jpg', 15),
+
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266321/w05jzxrqfwb35qjg5p13.png', 'w05jzxrqfwb35qjg5p13.png', 16),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266245/erovkf0owfbai9h8jkzq.png', 'erovkf0owfbai9h8jkzq.png', 16),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266199/s6xhgewuv9sf3c1jnlik.png', 's6xhgewuv9sf3c1jnlik.png', 16),
+('https://watermark.lovepik.com/photo/20211130/large/lovepik-grand-bed-room-of-superior-hotel-picture_501221020.jpg', '501221020.jpg', 16),
+('https://saigontourist.com.vn/files/images/luu-tru/luu-tru-mien-nam/hotel-grand-saigon-2.jpg', 'hotel-grand-saigon-2.jpg', 16),
+
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266321/w05jzxrqfwb35qjg5p13.png', 'w05jzxrqfwb35qjg5p13.png', 17),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266245/erovkf0owfbai9h8jkzq.png', 'erovkf0owfbai9h8jkzq.png', 17),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266199/s6xhgewuv9sf3c1jnlik.png', 's6xhgewuv9sf3c1jnlik.png', 17),
+('https://watermark.lovepik.com/photo/20211130/large/lovepik-grand-bed-room-of-superior-hotel-picture_501221020.jpg', '501221020.jpg', 17),
+('https://saigontourist.com.vn/files/images/luu-tru/luu-tru-mien-nam/hotel-grand-saigon-2.jpg', 'hotel-grand-saigon-2.jpg', 17),
+
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266321/w05jzxrqfwb35qjg5p13.png', 'w05jzxrqfwb35qjg5p13.png', 18),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266245/erovkf0owfbai9h8jkzq.png', 'erovkf0owfbai9h8jkzq.png', 18),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266199/s6xhgewuv9sf3c1jnlik.png', 's6xhgewuv9sf3c1jnlik.png', 18),
+('https://watermark.lovepik.com/photo/20211130/large/lovepik-grand-bed-room-of-superior-hotel-picture_501221020.jpg', '501221020.jpg', 18),
+('https://saigontourist.com.vn/files/images/luu-tru/luu-tru-mien-nam/hotel-grand-saigon-2.jpg', 'hotel-grand-saigon-2.jpg', 18),
+
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266321/w05jzxrqfwb35qjg5p13.png', 'w05jzxrqfwb35qjg5p13.png', 19),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266245/erovkf0owfbai9h8jkzq.png', 'erovkf0owfbai9h8jkzq.png', 19),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266199/s6xhgewuv9sf3c1jnlik.png', 's6xhgewuv9sf3c1jnlik.png', 19),
+('https://watermark.lovepik.com/photo/20211130/large/lovepik-grand-bed-room-of-superior-hotel-picture_501221020.jpg', '501221020.jpg', 19),
+('https://saigontourist.com.vn/files/images/luu-tru/luu-tru-mien-nam/hotel-grand-saigon-2.jpg', 'hotel-grand-saigon-2.jpg', 19),
+
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266321/w05jzxrqfwb35qjg5p13.png', 'w05jzxrqfwb35qjg5p13.png', 20),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266245/erovkf0owfbai9h8jkzq.png', 'erovkf0owfbai9h8jkzq.png', 20),
+('https://res.cloudinary.com/djbvf02yt/image/upload/v1744266199/s6xhgewuv9sf3c1jnlik.png', 's6xhgewuv9sf3c1jnlik.png', 20),
+('https://watermark.lovepik.com/photo/20211130/large/lovepik-grand-bed-room-of-superior-hotel-picture_501221020.jpg', '501221020.jpg', 20),
+('https://saigontourist.com.vn/files/images/luu-tru/luu-tru-mien-nam/hotel-grand-saigon-2.jpg', 'hotel-grand-saigon-2.jpg', 20);
 
 INSERT INTO REVIEW (ROOM_ID, GUEST_ID, RATING, COMMENT) VALUES
 (1, 1, 5, 'Phòng 101 có view biển tuyệt đẹp, không gian sạch sẽ và thoáng mát. Tiện nghi đầy đủ, giường ngủ êm ái, nhân viên phục vụ rất nhiệt tình. Tôi đặc biệt thích ban công nhỏ để ngắm bình minh. Trạng thái phòng READY_TO_SERVE đúng như kỳ vọng, mọi thứ đều sẵn sàng khi tôi check-in. Chắc chắn sẽ quay lại lần sau!'),
