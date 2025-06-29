@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
@@ -115,6 +116,7 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy người dùng hợp lệ");
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'RECEPTIONIST', 'MANAGER', 'GUEST', 'ACCOUNTANT')")
     @PostMapping("/change-password")
     public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordDto dto) {
         String userIdStr = SecurityContextHolder.getContext().getAuthentication().getName();

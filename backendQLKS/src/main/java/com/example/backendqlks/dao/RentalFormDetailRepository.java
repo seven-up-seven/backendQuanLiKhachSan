@@ -12,4 +12,5 @@ public interface RentalFormDetailRepository extends JpaRepository<RentalFormDeta
     Optional<RentalFormDetail> findByRentalFormIdAndGuestId(int rentalFormId, int guestId);
     boolean existsByRentalFormIdAndGuestId(int rentalFormId, int guestId);
     List<RentalFormDetail> findRentalFormDetailsByGuestId(int guestId);
+    List<RentalFormDetail> findRentalFormDetailsByRentalFormId(int rentalFormId);
 }

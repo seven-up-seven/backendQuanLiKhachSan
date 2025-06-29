@@ -5,6 +5,7 @@ import com.example.backendqlks.service.InvoiceService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
@@ -55,7 +56,7 @@ public class InvoiceController {
         }
     }
 
-//    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST')")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST', 'GUEST')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createInvoice(@PathVariable int impactorId,
                                            @PathVariable String impactor,
@@ -124,6 +125,23 @@ public class InvoiceController {
         }
         catch (Exception e) {
             return ResponseEntity.status(500).body("Error fetching invoices: " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
+    @PostMapping("/send-email/{invoiceId}/{impactorId}/{impactor}")
+    public ResponseEntity<?> sendEmailToGuests(@PathVariable int invoiceId,
+                                               @PathVariable int impactorId,
+                                               @PathVariable String impactor) {
+        try {
+            invoiceService.sendEmailAfterInvoicePayment(invoiceId);
+            return ResponseEntity.ok("Đã gửi email hóa đơn cho khách thành công.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Gửi email thất bại: " + e.getMessage());
         }
     }
 }
