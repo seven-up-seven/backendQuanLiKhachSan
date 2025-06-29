@@ -65,8 +65,7 @@ public class RentalFormService {
         //kiểm tra roomid, nếu roomid thoả kiểm tra roomstate, sau đó mới tạo rental form
         if(room.isEmpty())
             throw new IllegalArgumentException("Incorrect room id");
-        if(room.get().getRoomState() != RoomState.READY_TO_SERVE)
-            throw new IllegalArgumentException("Room is not ready to serve");
+
 
         var rentalForm = rentalFormMapper.toEntity(rentalFormDto);
         rentalFormRepository.save(rentalForm);

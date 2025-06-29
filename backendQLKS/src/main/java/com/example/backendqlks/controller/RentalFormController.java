@@ -37,7 +37,7 @@ public class RentalFormController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @GetMapping
     public ResponseEntity<?> getAllRentalForms()
     {
@@ -61,7 +61,7 @@ public class RentalFormController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createRentalForm(@PathVariable int impactorId,
                                               @PathVariable String impactor,

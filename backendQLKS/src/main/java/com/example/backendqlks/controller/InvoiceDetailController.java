@@ -55,7 +55,7 @@ public class InvoiceDetailController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createInvoiceDetail(@PathVariable int impactorId,
                                                  @PathVariable String impactor,

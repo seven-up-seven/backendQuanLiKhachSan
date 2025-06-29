@@ -4,6 +4,7 @@ import com.example.backendqlks.dao.HistoryRepository;
 import com.example.backendqlks.dto.history.HistoryDto;
 import com.example.backendqlks.dto.history.ResponseHistoryDto;
 import com.example.backendqlks.entity.History;
+import com.example.backendqlks.entity.enums.Action;
 import com.example.backendqlks.mapper.HistoryMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,7 @@ public class HistoryService {
 
     @Transactional(readOnly = true)
     public ResponseHistoryDto getById(int id) {
-        return historyMapper.toResponseDto(historyRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Incorrect fucking history id!")));
+        return historyMapper.toResponseDto(historyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Incorrect fucking history id!")));
     }
 
     @Transactional(readOnly = true)
@@ -69,5 +70,28 @@ public class HistoryService {
         } catch (Exception e) {
             throw new RuntimeException("Error creating history record: " + e.getMessage(), e);
         }
+    }
+
+    @Transactional
+    public void saveHistory(String impactor, String affectedObject, int impactorId, int affectedObjectId, String action, String content) {
+        // Ánh xạ String sang enum Action
+        Action actionEnum;
+        try {
+            actionEnum = Action.valueOf(action.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Hành động không hợp lệ: " + action);
+        }
+
+        // Sử dụng builder pattern để tạo HistoryDto
+        HistoryDto historyDto = HistoryDto.builder()
+                .impactor(impactor)
+                .affectedObject(affectedObject)
+                .impactorId(impactorId)
+                .affectedObjectId(affectedObjectId)
+                .action(actionEnum)
+                .content(content)
+                .build();
+
+        create(historyDto);
     }
 }

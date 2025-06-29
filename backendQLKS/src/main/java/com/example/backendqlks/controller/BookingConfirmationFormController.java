@@ -98,7 +98,7 @@ public class BookingConfirmationFormController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @DeleteMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> deleteBookingConfirmationForm(@PathVariable int id, @PathVariable int impactorId, @PathVariable String impactor){
         try{
@@ -106,6 +106,17 @@ public class BookingConfirmationFormController {
             return ResponseEntity.ok("Booking confirmation form deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting booking confirmation form: " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
+    @GetMapping("/user-id/{userId}")
+    public ResponseEntity<?> getByUserId(@PathVariable int userId) {
+        try {
+            return ResponseEntity.ok(bookingConfirmationFormService.getBookingConfirmationFormsByUserId(userId));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching booking confirmation forms: " + e.getMessage());
         }
     }
 }
