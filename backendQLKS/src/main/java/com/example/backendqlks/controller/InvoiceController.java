@@ -24,7 +24,7 @@ public class InvoiceController {
         this.invoiceService = invoiceService;
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST', 'GUEST')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getInvoice(@PathVariable int id){
         try{
@@ -34,7 +34,7 @@ public class InvoiceController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST')")
     @GetMapping("/get-all-page")
     public ResponseEntity<?> getAllInvoices(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try{
@@ -44,7 +44,7 @@ public class InvoiceController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER', 'ACCOUNTANT', 'RECEPTIONIST')")
     @GetMapping()
     public ResponseEntity<?> getAllInvoices() {
         try {

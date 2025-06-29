@@ -24,7 +24,7 @@ public class RentalExtensionFormController {
         this.rentalExtensionFormService = rentalExtensionFormService;
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @GetMapping("/get-all-page")
     public ResponseEntity<?> getAllRentalExtensionForms(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         try {
@@ -35,7 +35,7 @@ public class RentalExtensionFormController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @GetMapping
     public ResponseEntity<?> getAllRentalExtensionForms() {
         try {
@@ -46,7 +46,7 @@ public class RentalExtensionFormController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getRentalExtensionFormById(@PathVariable int id) {
         try {

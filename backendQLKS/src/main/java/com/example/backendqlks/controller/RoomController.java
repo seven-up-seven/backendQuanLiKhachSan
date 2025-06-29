@@ -87,7 +87,7 @@ public class RoomController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER', 'RECEPTIONIST')")
     @PutMapping("/{id}/{impactorId}/{impactor}")
     public ResponseEntity<?> updateRoom(@PathVariable int id,
                                         @PathVariable int impactorId,
