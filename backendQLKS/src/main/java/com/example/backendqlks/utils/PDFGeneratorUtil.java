@@ -15,21 +15,15 @@ import java.util.List;
 
 @Service
 public class PDFGeneratorUtil {
-    private final InvoiceDetailService invoiceDetailService;
     private final RentalFormService rentalFormService;
-    private final RentalFormDetailService rentalFormDetailService;
     private final GuestService guestService;
     private final RoomService roomService;
     private final RentalExtensionFormService rentalExtensionFormService;
 
-    public PDFGeneratorUtil(InvoiceDetailService invoiceDetailService,
-                            RentalFormService rentalFormService,
-                            RentalFormDetailService rentalFormDetailService,
+    public PDFGeneratorUtil(RentalFormService rentalFormService,
                             GuestService guestService,
                             RoomService roomService, RentalExtensionFormService rentalExtensionFormService) {
-        this.invoiceDetailService = invoiceDetailService;
         this.rentalFormService = rentalFormService;
-        this.rentalFormDetailService = rentalFormDetailService;
         this.guestService = guestService;
         this.roomService = roomService;
         this.rentalExtensionFormService = rentalExtensionFormService;
