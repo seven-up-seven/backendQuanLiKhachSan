@@ -1,18 +1,17 @@
 package com.example.backendqlks.service;
 
-import com.example.backendqlks.dao.InvoiceDetailRepository;
-import com.example.backendqlks.dao.InvoiceRepository;
-import com.example.backendqlks.dao.RentalFormRepository;
-import com.example.backendqlks.dao.RoomRepository;
+import com.example.backendqlks.dao.*;
 import com.example.backendqlks.dto.history.HistoryDto;
 import com.example.backendqlks.dto.invoice.InvoiceDto;
 import com.example.backendqlks.dto.invoice.ResponseInvoiceDto;
 import com.example.backendqlks.dto.invoiceDetail.InvoiceDetailDto;
+import com.example.backendqlks.entity.Guest;
 import com.example.backendqlks.entity.Invoice;
 import com.example.backendqlks.entity.enums.Action;
 import com.example.backendqlks.entity.enums.RoomState;
 import com.example.backendqlks.mapper.InvoiceDetailMapper;
 import com.example.backendqlks.mapper.InvoiceMapper;
+import com.example.backendqlks.utils.PDFGeneratorUtil;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -35,18 +34,28 @@ public class InvoiceService {
     private final InvoiceDetailRepository invoiceDetailRepository;
     private final HistoryService historyService;
     private final RoomRepository roomRepository;
+    private final GuestRepository guestRepository;
+    private final SMTPEmailService smtpEmailService;
+    private final PDFGeneratorUtil pdfGeneratorUtil;
 
     public InvoiceService(InvoiceRepository invoiceRepository,
                           InvoiceMapper invoiceMapper,
                           RentalFormRepository rentalFormRepository,
                           InvoiceDetailRepository invoiceDetailRepository,
-                          HistoryService historyService, RoomRepository roomRepository) {
+                          HistoryService historyService,
+                          RoomRepository roomRepository,
+                          GuestRepository guestRepository,
+                          SMTPEmailService smtpEmailService,
+                          PDFGeneratorUtil pdfGeneratorUtil) {
         this.invoiceMapper = invoiceMapper;
         this.invoiceRepository = invoiceRepository;
         this.rentalFormRepository = rentalFormRepository;
         this.invoiceDetailRepository = invoiceDetailRepository;
         this.historyService = historyService;
         this.roomRepository = roomRepository;
+        this.guestRepository = guestRepository;
+        this.smtpEmailService = smtpEmailService;
+        this.pdfGeneratorUtil = pdfGeneratorUtil;
     }
 
     @Transactional(readOnly = true)
@@ -202,5 +211,25 @@ public class InvoiceService {
     @Transactional(readOnly = true)
     public List<ResponseInvoiceDto> getAllInvoicesByUserId(int userId) {
         return invoiceMapper.toResponseDtoList(invoiceRepository.findInvoicesByPayingGuestId(userId));
+    }
+
+    public void sendEmailAfterInvoicePayment(int invoiceId) {
+        var invoice= invoiceRepository.findById(invoiceId).orElseThrow(() -> new IllegalArgumentException("Invoice with this ID cannot be found"));
+
+        String guestEmail = guestRepository.findById(invoice.getPayingGuestId())
+                .map(Guest::getEmail)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy email của khách hàng"));
+
+        String guestName = invoice.getPayingGuest().getName();
+        String invoiceInfo = String.format("Mã hóa đơn: %d | Tổng tiền: %,.0f VND",
+                invoice.getId(),
+                invoice.getTotalReservationCost());
+
+        // Tạo PDF
+        ResponseInvoiceDto RinvoiceDto = invoiceMapper.toResponseDto(invoice);
+        byte[] pdfBytes = pdfGeneratorUtil.generateInvoicePdf(RinvoiceDto);
+
+        // Gửi email
+        smtpEmailService.sendInvoicePaymentNotification(guestEmail, guestName, invoiceInfo, pdfBytes);
     }
 }

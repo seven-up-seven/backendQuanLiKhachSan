@@ -1,6 +1,7 @@
 package com.example.backendqlks.service;
 
 import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.util.ByteArrayDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -108,6 +109,32 @@ public class SMTPEmailService {
         catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Gửi email thông báo hết hạn phiếu thuê phòng thất bại", e);
+        }
+    }
+
+    public void sendInvoicePaymentNotification(String toEmail, String guestName, String invoiceInfo, byte[] pdfBytes) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromAddress);
+            helper.setTo(toEmail);
+            helper.setSubject("Thông báo: Thanh toán hóa đơn");
+
+            String content = "<p>Thân gửi quý khách " + guestName + ",</p>"
+                    + "<p>Hóa đơn thanh toán:</p>"
+                    + "<p><strong>" + invoiceInfo + "</strong></p>"
+                    + "<p>Nếu bạn vẫn có nhu cầu sử dụng dịch vụ, vui lòng sử dụng trang web khách sạn hoặc liên hệ lễ tân.</p>"
+                    + "<p>Trân trọng,</p><p>Roomify.</p>";
+
+            helper.setText(content, true);
+            helper.addAttachment("hoa_don.pdf", new ByteArrayDataSource(pdfBytes, "application/pdf"));
+
+            mailSender.send(message);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Gửi email thông báo thanh toán hóa đơn thất bại", e);
         }
     }
 }
