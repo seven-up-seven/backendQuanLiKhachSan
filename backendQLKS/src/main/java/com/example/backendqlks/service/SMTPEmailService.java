@@ -96,7 +96,7 @@ public class SMTPEmailService {
             helper.setSubject("Thông báo: Phiếu thuê phòng đã hết hạn");
 
             String content = "<p>Thân gửi quý khách " + guestName + ",</p>"
-                    + "<p>Phiếu thuê phòng của bạn sắp hết hạn:</p>"
+                    + "<p>Phiếu thuê phòng của bạn đã hết hạn:</p>"
                     + "<p><strong>" + rentalFormInfo + "</strong></p>"
                     + "<p>Nếu bạn vẫn có nhu cầu sử dụng dịch vụ, vui lòng sử dụng trang web khách sạn hoặc liên hệ lễ tân.</p>"
                     + "<p>Trân trọng,</p><p>Roomify.</p>";

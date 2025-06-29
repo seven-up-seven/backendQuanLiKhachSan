@@ -100,8 +100,13 @@ public class RentalFormService {
         // Implement auto-complete jobs
         LocalDateTime rentalEndTime = rentalForm.getRentalDate().plusDays(rentalForm.getNumberOfRentalDays());
         ZonedDateTime expirationTime = rentalEndTime.atZone(ZoneId.systemDefault());
-
         ZonedDateTime beforeExpirationTime = expirationTime.minusHours(1);
+
+        //phan nay de test voi thoi gian khoang 2 - 3 phut
+        // Chế độ TEST: Gửi sau 2 phút và 3 phút kể từ thời điểm tạo
+//        ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
+//        ZonedDateTime beforeExpirationTime = now.plusMinutes(2);  // cảnh báo
+//        ZonedDateTime expirationTime = now.plusMinutes(3);        // hết hạn
 
         //Job canh bao truoc 1 tieng
         JobDetail warningJob = JobBuilder.newJob(RentalFormExpirationChecker.class)
