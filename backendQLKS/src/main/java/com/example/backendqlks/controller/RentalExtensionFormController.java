@@ -58,7 +58,7 @@ public class RentalExtensionFormController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @PostMapping("/{impactorId}/{impactor}")
     public ResponseEntity<?> createRentalExtensionForm(@PathVariable int impactorId,
                                                        @PathVariable String impactor,
@@ -110,7 +110,7 @@ public class RentalExtensionFormController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/day-remains/{rentalFormId}")
     public ResponseEntity<?> getDayRemains(@PathVariable int rentalFormId) {
         try {
@@ -121,7 +121,7 @@ public class RentalExtensionFormController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
+//    @PreAuthorize("hasAnyAuthority('MANAGER', 'GUEST')")
     @GetMapping("/rental-form/{rentalFormId}")
     public ResponseEntity<?> getRentalExtensionFormByRentalFormId(@PathVariable int rentalFormId) {
         try {
