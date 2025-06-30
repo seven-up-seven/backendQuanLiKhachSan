@@ -379,8 +379,11 @@ INSERT INTO `ROOM` (`NAME`,`NOTE`,`ROOM_STATE`,`ROOMTYPE_ID`,`FLOOR_ID`) VALUES
                                                                              ('502','Corner suite','READY_TO_SERVE',4,4),
                                                                              ('503','Deluxe room','READY_TO_SERVE',5,5);
 
+SET @payBaseMay = '2025-05-30 12:00:00';
+
 INSERT INTO `BOOKING_CONFIRMATION_FORM`
 (`BOOKING_GUEST_ID`,`BOOKING_STATE`,`ROOM_ID`,`BOOKING_DATE`,`RENTAL_DAYS`) VALUES
+                                                                                #thang 6
                                                                                 (1,'PENDING',1,'2025-06-20 10:00:00',2),
                                                                                 (2,'COMMITED',2,'2025-06-21 14:30:00',3),
                                                                                 (3,'EXPIRED',3,'2025-06-18 09:00:00',1),
@@ -390,10 +393,23 @@ INSERT INTO `BOOKING_CONFIRMATION_FORM`
                                                                                 (7,'COMMITED',7,'2025-06-23 14:30:00',3),
                                                                                 (8,'EXPIRED',8,'2025-06-19 09:00:00',1),
                                                                                 (9,'CANCELLED',9,'2025-06-16 12:15:00',4),
-                                                                                (10,'PENDING',10,'2025-06-24 08:45:00',2);
+                                                                                (10,'PENDING',10,'2025-06-24 08:45:00',2),
+
+                                                                                #thang 5
+                                                                                (1,'PENDING',1,'2025-05-20 10:00:00',2),
+                                                                                (2,'COMMITED',2,'2025-05-21 14:30:00',3),
+                                                                                (3,'EXPIRED',3,'2025-05-18 09:00:00',1),
+                                                                                (4,'CANCELLED',4,'2025-05-15 12:15:00',4),
+                                                                                (5,'PENDING',5,'2025-05-22 08:45:00',2),
+                                                                                (6,'PENDING',6,'2025-05-22 10:00:00',2),
+                                                                                (7,'COMMITED',7,'2025-05-23 14:30:00',3),
+                                                                                (8,'EXPIRED',8,'2025-05-19 09:00:00',1),
+                                                                                (9,'CANCELLED',9,'2025-05-16 12:15:00',4),
+                                                                                (10,'PENDING',10,'2025-05-24 08:45:00',2);
 
 INSERT INTO `RENTAL_FORM`
 (`ROOM_ID`,`STAFF_ID`,`RENTAL_DATE`,`IS_PAID_AT`,`NUMBER_OF_RENTAL_DAY`,`NOTE`) VALUES
+                                                                                    #thang 6
                                                                                     (1,1,DATE_SUB(NOW(), INTERVAL 3 DAY),NOW(),3,'No note'),
                                                                                     (2,2,DATE_SUB(NOW(), INTERVAL 3 DAY),DATE_SUB(NOW(), INTERVAL 1 DAY),2,'VIP guest'),
                                                                                     (3,3,DATE_SUB(NOW(), INTERVAL 1 DAY),NOW(),1,'Needs late checkout'),
@@ -403,9 +419,22 @@ INSERT INTO `RENTAL_FORM`
                                                                                     (7,7,DATE_SUB(NOW(), INTERVAL 2 DAY),NOW(),2,'Child seat required'),
                                                                                     (8,8,DATE_SUB(NOW(), INTERVAL 4 DAY),DATE_SUB(NOW(), INTERVAL 3 DAY),1,'No special needs'),
                                                                                     (9,9,DATE_SUB(NOW(), INTERVAL 8 DAY),DATE_SUB(NOW(), INTERVAL 3 DAY),5,'Group booking'),
-                                                                                    (10,10,DATE_SUB(NOW(), INTERVAL 2 DAY),NOW(),2,'Business trip');
+                                                                                    (10,10,DATE_SUB(NOW(), INTERVAL 2 DAY),NOW(),2,'Business trip'),
+
+                                                                                    #thang 5
+                                                                                    ( 1,  1, DATE_SUB(@payBaseMay, INTERVAL 3 DAY), @payBaseMay, 3, 'No note'),
+                                                                                    ( 2,  2, DATE_SUB(@payBaseMay, INTERVAL 2 DAY), @payBaseMay, 2, 'VIP guest'),
+                                                                                    ( 3,  3, DATE_SUB(@payBaseMay, INTERVAL 1 DAY), @payBaseMay, 1, 'Needs late checkout'),
+                                                                                    ( 4,  4, DATE_SUB(@payBaseMay, INTERVAL 5 DAY), @payBaseMay, 5, 'Birthday booking'),
+                                                                                    ( 5,  5, DATE_SUB(@payBaseMay, INTERVAL 7 DAY), @payBaseMay, 7, 'Company event'),
+                                                                                    ( 6,  6, DATE_SUB(@payBaseMay, INTERVAL 3 DAY), @payBaseMay, 3, 'Extra towels'),
+                                                                                    ( 7,  7, DATE_SUB(@payBaseMay, INTERVAL 2 DAY), @payBaseMay, 2, 'Child seat required'),
+                                                                                    ( 8,  8, DATE_SUB(@payBaseMay, INTERVAL 1 DAY), @payBaseMay, 1, 'No special needs'),
+                                                                                    ( 9,  9, DATE_SUB(@payBaseMay, INTERVAL 5 DAY), @payBaseMay, 5, 'Group booking'),
+                                                                                    (10, 10, DATE_SUB(@payBaseMay, INTERVAL 2 DAY), @payBaseMay, 2, 'Business trip');
 
 INSERT INTO `RENTAL_FORM_DETAIL` (`RENTAL_FORM_ID`,`GUEST_ID`) VALUES
+                                                                   #thang 6
                                                                    (1,1),
                                                                    (2,2),
                                                                    (3,3),
@@ -415,9 +444,23 @@ INSERT INTO `RENTAL_FORM_DETAIL` (`RENTAL_FORM_ID`,`GUEST_ID`) VALUES
                                                                    (7,7),
                                                                    (8,8),
                                                                    (9,9),
-                                                                   (10,10);
+                                                                   (10,10),
+
+                                                                   #thang 5
+                                                                   (11,1),
+                                                                   (12,2),
+                                                                   (13,3),
+                                                                   (14,4),
+                                                                   (15,5),
+                                                                   (16,6),
+                                                                   (17,7),
+                                                                   (18,8),
+                                                                   (19,9),
+                                                                   (20,10);
+
 
 INSERT INTO `RENTAL_EXTENSION_FORM` (`RENTAL_FORM_ID`,`NUMBER_OF_RENTAL_DAY`,`STAFF_ID`) VALUES
+                                                                                             #thang 6
                                                                                              (1,2,1),
                                                                                              (2,3,2),
                                                                                              (3,1,3),
@@ -427,9 +470,34 @@ INSERT INTO `RENTAL_EXTENSION_FORM` (`RENTAL_FORM_ID`,`NUMBER_OF_RENTAL_DAY`,`ST
                                                                                              (7,2,7),
                                                                                              (8,1,8),
                                                                                              (9,4,9),
-                                                                                             (10,1,10);
+                                                                                             (10,1,10),
+
+                                                                                             #thang 5
+                                                                                             (11,2,1),
+                                                                                             (12,3,2),
+                                                                                             (13,1,3),
+                                                                                             (14,2,4),
+                                                                                             (15,1,5),
+                                                                                             (16,1,6),
+                                                                                             (17,2,7),
+                                                                                             (18,1,8),
+                                                                                             (19,4,9),
+                                                                                             (20,1,10);
 
 INSERT INTO `INVOICE` (`TOTAL_RESERVATION_COST`,`PAYING_GUEST_ID`,`STAFF_ID`) VALUES
+                                                                                  #thang 6
+                                                                                  (2500.0,1,1),
+                                                                                  (3500.0,2,2),
+                                                                                  (2000.0,3,3),
+                                                                                  (8400.0,4,4),
+                                                                                  (16000.0,5,5),
+                                                                                  (2000.0,6,6),
+                                                                                  (2800.0,7,7),
+                                                                                  (2400.0,8,8),
+                                                                                  (9000.0,9,9),
+                                                                                  (6000.0,10,10),
+
+                                                                                  #thang 5
                                                                                   (2500.0,1,1),
                                                                                   (3500.0,2,2),
                                                                                   (2000.0,3,3),
@@ -443,6 +511,7 @@ INSERT INTO `INVOICE` (`TOTAL_RESERVATION_COST`,`PAYING_GUEST_ID`,`STAFF_ID`) VA
 
 INSERT INTO `INVOICE_DETAIL`
 (`NUMBER_OF_RENTAL_DAYS`,`INVOICE_ID`,`RESERVATION_COST`,`RENTAL_FORM_ID`) VALUES
+                                                                               #thang 6
                                                                                (5,1,2500.0,1),
                                                                                (5,2,3500.0,2),
                                                                                (2,3,2000.0,3),
@@ -452,18 +521,39 @@ INSERT INTO `INVOICE_DETAIL`
                                                                                (4,7,2800.0,7),
                                                                                (2,8,2400.0,8),
                                                                                (9,9,9000.0,9),
-                                                                               (3,10,6000.0,10);
+                                                                               (3,10,6000.0,10),
+
+                                                                               #thang 5
+                                                                               (5,11,2500.0,11),
+                                                                               (5,12,3500.0,12),
+                                                                               (2,13,2000.0,13),
+                                                                               (7,14,8400.0,14),
+                                                                               (8,15,16000.0,15),
+                                                                               (4,16,2000.0,16),
+                                                                               (4,17,2800.0,17),
+                                                                               (2,18,2400.0,18),
+                                                                               (9,19,9000.0,19),
+                                                                               (3,20,6000.0,20);
 
 INSERT INTO `REVENUE_REPORT` (`YEAR`,`MONTH`,`TOTAL_MONTH_REVENUE`) VALUES
-    (2025,6,54600.0);
+    (2025,6,54600.0),
+    (2025,5,54600.0);
 
 INSERT INTO `REVENUE_REPORT_DETAIL`
 (`TOTAL_ROOM_REVENUE`,`REVENUE_REPORT_ID`,`ROOMTYPE_ID`) VALUES
+                                                             #thang 6
                                                              (4500.0, (SELECT ID FROM `REVENUE_REPORT` WHERE YEAR=2025 AND MONTH=6), 1),
                                                              (6300.0, (SELECT ID FROM `REVENUE_REPORT` WHERE YEAR=2025 AND MONTH=6), 2),
                                                              (11000.0,(SELECT ID FROM `REVENUE_REPORT` WHERE YEAR=2025 AND MONTH=6), 3),
                                                              (10800.0,(SELECT ID FROM `REVENUE_REPORT` WHERE YEAR=2025 AND MONTH=6), 4),
-                                                             (22000.0,(SELECT ID FROM `REVENUE_REPORT` WHERE YEAR=2025 AND MONTH=6), 5);
+                                                             (22000.0,(SELECT ID FROM `REVENUE_REPORT` WHERE YEAR=2025 AND MONTH=6), 5),
+
+                                                             #thang 5
+                                                             (4500.0, (SELECT `ID` FROM `REVENUE_REPORT` WHERE `YEAR`=2025 AND `MONTH`=5), 1),
+                                                             (6300.0, (SELECT `ID` FROM `REVENUE_REPORT` WHERE `YEAR`=2025 AND `MONTH`=5), 2),
+                                                             (11000.0,(SELECT `ID` FROM `REVENUE_REPORT` WHERE `YEAR`=2025 AND `MONTH`=5), 3),
+                                                             (10800.0,(SELECT `ID` FROM `REVENUE_REPORT` WHERE `YEAR`=2025 AND `MONTH`=5), 4),
+                                                             (22000.0,(SELECT `ID` FROM `REVENUE_REPORT` WHERE `YEAR`=2025 AND `MONTH`=5), 5);
 
 INSERT INTO `VARIABLE` (`NAME`, `VALUE`, `DESCRIPTION`) VALUES
                                                             ('MAX_EXTENSION_DAY', 10, 'Số ngày gia hạn tối đa'),
