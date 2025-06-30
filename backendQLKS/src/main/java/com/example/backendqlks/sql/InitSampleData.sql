@@ -422,7 +422,7 @@ INSERT INTO `RENTAL_FORM`
                                                                                     (10,10,DATE_SUB(NOW(), INTERVAL 2 DAY),NOW(),2,'Business trip'),
 
                                                                                     #thang 5
-                                                                                    ( 1,  1, DATE_SUB(@payBaseMay, INTERVAL 3 DAY), @payBaseMay, 3, 'No note'),
+                                                                                    ( 1,  1, DATE_SUB(@payBaseMay, INTERVAL 4 DAY), @payBaseMay, 4, 'Guest destroyed the room'),
                                                                                     ( 2,  2, DATE_SUB(@payBaseMay, INTERVAL 2 DAY), @payBaseMay, 2, 'VIP guest'),
                                                                                     ( 3,  3, DATE_SUB(@payBaseMay, INTERVAL 1 DAY), @payBaseMay, 1, 'Needs late checkout'),
                                                                                     ( 4,  4, DATE_SUB(@payBaseMay, INTERVAL 5 DAY), @payBaseMay, 5, 'Birthday booking'),
@@ -498,7 +498,7 @@ INSERT INTO `INVOICE` (`TOTAL_RESERVATION_COST`,`PAYING_GUEST_ID`,`STAFF_ID`) VA
                                                                                   (6000.0,10,10),
 
                                                                                   #thang 5
-                                                                                  (2500.0,1,1),
+                                                                                  (3000.0,1,1),
                                                                                   (3500.0,2,2),
                                                                                   (2000.0,3,3),
                                                                                   (8400.0,4,4),
@@ -524,7 +524,7 @@ INSERT INTO `INVOICE_DETAIL`
                                                                                (3,10,6000.0,10),
 
                                                                                #thang 5
-                                                                               (5,11,2500.0,11),
+                                                                               (6,11,3000.0,11),
                                                                                (5,12,3500.0,12),
                                                                                (2,13,2000.0,13),
                                                                                (7,14,8400.0,14),
@@ -537,7 +537,7 @@ INSERT INTO `INVOICE_DETAIL`
 
 INSERT INTO `REVENUE_REPORT` (`YEAR`,`MONTH`,`TOTAL_MONTH_REVENUE`) VALUES
     (2025,6,54600.0),
-    (2025,5,54600.0);
+    (2025,5,55100.0);
 
 INSERT INTO `REVENUE_REPORT_DETAIL`
 (`TOTAL_ROOM_REVENUE`,`REVENUE_REPORT_ID`,`ROOMTYPE_ID`) VALUES
@@ -549,7 +549,7 @@ INSERT INTO `REVENUE_REPORT_DETAIL`
                                                              (22000.0,(SELECT ID FROM `REVENUE_REPORT` WHERE YEAR=2025 AND MONTH=6), 5),
 
                                                              #thang 5
-                                                             (4500.0, (SELECT `ID` FROM `REVENUE_REPORT` WHERE `YEAR`=2025 AND `MONTH`=5), 1),
+                                                             (5000.0, (SELECT `ID` FROM `REVENUE_REPORT` WHERE `YEAR`=2025 AND `MONTH`=5), 1),
                                                              (6300.0, (SELECT `ID` FROM `REVENUE_REPORT` WHERE `YEAR`=2025 AND `MONTH`=5), 2),
                                                              (11000.0,(SELECT `ID` FROM `REVENUE_REPORT` WHERE `YEAR`=2025 AND `MONTH`=5), 3),
                                                              (10800.0,(SELECT `ID` FROM `REVENUE_REPORT` WHERE `YEAR`=2025 AND `MONTH`=5), 4),
