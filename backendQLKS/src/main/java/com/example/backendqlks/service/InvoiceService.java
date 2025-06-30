@@ -11,6 +11,7 @@ import com.example.backendqlks.entity.enums.Action;
 import com.example.backendqlks.entity.enums.RoomState;
 import com.example.backendqlks.mapper.InvoiceDetailMapper;
 import com.example.backendqlks.mapper.InvoiceMapper;
+import com.example.backendqlks.mapper.RentalFormMapper;
 import com.example.backendqlks.utils.PDFGeneratorUtil;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import com.example.backendqlks.dao.RentalExtensionFormRepository;
+import com.example.backendqlks.entity.RentalExtensionForm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ public class InvoiceService {
     private final RentalFormRepository rentalFormRepository;
     private final InvoiceMapper invoiceMapper;
     private final InvoiceDetailRepository invoiceDetailRepository;
+    private final RentalExtensionFormRepository rentalExtensionFormRepository;
     private final HistoryService historyService;
     private final RoomRepository roomRepository;
     private final GuestRepository guestRepository;
@@ -46,7 +50,8 @@ public class InvoiceService {
                           RoomRepository roomRepository,
                           GuestRepository guestRepository,
                           SMTPEmailService smtpEmailService,
-                          PDFGeneratorUtil pdfGeneratorUtil) {
+                          PDFGeneratorUtil pdfGeneratorUtil,
+                          RentalExtensionFormRepository rentalExtensionFormRepository) {
         this.invoiceMapper = invoiceMapper;
         this.invoiceRepository = invoiceRepository;
         this.rentalFormRepository = rentalFormRepository;
@@ -56,6 +61,7 @@ public class InvoiceService {
         this.guestRepository = guestRepository;
         this.smtpEmailService = smtpEmailService;
         this.pdfGeneratorUtil = pdfGeneratorUtil;
+        this.rentalExtensionFormRepository = rentalExtensionFormRepository;
     }
 
     @Transactional(readOnly = true)
@@ -163,23 +169,42 @@ public class InvoiceService {
         if (details == null || details.isEmpty()) {
             throw new IllegalArgumentException("Invoice has no details to recalculate");
         }
+
         double totalAmount = 0;
         StringBuilder detailUpdateHistory = new StringBuilder();
         double previousTotalAmount = existingInvoice.getTotalReservationCost();
+
         for (var detail : details) {
             double oldCost = detail.getReservationCost();
+
             var rentalForm = rentalFormRepository.findById(detail.getRentalFormId())
                     .orElseThrow(() -> new IllegalArgumentException("Rental Form with this ID cannot be found"));
             var rentalDays = rentalForm.getNumberOfRentalDays();
             var pricePerDay = rentalForm.getRoom().getRoomType().getPrice();
-            var amount = rentalDays * pricePerDay;
+
+            // ⭐ Thêm phần extension rental form
+            var extensionForms = rentalExtensionFormRepository.findByRentalFormId(rentalForm.getId());
+            int totalExtensionDays = extensionForms.stream()
+                    .mapToInt(RentalExtensionForm::getNumberOfRentalDays)
+                    .sum();
+
+            // ⭐ Tổng số ngày thuê = rentalDays + extensionDays
+            int totalRentalDays = rentalDays + totalExtensionDays;
+
+            var amount = totalRentalDays * pricePerDay;
+
             detail.setReservationCost(amount);
             invoiceDetailRepository.save(detail);
+
             if (Double.compare(oldCost, amount) != 0) {
-                detailUpdateHistory.append(String.format("- Chi tiết #%d: %.2f → %.2f\n", detail.getId(), oldCost, amount));
+                detailUpdateHistory.append(
+                        String.format("- Chi tiết #%d: %.2f → %.2f\n", detail.getId(), oldCost, amount)
+                );
             }
+
             totalAmount += amount;
         }
+
         if (!detailUpdateHistory.isEmpty()) {
             HistoryDto detailHistory = HistoryDto.builder()
                     .impactor(impactor)
@@ -187,12 +212,14 @@ public class InvoiceService {
                     .affectedObject("Chi tiết hóa đơn")
                     .affectedObjectId(existingInvoice.getId())
                     .action(Action.UPDATE)
-                    .content("Cập nhật chi phí các chi tiết hóa đơn:\n" + detailUpdateHistory.toString().trim())
+                    .content("Cập nhật chi phí các chi tiết hóa đơn (bao gồm extension rental form):\n" + detailUpdateHistory.toString().trim())
                     .build();
             historyService.create(detailHistory);
         }
+
         existingInvoice.setTotalReservationCost(totalAmount);
         invoiceRepository.save(existingInvoice);
+
         if (Double.compare(previousTotalAmount, totalAmount) != 0) {
             String invoiceContent = String.format("Tổng chi phí: %.2f → %.2f", previousTotalAmount, totalAmount);
             HistoryDto invoiceHistory = HistoryDto.builder()
@@ -205,8 +232,10 @@ public class InvoiceService {
                     .build();
             historyService.create(invoiceHistory);
         }
+
         return invoiceMapper.toResponseDto(existingInvoice);
     }
+
 
     @Transactional(readOnly = true)
     public List<ResponseInvoiceDto> getAllInvoicesByUserId(int userId) {
