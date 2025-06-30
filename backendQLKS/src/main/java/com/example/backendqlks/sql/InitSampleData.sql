@@ -394,16 +394,16 @@ INSERT INTO `BOOKING_CONFIRMATION_FORM`
 
 INSERT INTO `RENTAL_FORM`
 (`ROOM_ID`,`STAFF_ID`,`RENTAL_DATE`,`IS_PAID_AT`,`NUMBER_OF_RENTAL_DAY`,`NOTE`) VALUES
-                                                                                    (1,1,NOW(),NULL,3,'No note'),
-                                                                                    (2,2,NOW(),NULL,2,'VIP guest'),
-                                                                                    (3,3,NOW(),NULL,1,'Needs late checkout'),
-                                                                                    (4,4,NOW(),NULL,5,'Birthday booking'),
-                                                                                    (5,5,NOW(),NULL,7,'Company event'),
-                                                                                    (6,6,NOW(),NULL,3,'Extra towels'),
-                                                                                    (7,7,NOW(),NULL,2,'Child seat required'),
-                                                                                    (8,8,NOW(),NULL,1,'No special needs'),
-                                                                                    (9,9,NOW(),NULL,5,'Group booking'),
-                                                                                    (10,10,NOW(),NULL,2,'Business trip');
+                                                                                    (1,1,DATE_SUB(NOW(), INTERVAL 3 DAY),NOW(),3,'No note'),
+                                                                                    (2,2,DATE_SUB(NOW(), INTERVAL 3 DAY),DATE_SUB(NOW(), INTERVAL 1 DAY),2,'VIP guest'),
+                                                                                    (3,3,DATE_SUB(NOW(), INTERVAL 1 DAY),NOW(),1,'Needs late checkout'),
+                                                                                    (4,4,DATE_SUB(NOW(), INTERVAL 7 DAY),DATE_SUB(NOW(), INTERVAL 2 DAY),5,'Birthday booking'),
+                                                                                    (5,5,DATE_SUB(NOW(), INTERVAL 10 DAY),DATE_SUB(NOW(), INTERVAL 3 DAY),7,'Company event'),
+                                                                                    (6,6,DATE_SUB(NOW(), INTERVAL 8 DAY),DATE_SUB(NOW(), INTERVAL 5 DAY),3,'Extra towels'),
+                                                                                    (7,7,DATE_SUB(NOW(), INTERVAL 2 DAY),NOW(),2,'Child seat required'),
+                                                                                    (8,8,DATE_SUB(NOW(), INTERVAL 4 DAY),DATE_SUB(NOW(), INTERVAL 3 DAY),1,'No special needs'),
+                                                                                    (9,9,DATE_SUB(NOW(), INTERVAL 8 DAY),DATE_SUB(NOW(), INTERVAL 3 DAY),5,'Group booking'),
+                                                                                    (10,10,DATE_SUB(NOW(), INTERVAL 2 DAY),NOW(),2,'Business trip');
 
 INSERT INTO `RENTAL_FORM_DETAIL` (`RENTAL_FORM_ID`,`GUEST_ID`) VALUES
                                                                    (1,1),
