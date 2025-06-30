@@ -30,7 +30,7 @@ public class BlockController {
             return ResponseEntity.status(500).body("Error fetching block: " + e.getMessage());
         }
     }
-
+    // GetMapping
     @GetMapping
     public ResponseEntity<?> getAllBlocks(){
         try{
