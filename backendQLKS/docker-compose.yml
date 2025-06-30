@@ -15,7 +15,7 @@ services:
       - '3307:3306'
     volumes:
       - ./mysql-data:/var/lib/mysql
-      - ./sql/InitSampleData.sql:/docker-entrypoint-initdb.d/InitSampleData.sql
+      - ./backendQLKS/src/main/java/com/example/backendqlks/sql/InitSampleData.sql:/docker-entrypoint-initdb.d/InitSampleData.sql
     command: >
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_unicode_ci
