@@ -26,6 +26,7 @@ import com.example.backendqlks.entity.RentalExtensionForm;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -245,21 +246,35 @@ public class InvoiceService {
         return invoiceMapper.toResponseDtoList(invoiceRepository.findInvoicesByPayingGuestId(userId));
     }
 
+    //indeed it is month amount
     public Double getTodayMoneyAmount() {
-        LocalDate today = LocalDate.now();
-        LocalDateTime startOfDay = today.atStartOfDay();
-        LocalDateTime endOfDay = today.atTime(LocalTime.MAX);
+        YearMonth currentMonth = YearMonth.now();
 
-        List<Invoice> todayInvoices = invoiceRepository.findInvoiceByCreatedAtBetween(startOfDay, endOfDay);
+        // Ngày bắt đầu tháng (01/… 00:00:00)
+        LocalDateTime startOfMonth = currentMonth
+                .atDay(1)
+                .atStartOfDay();
 
-        if (todayInvoices.isEmpty()) {
+        // Ngày cuối tháng (ngày cuối 23:59:59.999999999)
+        LocalDateTime endOfMonth = currentMonth
+                .atEndOfMonth()
+                .atTime(LocalTime.MAX);
+
+        // Lấy tất cả hóa đơn trong khoảng
+        List<Invoice> monthInvoices = invoiceRepository
+                .findInvoiceByCreatedAtBetween(startOfMonth, endOfMonth);
+
+        // Nếu không có hóa đơn nào thì trả về 0
+        if (monthInvoices.isEmpty()) {
             return 0.0;
         }
 
-        return todayInvoices.stream()
+        // Cộng dồn tổng tiền
+        return monthInvoices.stream()
                 .mapToDouble(Invoice::getTotalReservationCost)
                 .sum();
     }
+
 
     public void sendEmailAfterInvoicePayment(int invoiceId) {
         var invoice= invoiceRepository.findById(invoiceId).orElseThrow(() -> new IllegalArgumentException("Invoice with this ID cannot be found"));
