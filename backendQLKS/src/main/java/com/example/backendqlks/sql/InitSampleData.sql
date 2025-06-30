@@ -244,10 +244,13 @@ CREATE TABLE `VARIABLE` (
 -- Insert sample data into database
 INSERT INTO `USER_ROLE` (`NAME`) VALUES
                                      ('SuperAdmin'),
-                                     ('Receptionist'),
+                                     ('BigReceptionist'),
                                      ('Manager'),
                                      ('Cleaner'),
-                                     ('Guest');
+                                     ('Accountant'),
+                                     ('NormalGuest'),
+                                     ('Admin'),
+                                     ('NormalReceptionist');
 
 INSERT INTO `PERMISSION` (`NAME`) VALUES
                                       ('ADMIN'),
@@ -261,11 +264,15 @@ INSERT INTO `USER_ROLE_PERMISSION` (`USER_ROLE_ID`, `PERMISSION_ID`) VALUES
                                                                          (1, 2),
                                                                          (1, 3),
                                                                          (1, 4),
+                                                                         (1, 5),
                                                                          (2, 1),
                                                                          (2, 2),
                                                                          (2, 4),
                                                                          (3, 3),
                                                                          (5, 5),
+                                                                         (6, 4),
+                                                                         (7, 1),
+                                                                         (8, 2),
                                                                          (4, 1);
 
 INSERT INTO `ACCOUNT` (`USERNAME`, `PASSWORD`, `USER_ROLE_ID`) VALUES
@@ -273,7 +280,7 @@ INSERT INTO `ACCOUNT` (`USERNAME`, `PASSWORD`, `USER_ROLE_ID`) VALUES
                                                                    ('recept1', 'recept123', 2),
                                                                    ('manager1', 'manager123', 3),
                                                                    ('cleaner1', 'cleaner123', 4),
-                                                                   ('guest1', 'guest123', 5);
+                                                                   ('guest1', 'guest123', 6);
 
 INSERT INTO `POSITION` (`NAME`, `BASE_SALARY`) VALUES
                                                    ('Manager', 1200.0),
@@ -308,8 +315,8 @@ INSERT INTO `STAFF` (
 
 
 INSERT INTO `GUEST` (`NAME`, `SEX`, `AGE`, `IDENTIFICATION_NUMBER`, `PHONE_NUMBER`, `EMAIL`, `ACCOUNT_ID`) VALUES
-                                                                                                               ('Alice', 'FEMALE', 27, '666666666666', '12345678923', 'alice@example.com', 5),
-                                                                                                               ('Bob', 'MALE', 32, '777777777777', '15467893412', 'bob@example.com', NULL),
+                                                                                                               ('Alice', 'FEMALE', 27, '666666666666', '12345678923', 'nnguyenminhquang786@gmail.com', 5),
+                                                                                                               ('Bob', 'MALE', 32, '777777777777', '15467893412', 'rinntrann05@gmail.com', NULL),
                                                                                                                ('Charlie', 'MALE', 45, '888888888888', '10394581234', 'charlie@example.com', NULL),
                                                                                                                ('Diana', 'FEMALE', 29, '999999999999', '21345676545', 'diana@example.com', NULL),
                                                                                                                ('Eve', 'FEMALE', 24, '123456789123', '45674567431', 'eve@example.com', NULL),
@@ -350,125 +357,113 @@ INSERT INTO `ROOMTYPE` (`NAME`, `PRICE`) VALUES
                                              ('Family', 1200.0),
                                              ('Presidential', 2000.0);
 
-INSERT INTO `ROOM` (`NAME`, `NOTE`, `ROOM_STATE`, `ROOMTYPE_ID`, `FLOOR_ID`) VALUES
-                                                                                 ('101', 'Sea view', 'READY_TO_SERVE', 1, 1),
-                                                                                 ('102', 'City view', 'BOOKED', 2, 1),
-                                                                                 ('201', 'Garden view', 'BEING_CLEANED', 3, 2),
-                                                                                 ('202', 'Mountain view', 'UNDER_RENOVATION', 4, 2),
-                                                                                 ('301', 'Lake view', 'BEING_RENTED', 5, 3),
-                                                                                 ('302', 'Near elevator', 'READY_TO_SERVE', 1, 4),
-                                                                                 ('303', 'Quiet corner', 'BOOKED', 2, 5),
-                                                                                 ('304', 'Family pack', 'READY_TO_SERVE', 4, 6),
-                                                                                 ('401', 'Mountain view', 'READY_TO_SERVE', 5, 7),
-                                                                                 ('402', 'No window', 'BEING_CLEANED', 1, 8),
-                                                                                 ('403', 'Long stay', 'READY_TO_SERVE', 2, 9),
-                                                                                 ('404', 'Presidential', 'BOOKED', 5, 10),
-                                                                                 ('405', 'Accessible', 'READY_TO_SERVE', 3, 3),
-                                                                                 ('406', 'VIP area', 'READY_TO_SERVE', 4, 2),
-                                                                                 ('407', 'Balcony room', 'READY_TO_SERVE', 3, 1),
-                                                                                ('408', 'Oceanfront', 'READY_TO_SERVE', 2, 1),
-                                                                                ('409', 'Pool view', 'READY_TO_SERVE', 3, 2),
-                                                                                ('501', 'Skyline view', 'READY_TO_SERVE', 1, 3),
-                                                                                ('502', 'Corner suite', 'READY_TO_SERVE', 4, 4),
-                                                                                ('503', 'Deluxe room', 'READY_TO_SERVE', 5, 5);
-
+INSERT INTO `ROOM` (`NAME`,`NOTE`,`ROOM_STATE`,`ROOMTYPE_ID`,`FLOOR_ID`) VALUES
+                                                                             ('101','Pet friendly','READY_TO_SERVE',1,1),
+                                                                             ('102','City view','BOOKED',2,1),
+                                                                             ('201','Garden view','BEING_CLEANED',3,2),
+                                                                             ('202','Mountain view','UNDER_RENOVATION',4,2),
+                                                                             ('301','Lake view','BEING_RENTED',5,3),
+                                                                             ('302','Near elevator','READY_TO_SERVE',1,4),
+                                                                             ('303','Quiet corner','BOOKED',2,5),
+                                                                             ('304','Family pack','READY_TO_SERVE',4,6),
+                                                                             ('401','Mountain view','READY_TO_SERVE',5,7),
+                                                                             ('402','No window','BEING_CLEANED',1,8),
+                                                                             ('403','Long stay','READY_TO_SERVE',2,9),
+                                                                             ('404','Presidential','BOOKED',5,10),
+                                                                             ('405','Accessible','READY_TO_SERVE',3,3),
+                                                                             ('406','VIP area','READY_TO_SERVE',4,2),
+                                                                             ('407','Balcony room','READY_TO_SERVE',3,1),
+                                                                             ('408','Oceanfront','READY_TO_SERVE',2,1),
+                                                                             ('409','Pool view','READY_TO_SERVE',3,2),
+                                                                             ('501','Skyline view','READY_TO_SERVE',1,3),
+                                                                             ('502','Corner suite','READY_TO_SERVE',4,4),
+                                                                             ('503','Deluxe room','READY_TO_SERVE',5,5);
 
 INSERT INTO `BOOKING_CONFIRMATION_FORM`
-(`BOOKING_GUEST_ID`, `BOOKING_STATE`, `ROOM_ID`, `BOOKING_DATE`, `RENTAL_DAYS`) VALUES
-                                                                                    (1, 'PENDING', 1, '2025-06-20 10:00:00', 2),
-                                                                                    (2, 'COMMITED', 2, '2025-06-21 14:30:00', 3),
-                                                                                    (3, 'EXPIRED', 3, '2025-06-18 09:00:00', 1),
-                                                                                    (4, 'CANCELLED', 4, '2025-06-15 12:15:00', 4),
-                                                                                    (5, 'PENDING', 5, '2025-06-22 08:45:00', 2),
-                                                                                    (6, 'PENDING', 6, '2025-06-22 10:00:00', 2),
-                                                                                    (7, 'COMMITED', 7, '2025-06-23 14:30:00', 3),
-                                                                                    (8, 'EXPIRED', 8, '2025-06-19 09:00:00', 1),
-                                                                                    (9, 'CANCELLED', 9, '2025-06-16 12:15:00', 4),
-                                                                                    (10, 'PENDING', 10, '2025-06-24 08:45:00', 2);
+(`BOOKING_GUEST_ID`,`BOOKING_STATE`,`ROOM_ID`,`BOOKING_DATE`,`RENTAL_DAYS`) VALUES
+                                                                                (1,'PENDING',1,'2025-06-20 10:00:00',2),
+                                                                                (2,'COMMITED',2,'2025-06-21 14:30:00',3),
+                                                                                (3,'EXPIRED',3,'2025-06-18 09:00:00',1),
+                                                                                (4,'CANCELLED',4,'2025-06-15 12:15:00',4),
+                                                                                (5,'PENDING',5,'2025-06-22 08:45:00',2),
+                                                                                (6,'PENDING',6,'2025-06-22 10:00:00',2),
+                                                                                (7,'COMMITED',7,'2025-06-23 14:30:00',3),
+                                                                                (8,'EXPIRED',8,'2025-06-19 09:00:00',1),
+                                                                                (9,'CANCELLED',9,'2025-06-16 12:15:00',4),
+                                                                                (10,'PENDING',10,'2025-06-24 08:45:00',2);
 
-INSERT INTO `RENTAL_FORM` (`ROOM_ID`, `STAFF_ID`, `RENTAL_DATE`, `IS_PAID_AT`, `NUMBER_OF_RENTAL_DAY`, `NOTE`) VALUES
-                                                                                                                   (1, 1, NOW(), NOW(), 3, 'No note'),
-                                                                                                                   (2, 2, NOW(), NOW(), 2, 'VIP guest'),
-                                                                                                                   (3, 3, NOW(), NOW(), 1, 'Needs late checkout'),
-                                                                                                                   (4, 4, NOW(), NOW(), 5, 'Birthday booking'),
-                                                                                                                   (5, 5, NOW(), NOW(), 7, 'Company event'),
-                                                                                                                   (6, 6, NOW(), NOW(), 3, 'Extra towels'),
-                                                                                                                   (7, 7, NOW(), NOW(), 2, 'Child seat required'),
-                                                                                                                   (8, 8, NOW(), NOW(), 1, 'No special needs'),
-                                                                                                                   (9, 9, NOW(), NOW(), 5, 'Group booking'),
-                                                                                                                   (10, 10, NOW(), NOW(), 2, 'Business trip');
+INSERT INTO `RENTAL_FORM`
+(`ROOM_ID`,`STAFF_ID`,`RENTAL_DATE`,`IS_PAID_AT`,`NUMBER_OF_RENTAL_DAY`,`NOTE`) VALUES
+                                                                                    (1,1,NOW(),NULL,3,'No note'),
+                                                                                    (2,2,NOW(),NULL,2,'VIP guest'),
+                                                                                    (3,3,NOW(),NULL,1,'Needs late checkout'),
+                                                                                    (4,4,NOW(),NULL,5,'Birthday booking'),
+                                                                                    (5,5,NOW(),NULL,7,'Company event'),
+                                                                                    (6,6,NOW(),NULL,3,'Extra towels'),
+                                                                                    (7,7,NOW(),NULL,2,'Child seat required'),
+                                                                                    (8,8,NOW(),NULL,1,'No special needs'),
+                                                                                    (9,9,NOW(),NULL,5,'Group booking'),
+                                                                                    (10,10,NOW(),NULL,2,'Business trip');
 
-INSERT INTO `RENTAL_FORM_DETAIL` (`RENTAL_FORM_ID`, `GUEST_ID`) VALUES
-                                                                    (1, 1),
-                                                                    (2, 2),
-                                                                    (3, 3),
-                                                                    (4, 4),
-                                                                    (5, 5),
-                                                                    (6, 6),
-                                                                    (7, 7),
-                                                                    (8, 8),
-                                                                    (9, 9),
-                                                                    (10, 10);
+INSERT INTO `RENTAL_FORM_DETAIL` (`RENTAL_FORM_ID`,`GUEST_ID`) VALUES
+                                                                   (1,1),
+                                                                   (2,2),
+                                                                   (3,3),
+                                                                   (4,4),
+                                                                   (5,5),
+                                                                   (6,6),
+                                                                   (7,7),
+                                                                   (8,8),
+                                                                   (9,9),
+                                                                   (10,10);
 
-INSERT INTO `RENTAL_EXTENSION_FORM` (`RENTAL_FORM_ID`, `NUMBER_OF_RENTAL_DAY`, `STAFF_ID`) VALUES
-                                                                                               (1, 2, 1),
-                                                                                               (2, 3, 2),
-                                                                                               (3, 1, 3),
-                                                                                               (4, 2, 4),
-                                                                                               (5, 1, 5),
-                                                                                               (6, 1, 6),
-                                                                                               (7, 2, 7),
-                                                                                               (8, 1, 8),
-                                                                                               (9, 4, 9),
-                                                                                               (10, 1, 10);
+INSERT INTO `RENTAL_EXTENSION_FORM` (`RENTAL_FORM_ID`,`NUMBER_OF_RENTAL_DAY`,`STAFF_ID`) VALUES
+                                                                                             (1,2,1),
+                                                                                             (2,3,2),
+                                                                                             (3,1,3),
+                                                                                             (4,2,4),
+                                                                                             (5,1,5),
+                                                                                             (6,1,6),
+                                                                                             (7,2,7),
+                                                                                             (8,1,8),
+                                                                                             (9,4,9),
+                                                                                             (10,1,10);
 
-INSERT INTO `INVOICE` (`TOTAL_RESERVATION_COST`, `PAYING_GUEST_ID`, `STAFF_ID`) VALUES
-                                                                                    (1500.0, 1, 1),
-                                                                                    (1400.0, 2, 2),
-                                                                                    (1200.0, 3, 3),
-                                                                                    (2000.0, 4, 4),
-                                                                                    (2500.0, 5, 5),
-                                                                                    (1300.0, 6, 6),
-                                                                                    (1100.0, 7, 7),
-                                                                                    (1700.0, 8, 8),
-                                                                                    (1900.0, 9, 9),
-                                                                                    (2100.0, 10, 10);
+INSERT INTO `INVOICE` (`TOTAL_RESERVATION_COST`,`PAYING_GUEST_ID`,`STAFF_ID`) VALUES
+                                                                                  (2500.0,1,1),
+                                                                                  (3500.0,2,2),
+                                                                                  (2000.0,3,3),
+                                                                                  (8400.0,4,4),
+                                                                                  (16000.0,5,5),
+                                                                                  (2000.0,6,6),
+                                                                                  (2800.0,7,7),
+                                                                                  (2400.0,8,8),
+                                                                                  (9000.0,9,9),
+                                                                                  (6000.0,10,10);
 
-INSERT INTO `INVOICE_DETAIL` (`NUMBER_OF_RENTAL_DAYS`, `INVOICE_ID`, `RESERVATION_COST`, `RENTAL_FORM_ID`) VALUES
-                                                                                                               (3, 1, 1500.0, 1),
-                                                                                                               (2, 2, 1400.0, 2),
-                                                                                                               (1, 3, 1200.0, 3),
-                                                                                                               (5, 4, 2000.0, 4),
-                                                                                                               (7, 5, 2500.0, 5),
-                                                                                                               (3, 6, 1300.0, 6),
-                                                                                                               (2, 7, 1100.0, 7),
-                                                                                                               (1, 8, 1700.0, 8),
-                                                                                                               (5, 9, 1900.0, 9),
-                                                                                                               (2, 10, 2100.0, 10);
+INSERT INTO `INVOICE_DETAIL`
+(`NUMBER_OF_RENTAL_DAYS`,`INVOICE_ID`,`RESERVATION_COST`,`RENTAL_FORM_ID`) VALUES
+                                                                               (5,1,2500.0,1),
+                                                                               (5,2,3500.0,2),
+                                                                               (2,3,2000.0,3),
+                                                                               (7,4,8400.0,4),
+                                                                               (8,5,16000.0,5),
+                                                                               (4,6,2000.0,6),
+                                                                               (4,7,2800.0,7),
+                                                                               (2,8,2400.0,8),
+                                                                               (9,9,9000.0,9),
+                                                                               (3,10,6000.0,10);
 
-INSERT INTO `REVENUE_REPORT` (`YEAR`, `MONTH`, `TOTAL_MONTH_REVENUE`) VALUES
-                                                                          (2024, 1, 10000.0),
-                                                                          (2024, 2, 20000.0),
-                                                                          (2024, 3, 15000.0),
-                                                                          (2024, 4, 22000.0),
-                                                                          (2024, 5, 18000.0),
-                                                                          (2024, 6, 25000.0),
-                                                                          (2024, 7, 26000.0),
-                                                                          (2024, 8, 27000.0),
-                                                                          (2024, 9, 28000.0),
-                                                                          (2024, 10, 29000.0);
+INSERT INTO `REVENUE_REPORT` (`YEAR`,`MONTH`,`TOTAL_MONTH_REVENUE`) VALUES
+    (2025,6,54600.0);
 
-INSERT INTO `REVENUE_REPORT_DETAIL` (`TOTAL_ROOM_REVENUE`, `REVENUE_REPORT_ID`, `ROOMTYPE_ID`) VALUES
-                                                                                                   (3000.0, 1, 1),
-                                                                                                   (4000.0, 2, 2),
-                                                                                                   (3500.0, 3, 3),
-                                                                                                   (5000.0, 4, 4),
-                                                                                                   (4500.0, 5, 5),
-                                                                                                   (5000.0, 6, 1),
-                                                                                                   (5200.0, 7, 2),
-                                                                                                   (5400.0, 8, 3),
-                                                                                                   (5600.0, 9, 4),
-                                                                                                   (5800.0, 10, 5);
+INSERT INTO `REVENUE_REPORT_DETAIL`
+(`TOTAL_ROOM_REVENUE`,`REVENUE_REPORT_ID`,`ROOMTYPE_ID`) VALUES
+                                                             (4500.0, (SELECT ID FROM `REVENUE_REPORT` WHERE YEAR=2025 AND MONTH=6), 1),
+                                                             (6300.0, (SELECT ID FROM `REVENUE_REPORT` WHERE YEAR=2025 AND MONTH=6), 2),
+                                                             (11000.0,(SELECT ID FROM `REVENUE_REPORT` WHERE YEAR=2025 AND MONTH=6), 3),
+                                                             (10800.0,(SELECT ID FROM `REVENUE_REPORT` WHERE YEAR=2025 AND MONTH=6), 4),
+                                                             (22000.0,(SELECT ID FROM `REVENUE_REPORT` WHERE YEAR=2025 AND MONTH=6), 5);
 
 INSERT INTO `VARIABLE` (`NAME`, `VALUE`, `DESCRIPTION`) VALUES
                                                             ('MAX_EXTENSION_DAY', 10, 'Số ngày gia hạn tối đa'),
